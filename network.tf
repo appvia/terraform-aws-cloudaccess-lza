@@ -10,7 +10,7 @@ locals {
 resource "aws_iam_policy" "ipam_admin" {
   description = "Provides the permissions to manage the ipam service"
   name        = "lza-ipam-management"
-  policy      = file("assets/policies/ipam-management.json")
+  policy      = file("${path.module}/assets/policies/ipam-management.json")
   tags        = var.tags
 
   provider = aws.network

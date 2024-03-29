@@ -34,6 +34,7 @@ variable "region" {
   description = "AWS region to deploy into"
   type        = string
 }
+
 variable "permissive_permissions_boundary_name" {
   description = "Name of the permissive IAM policy to use as a permissions boundary"
   type        = string
@@ -43,11 +44,17 @@ variable "permissive_permissions_boundary_name" {
 variable "landing_zone_repositories" {
   description = "List of repository locations for the landing zone functionality"
   type = object({
-    accelerator_repository_url  = string
-    connectivity_repository_url = string
-    firewall_repository_url     = string
-    identity_repository_url     = string
+    accelerator_repository_url  = optional(string)
+    connectivity_repository_url = optional(string)
+    firewall_repository_url     = optional(string)
+    identity_repository_url     = optional(string)
   })
+  default = {
+    accelerator_repository_url  = ""
+    connectivity_repository_url = ""
+    firewall_repository_url     = ""
+    identity_repository_url     = ""
+  }
 }
 
 variable "tags" {

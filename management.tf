@@ -10,7 +10,7 @@ locals {
 resource "aws_iam_policy" "user_management" {
   name        = "lza-user-management"
   description = "Provides the permissions to manage users in identity center"
-  policy      = file("assets/policies/user-management.json")
+  policy      = file("${path.module}/assets/policies/user-management.json")
   provider    = aws.management
   tags        = var.tags
 }
@@ -19,7 +19,7 @@ resource "aws_iam_policy" "user_management" {
 resource "aws_iam_policy" "code_contributor" {
   name        = "lza-code-contributor"
   description = "Provides the permissions to validate the landing zone code"
-  policy      = file("assets/policies/code-contributor.json")
+  policy      = file("${path.module}/assets/policies/code-contributor.json")
   provider    = aws.management
   tags        = var.tags
 }
@@ -28,7 +28,7 @@ resource "aws_iam_policy" "code_contributor" {
 resource "aws_iam_policy" "code_release" {
   name        = "lza-code-release"
   description = "Provides the permissions to release the landing zone code"
-  policy      = file("assets/policies/code-release.json")
+  policy      = file("${path.module}/assets/policies/code-release.json")
   provider    = aws.management
   tags        = var.tags
 }
@@ -37,7 +37,7 @@ resource "aws_iam_policy" "code_release" {
 resource "aws_iam_policy" "costs_admin" {
   name        = "lza-costs-admin"
   description = "Provides the permissions to manage costs in the management account"
-  policy      = file("assets/policies/costs-admin.json")
+  policy      = file("${path.module}/assets/policies/costs-admin.json")
   provider    = aws.management
   tags        = var.tags
 }
@@ -46,7 +46,7 @@ resource "aws_iam_policy" "costs_admin" {
 resource "aws_iam_policy" "costs_viewer" {
   name        = "lza-costs-viewer"
   description = "Provides the permissions to view costs in the management account"
-  policy      = file("assets/policies/costs-viewer.json")
+  policy      = file("${path.module}/assets/policies/costs-viewer.json")
   provider    = aws.management
   tags        = var.tags
 }

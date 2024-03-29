@@ -15,4 +15,4 @@ jobs:
     secrets:
       infracost-api-key: ${{ secrets.ORG_INFRACOST_API_KEY }}
     with:
-      working-directory: .
+      working-directory: tests/

@@ -6,7 +6,7 @@
 resource "aws_iam_policy" "cost_iam_boundary" {
   name        = var.costs_boundary_name
   description = "IAM boundary used by the cost management pipelines"
-  policy      = file("assets/boundaries/costs-boundary.json")
+  policy      = file("${path.module}/assets/boundaries/costs-boundary.json")
   provider    = aws.management
   tags        = var.tags
 }
@@ -21,7 +21,7 @@ module "default_boundary" {
   name                      = "LZA-IAM-DefaultBoundary"
   region                    = var.region
   tags                      = var.tags
-  template                  = file("assets/cloudformation/default-boundary.yml")
+  template                  = file("${path.module}/assets/cloudformation/default-boundary.yml")
 
   parameters = {
     "BoundaryName"               = var.default_permissions_boundary_name
@@ -44,7 +44,7 @@ module "permissive_boundary" {
   name                      = "LZA-IAM-PermissiveBoundary"
   region                    = var.region
   tags                      = var.tags
-  template                  = file("assets/cloudformation/permissive-boundary.yml")
+  template                  = file("${path.module}/assets/cloudformation/permissive-boundary.yml")
 
   parameters = {
     "BoundaryName"               = var.permissive_permissions_boundary_name
