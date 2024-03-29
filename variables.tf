@@ -30,15 +30,39 @@ variable "default_permissions_boundary_name" {
   default     = "lza-default-boundary"
 }
 
+variable "enable_cis_alarms" {
+  description = "Indicates if we should enable CIS alerts"
+  type        = bool
+  default     = true
+}
+
 variable "region" {
   description = "AWS region to deploy into"
   type        = string
+}
+
+variable "notification_emails" {
+  description = "List of email addresses to send notifications to"
+  type        = list(string)
+  default     = []
 }
 
 variable "permissive_permissions_boundary_name" {
   description = "Name of the permissive IAM policy to use as a permissions boundary"
   type        = string
   default     = "lza-permissive-boundary"
+}
+
+variable "slack_notification_channel" {
+  description = "Slack channel to send notifications to"
+  type        = string
+  default     = "cloud-notifications"
+}
+
+variable "slack_notification_secret_name" {
+  description = "Name of the secret in AWS Secrets Manager that contains the Slack webhook URL"
+  type        = string
+  default     = "notification/slack"
 }
 
 variable "landing_zone_repositories" {
