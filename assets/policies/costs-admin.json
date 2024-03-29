@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ce:Create*",
+        "ce:Delete*",
+        "ce:Describe*",
+        "ce:Get*",
+        "ce:List*",
+        "ce:Update*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

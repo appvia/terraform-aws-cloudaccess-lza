@@ -1,0 +1,35 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowBilling",
+      "Effect": "Allow",
+      "Action": ["aws-portal:ViewBilling"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowCarbonFootprint",
+      "Effect": "Allow",
+      "Action": "sustainability:GetCarbonFootprintSummary",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowReportConsole",
+      "Effect": "Allow",
+      "Action": [
+        "aws-portal:ViewBilling",
+        "aws-portal:ViewUsage",
+        "cur:DeleteReportDefinition",
+        "cur:DescribeReportDefinitions",
+        "cur:ModifyReportDefinition",
+        "cur:PutReportDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["ce:Describe*", "ce:Get*"],
+      "Resource": "*"
+    }
+  ]
+}

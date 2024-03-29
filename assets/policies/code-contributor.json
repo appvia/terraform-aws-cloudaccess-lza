@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Condition": {
+        "Null": {
+          "codecommit:References": "false"
+        },
+        "StringEqualsIfExists": {
+          "codecommit:References": ["refs/heads/main"]
+        }
+      },
+      "Action": [
+        "codecommit:DeleteBranch",
+        "codecommit:PutFile",
+        "codecommit:MergeBranchesByFastForward",
+        "codecommit:MergeBranchesBySquash",
+        "codecommit:MergeBranchesByThreeWay",
+        "codecommit:MergePullRequestByFastForward",
+        "codecommit:MergePullRequestBySquash",
+        "codecommit:MergePullRequestByThreeWay"
+      ],
+      "Resource": "arn:aws:codecommit:*:*:aws-accelerator-config",
+      "Effect": "Deny",
+      "Sid": "DenyPushToMain"
+    },
+    {
+      "Action": "cloudformation:ValidateTemplate",
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "CF"
+    },
+    {
+      "Action": "access-analyzer:ValidatePolicy",
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "IAM"
+    },
+    {
+      "Action": "codecommit:ListRepositories",
+      "Resource": "*",
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "codecommit:CreateBranch",
+        "codecommit:CreateCommit",
+        "codecommit:CreatePullRequest",
+        "codecommit:GetBranch",
+        "codecommit:GetComment",
+        "codecommit:GetPullRequest",
+        "codecommit:GetPullRequestApprovalStates",
+        "codecommit:GitPush",
+        "codecommit:ListPullRequests",
+        "codecommit:ListRepositories",
+        "codecommit:PutCommentReaction",
+        "codecommit:UpdateComment",
+        "codecommit:UpdatePullRequestTitle"
+      ],
+      "Resource": "arn:aws:codecommit:*:*:aws-accelerator-config",
+      "Effect": "Allow",
+      "Sid": "CC"
+    }
+  ]
+}

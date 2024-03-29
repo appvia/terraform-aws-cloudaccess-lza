@@ -1,0 +1,109 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "sso-directory:AddMemberToGroup",
+        "sso-directory:CreateGroup",
+        "sso-directory:CreateUser",
+        "sso-directory:DeleteGroup",
+        "sso-directory:DeleteUser",
+        "sso-directory:DescribeDirectory",
+        "sso-directory:DescribeGroup",
+        "sso-directory:DescribeGroups",
+        "sso-directory:DescribeProvisioningTenant",
+        "sso-directory:DescribeUser",
+        "sso-directory:DescribeUserByUniqueAttribute",
+        "sso-directory:DescribeUsers",
+        "sso-directory:DisableUser",
+        "sso-directory:IsMemberInGroup",
+        "sso-directory:ListExternalIdPCertificates",
+        "sso-directory:ListExternalIdPConfigurationsForDirectory",
+        "sso-directory:ListGroupsForMember",
+        "sso-directory:ListGroupsForUser",
+        "sso-directory:ListMembersInGroup",
+        "sso-directory:ListMfaDevicesForUser",
+        "sso-directory:ListProvisioningTenants",
+        "sso-directory:RemoveMemberFromGroup",
+        "sso-directory:SearchGroups",
+        "sso-directory:SearchUsers",
+        "sso-directory:UpdateGroup",
+        "sso-directory:UpdateUser"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowIdentityCentral"
+    },
+    {
+      "Action": [
+        "sso:AssociateProfile",
+        "sso:AttachManagedPolicyToPermissionSet",
+        "sso:AttachCustomerManagedPolicyReferenceToPermissionSet",
+        "sso:CreateAccountAssignment",
+        "sso:CreatePermissionSet",
+        "sso:DeleteAccountAssignment",
+        "sso:DeletePermissionSet",
+        "sso:DeletePermissionsPolicy",
+        "sso:DeleteProfile",
+        "sso:Describe*",
+        "sso:DisassociateProfile",
+        "sso:Get*",
+        "sso:List*",
+        "sso:ProvisionPermissionSet",
+        "sso:PutInlinePolicyToPermissionSet",
+        "sso:PutPermissionsBoundaryToPermissionSet",
+        "sso:DeletePermissionsBoundaryFromPermissionSet",
+        "sso:PutPermissionsPolicy",
+        "sso:TagResource",
+        "sso:UntagResource",
+        "sso:UpdateDirectoryAssociation",
+        "sso:UpdatePermissionSet",
+        "sso:UpdateProfile",
+        "sso:AttachCustomerManagedPolicyReferenceToPermissionSet",
+        "sso:DetachManagedPolicyFromPermissionSet",
+        "sso:DetachCustomerManagedPolicyReferenceFromPermissionSet"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowSSO"
+    },
+    {
+      "Action": [
+        "identitystore:DescribeGroup",
+        "identitystore:DescribeGroupMembership",
+        "identitystore:DescribeUser",
+        "identitystore:GetGroupId",
+        "identitystore:GetGroupMembershipId",
+        "identitystore:GetUserId",
+        "identitystore:IsMemberInGroups",
+        "identitystore:ListGroupMemberships",
+        "identitystore:ListGroupMembershipsForMember",
+        "identitystore:ListGroups",
+        "identitystore:ListUsers"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowSSOAdmin"
+    },
+    {
+      "Action": [
+        "iam:ListPolicies",
+        "organizations:List*",
+        "organizations:Describe*"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowOrganizations"
+    },
+    {
+      "Action": [
+        "iam:ListPolicies",
+        "iam:DeleteRolePermissionsBoundary",
+        "iam:DeleteRolePermissionsBoundary"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowIAM"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Provisions the IAM boundaries used by CI
+
+Parameters:
+  BoundaryName:
+    Type: String
+    Description: The name of the Permissive Permissions Boundary
+    Default: PermissivePermissionsBoundary
+  TerraformStateROPolicyName:
+    Type: String
+    Description: The name of the Terraform State Read Only Policy
+  TerraformStateRWPolicyName:
+    Type: String
+    Description: The name of the Terraform State Read Write Policy
+
+Resources:
+  Boundary:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: !Ref BoundaryName
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: AllowAdminAccess
+            Effect: Allow
+            Action: "*"
+            Resource: "*"
+          - Sid: DenyAccess
+            Effect: Deny
+            Action:
+              - "account:*"
+              - "aws-portal:*"
+              - "ce:*"
+              - "config:*"
+              - "cur:*"
+              - "savingsplans:*"
+            Resource: "*"
+          - Sid: DenyPermBoundaryIAMPolicyAlteration
+            Effect: Deny
+            Action:
+              - iam:CreatePolicyVersion
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:SetDefaultPolicyVersion
+            Resource:
+              - !Sub "arn:aws:iam::${AWS::AccountId}:policy/${BoundaryName}"
+          - Sid: DenyRemovalOfPermBoundaryFromAnyUserOrRole
+            Effect: Deny
+            Action:
+              - iam:DeleteRolePermissionsBoundary
+              - iam:DeleteUserPermissionsBoundary
+            Resource:
+              - !Sub "arn:aws:iam::${AWS::AccountId}:user/*"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
+          - Sid: NoCIPolicyEdit
+            Effect: Deny
+            Action:
+              - iam:CreatePolicy
+              - iam:CreatePolicyVersion
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:SetDefaultPolicyVersion
+            Resource:
+              - !Sub "arn:aws:iam::${AWS::AccountId}:policy/${TerraformStateRWPolicyName}"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:policy/${TerraformStateROPolicyName}"
+          - Sid: DenyCreateOrDestroyIAMUsers
+            Effect: Deny
+            Action:
+              - iam:CreateUser
+              - iam:DeleteAccessKey
+              - iam:DeleteUser
+              - iam:UpdateUser
+              - iam:RemoveUserFromGroup
+            Resource:
+              - "*"
+          - Sid: ProtectDynamoDBRemoteStateLock
+            Effect: Deny
+            Action:
+              - dynamoDB:DeleteTable
+            Resource:
+              - !Sub "arn:aws:dynamodb::${AWS::AccountId}:table/${AWS::AccountId}-${AWS::Region}-tflock"
+          - Sid: ProtectS3RemoteState
+            Effect: Deny
+            Action:
+              - s3:DeleteBucket
+            Resource:
+              - !Sub "arn:aws:s3:::${AWS::AccountId}-${AWS::Region}-tfstate"
+          - Sid: DenyCloudWatchAlarms
+            Effect: Deny
+            Action:
+              - cloudwatch:*
+            Resource:
+              - !Sub "arn:aws:cloudwatch::${AWS::AccountId}:alarm:*"

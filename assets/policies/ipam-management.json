@@ -1,0 +1,41 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AllocateIpamPoolCidr",
+        "ec2:AssociateIpamResourceDiscovery",
+        "ec2:CreateIpam",
+        "ec2:CreateIpamPool",
+        "ec2:CreateIpamResourceDiscovery",
+        "ec2:CreateIpamScope",
+        "ec2:DeleteIpam",
+        "ec2:DeleteIpamPool",
+        "ec2:DeleteIpamResourceDiscovery",
+        "ec2:DeleteIpamScope",
+        "ec2:DeprovisionIpamPoolCidr",
+        "ec2:DescribeIpamPools",
+        "ec2:DescribeIpamResourceDiscoveries",
+        "ec2:DescribeIpamResourceDiscoveryAssociations",
+        "ec2:DescribeIpamScopes",
+        "ec2:DescribeIpams",
+        "ec2:DisassociateIpamResourceDiscovery",
+        "ec2:GetIpamAddressHistory",
+        "ec2:GetIpamDiscoveredAccounts",
+        "ec2:GetIpamDiscoveredResourceCidrs",
+        "ec2:GetIpamPoolAllocations",
+        "ec2:GetIpamPoolCidrs",
+        "ec2:GetIpamResourceCidrs",
+        "ec2:ModifyIpam",
+        "ec2:ModifyIpamPool",
+        "ec2:ModifyIpamResourceCidr",
+        "ec2:ModifyIpamResourceDiscovery",
+        "ec2:ModifyIpamScope",
+        "ec2:ProvisionIpamPoolCidr",
+        "ec2:ReleaseIpamPoolAllocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

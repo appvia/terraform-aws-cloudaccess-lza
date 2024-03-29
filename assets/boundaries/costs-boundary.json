@@ -1,0 +1,88 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "*",
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowAdminAccess"
+    },
+    {
+      "Action": [
+        "iam:CreatePolicyVersion",
+        "iam:DeletePolicy",
+        "iam:DeletePolicyVersion",
+        "iam:SetDefaultPolicyVersion"
+      ],
+      "Resource": ["arn:aws:iam::536471746696:policy/CostManagementBoundary"],
+      "Effect": "Deny",
+      "Sid": "DenyPermBoundaryIAMPolicyAlteration"
+    },
+    {
+      "Condition": {
+        "StringEquals": {
+          "iam:PermissionsBoundary": "arn:aws:iam::536471746696:policy/CostManagementBoundary"
+        }
+      },
+      "Action": [
+        "iam:DeleteRolePermissionsBoundary",
+        "iam:DeleteUserPermissionsBoundary"
+      ],
+      "Resource": [
+        "arn:aws:iam::536471746696:user/*",
+        "arn:aws:iam::536471746696:role/*"
+      ],
+      "Effect": "Deny",
+      "Sid": "DenyRemovalOfPermBoundaryFromAnyUserOrRole"
+    },
+    {
+      "Condition": {
+        "StringNotEquals": {
+          "iam:PermissionsBoundary": "arn:aws:iam::536471746696:policy/CostManagementBoundary"
+        }
+      },
+      "Action": [
+        "iam:PutRolePermissionsBoundary",
+        "iam:PutUserPermissionsBoundary"
+      ],
+      "Resource": [
+        "arn:aws:iam::536471746696:user/*",
+        "arn:aws:iam::536471746696:role/*"
+      ],
+      "Effect": "Deny",
+      "Sid": "DenyAccessIfRequiredPermBoundaryIsNotBeingApplied"
+    },
+    {
+      "Action": [
+        "iam:CreateUser",
+        "iam:DeleteAccessKey",
+        "iam:DeleteUser",
+        "iam:UpdateUser",
+        "iam:RemoveUserFromGroup"
+      ],
+      "Resource": ["*"],
+      "Effect": "Deny",
+      "Sid": "DenyCreateOrDestroyIAMUsers"
+    },
+    {
+      "Action": ["dynamoDB:DeleteTable"],
+      "Resource": [
+        "arn:aws:dynamodb::536471746696:table/536471746696-eu-west-2-tflock"
+      ],
+      "Effect": "Deny",
+      "Sid": "ProtectDynamoDBRemoteStateLock"
+    },
+    {
+      "Action": ["s3:DeleteBucket"],
+      "Resource": ["arn:aws:s3:::536471746696-eu-west-2-tfstate"],
+      "Effect": "Deny",
+      "Sid": "ProtectS3RemoteState"
+    },
+    {
+      "Action": ["cloudwatch:*"],
+      "Resource": ["arn:aws:cloudwatch::536471746696:alarm:*"],
+      "Effect": "Deny",
+      "Sid": "DenyCloudWatchAlarms"
+    }
+  ]
+}

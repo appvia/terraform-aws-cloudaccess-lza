@@ -1,0 +1,36 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "codepipeline:StartPipelineExecution",
+      "Resource": "arn:aws:codepipeline:*:*:AWSAccelerator-Pipeline",
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "codepipeline:GetPipeline",
+        "codepipeline:GetPipelineExecution",
+        "codepipeline:GetPipelineState",
+        "codepipeline:ListActionExecutions",
+        "codepipeline:ListPipelineExecutions"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
+    },
+    {
+      "Action": "codecommit:ListRepositories",
+      "Resource": "*",
+      "Effect": "Allow"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["codecommit:GitPush"],
+      "Resource": "arn:aws:codecommit:*:*:aws-accelerator-config",
+      "Condition": {
+        "StringEqualsIfExists": {
+          "codecommit:References": ["refs/heads/main"]
+        }
+      }
+    }
+  ]
+}
