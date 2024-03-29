@@ -15,4 +15,5 @@ jobs:
     secrets:
       infracost-api-key: ${{ secrets.ORG_INFRACOST_API_KEY }}
     with:
-      working-directory: tests/
+      terraform-validate-dir: ./tests
+      working-directory: .

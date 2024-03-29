@@ -55,8 +55,8 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | ~> 5.0 |
-| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | ~> 5.0 |
+| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.43.0 |
+| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.43.0 |
 
 ## Modules
 
@@ -90,7 +90,7 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_cloudaccess_terraform_state_rw_policy_name"></a> [cloudaccess\_terraform\_state\_rw\_policy\_name](#input\_cloudaccess\_terraform\_state\_rw\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role | `string` | `"lza-cloudaccess-tfstate-rw"` | no |
 | <a name="input_costs_boundary_name"></a> [costs\_boundary\_name](#input\_costs\_boundary\_name) | Name of the IAM policy to use as a permissions boundary for cost-related roles | `string` | `"lza-costs-boundary"` | no |
 | <a name="input_default_permissions_boundary_name"></a> [default\_permissions\_boundary\_name](#input\_default\_permissions\_boundary\_name) | Name of the default IAM policy to use as a permissions boundary | `string` | `"lza-default-boundary"` | no |
-| <a name="input_landing_zone_repositories"></a> [landing\_zone\_repositories](#input\_landing\_zone\_repositories) | List of repository locations for the landing zone functionality | <pre>object({<br>    accelerator_repository_url  = string<br>    connectivity_repository_url = string<br>    firewall_repository_url     = string<br>    identity_repository_url     = string<br>  })</pre> | n/a | yes |
+| <a name="input_landing_zone_repositories"></a> [landing\_zone\_repositories](#input\_landing\_zone\_repositories) | List of repository locations for the landing zone functionality | <pre>object({<br>    accelerator_repository_url  = optional(string)<br>    connectivity_repository_url = optional(string)<br>    firewall_repository_url     = optional(string)<br>    identity_repository_url     = optional(string)<br>  })</pre> | <pre>{<br>  "accelerator_repository_url": "",<br>  "connectivity_repository_url": "",<br>  "firewall_repository_url": "",<br>  "identity_repository_url": ""<br>}</pre> | no |
 | <a name="input_permissive_permissions_boundary_name"></a> [permissive\_permissions\_boundary\_name](#input\_permissive\_permissions\_boundary\_name) | Name of the permissive IAM policy to use as a permissions boundary | `string` | `"lza-permissive-boundary"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region to deploy into | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | n/a | yes |
