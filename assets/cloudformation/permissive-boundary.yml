@@ -45,14 +45,6 @@ Resources:
               - iam:SetDefaultPolicyVersion
             Resource:
               - !Sub "arn:aws:iam::${AWS::AccountId}:policy/${BoundaryName}"
-          - Sid: DenyRemovalOfPermBoundaryFromAnyUserOrRole
-            Effect: Deny
-            Action:
-              - iam:DeleteRolePermissionsBoundary
-              - iam:DeleteUserPermissionsBoundary
-            Resource:
-              - !Sub "arn:aws:iam::${AWS::AccountId}:user/*"
-              - !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
           - Sid: NoCIPolicyEdit
             Effect: Deny
             Action:

@@ -96,11 +96,7 @@
       "Sid": "AllowOrganizations"
     },
     {
-      "Action": [
-        "iam:ListPolicies",
-        "iam:DeleteRolePermissionsBoundary",
-        "iam:DeleteRolePermissionsBoundary"
-      ],
+      "Action": ["iam:ListPolicies", "iam:DeleteRolePermissionsBoundary"],
       "Resource": "*",
       "Effect": "Allow",
       "Sid": "AllowIAM"
