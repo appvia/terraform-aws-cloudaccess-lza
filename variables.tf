@@ -53,16 +53,22 @@ variable "permissive_permissions_boundary_name" {
   default     = "lza-permissive-boundary"
 }
 
-variable "slack_notification_channel" {
-  description = "Slack channel to send notifications to"
-  type        = string
-  default     = "cloud-notifications"
+variable "enable_slack_notifications" {
+  description = "Indicates if we should enable Slack notifications"
+  type        = bool
+  default     = false
 }
 
-variable "slack_notification_secret_name" {
-  description = "Name of the secret in AWS Secrets Manager that contains the Slack webhook URL"
+variable "enable_teams_notifications" {
+  description = "Indicates if we should enable Teams notifications"
+  type        = bool
+  default     = false
+}
+
+variable "notification_secret_name" {
+  description = "Name of the secret in AWS Secrets Manager that contains the secrets"
   type        = string
-  default     = "notification/slack"
+  default     = ""
 }
 
 variable "landing_zone_repositories" {

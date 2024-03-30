@@ -35,6 +35,35 @@ module "landing_zone" {
 }
 ```
 
+## CIS Alarms & Notifications
+
+This module can configure CIS alarms and notifications. To enable this functionality, set the `enable_cis_alarms` variable to `true`. These will use a CloudWatch log group, defaulting to the AWS Control Tower organizational trail. In order to receive notifications on this events
+
+1. Use the `notifications_emails` variable to specify a list of email addresses to send notifications to.
+
+```hcl
+enable_cis_alarms = true
+notifications_emails = ["security@example.com"]
+```
+
+For notifications to slack
+
+1. Create a JSON secret `lza/cloudaccess/alarms` in AWS Secrets Manager with the following format:
+
+```json
+{
+  "webhook_url": "https://hooks.slack.com/services/..."
+  "channel": "cloud-notifications"
+}
+```
+
+2. Use the `slack_notification_secret_name` variable to specify the name of the secret in AWS Secrets Manager that contains the Slack webhook URL.
+
+```hcl
+enable_cis_alarms = true
+notification_secret_name = "lza/cloudaccess/alarms"
+```
+
 ## Update Documentation
 
 The `terraform-docs` utility is used to generate this README. Follow the below steps to update:
@@ -82,8 +111,8 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | [aws_iam_policy.costs_viewer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ipam_admin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.user_management](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_secretsmanager_secret.slack](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret) | data source |
-| [aws_secretsmanager_secret_version.slack](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
+| [aws_secretsmanager_secret.notification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret) | data source |
+| [aws_secretsmanager_secret_version.notification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 
 ## Inputs
 
@@ -95,12 +124,13 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_costs_boundary_name"></a> [costs\_boundary\_name](#input\_costs\_boundary\_name) | Name of the IAM policy to use as a permissions boundary for cost-related roles | `string` | `"lza-costs-boundary"` | no |
 | <a name="input_default_permissions_boundary_name"></a> [default\_permissions\_boundary\_name](#input\_default\_permissions\_boundary\_name) | Name of the default IAM policy to use as a permissions boundary | `string` | `"lza-default-boundary"` | no |
 | <a name="input_enable_cis_alarms"></a> [enable\_cis\_alarms](#input\_enable\_cis\_alarms) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
+| <a name="input_enable_slack_notifications"></a> [enable\_slack\_notifications](#input\_enable\_slack\_notifications) | Indicates if we should enable Slack notifications | `bool` | `false` | no |
+| <a name="input_enable_teams_notifications"></a> [enable\_teams\_notifications](#input\_enable\_teams\_notifications) | Indicates if we should enable Teams notifications | `bool` | `false` | no |
 | <a name="input_landing_zone_repositories"></a> [landing\_zone\_repositories](#input\_landing\_zone\_repositories) | List of repository locations for the landing zone functionality | <pre>object({<br>    accelerator_repository_url  = optional(string)<br>    connectivity_repository_url = optional(string)<br>    firewall_repository_url     = optional(string)<br>    identity_repository_url     = optional(string)<br>  })</pre> | <pre>{<br>  "accelerator_repository_url": "",<br>  "connectivity_repository_url": "",<br>  "firewall_repository_url": "",<br>  "identity_repository_url": ""<br>}</pre> | no |
 | <a name="input_notification_emails"></a> [notification\_emails](#input\_notification\_emails) | List of email addresses to send notifications to | `list(string)` | `[]` | no |
+| <a name="input_notification_secret_name"></a> [notification\_secret\_name](#input\_notification\_secret\_name) | Name of the secret in AWS Secrets Manager that contains the secrets | `string` | `""` | no |
 | <a name="input_permissive_permissions_boundary_name"></a> [permissive\_permissions\_boundary\_name](#input\_permissive\_permissions\_boundary\_name) | Name of the permissive IAM policy to use as a permissions boundary | `string` | `"lza-permissive-boundary"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region to deploy into | `string` | n/a | yes |
-| <a name="input_slack_notification_channel"></a> [slack\_notification\_channel](#input\_slack\_notification\_channel) | Slack channel to send notifications to | `string` | `"cloud-notifications"` | no |
-| <a name="input_slack_notification_secret_name"></a> [slack\_notification\_secret\_name](#input\_slack\_notification\_secret\_name) | Name of the secret in AWS Secrets Manager that contains the Slack webhook URL | `string` | `"notification/slack"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | n/a | yes |
 
 ## Outputs

@@ -3,30 +3,44 @@
 #
 
 locals {
-  # notification for email  
-  notification = {
-    email = {
-      addresses = var.notification_emails
-    }
+  slack_notification = var.enable_slack_notifications ? {
     slack = {
-      channel     = var.slack_notification_channel
-      webhook_url = data.aws_secretsmanager_secret_version.slack.secret_string
+      channel     = jsondecode(data.aws_secretsmanager_secret_version.notification[0].secret_string).channel
+      webhook_url = jsondecode(data.aws_secretsmanager_secret_version.notification[0].secret_string).webhook_url
     }
-  }
+  } : {}
+
+  teams_notification = var.enable_teams_notifications ? {
+    teams = {
+      webhook_url = jsondecode(data.aws_secretsmanager_secret_version.notification[0].secret_string).webhook_url
+    }
+  } : {}
+
+  notifications = merge(
+    {
+      email = {
+        addresses = var.notification_emails
+      }
+    },
+    local.slack_notification,
+    local.teams_notification
+  )
 }
 
 #
 ## We need to lookup the value from secret manager
 #
-data "aws_secretsmanager_secret" "slack" {
-  name = var.slack_notification_secret_name
+data "aws_secretsmanager_secret" "notification" {
+  count = var.notification_secret_name != "" ? 1 : 0
+  name  = var.notification_secret_name
 }
 
 #
 ## Retrieve the current version of the secret
 #
-data "aws_secretsmanager_secret_version" "slack" {
-  secret_id = data.aws_secretsmanager_secret.slack.id
+data "aws_secretsmanager_secret_version" "notification" {
+  count     = var.notification_secret_name != "" ? 1 : 0
+  secret_id = data.aws_secretsmanager_secret.notification[0].id
 }
 
 ## Provision the CIS AWS Foundations CloudWatch Alarms
@@ -38,7 +52,7 @@ module "alarm_baseline" {
   enable_iam_changes                  = false
   enable_mfa_console_signin_allow_sso = true
   enable_organizations_changes        = false
-  notification                        = local.notification
+  notification                        = local.notifications
   tags                                = var.tags
 }
 
