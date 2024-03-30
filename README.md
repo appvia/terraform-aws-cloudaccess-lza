@@ -1,4 +1,4 @@
-![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+![Github Actions](../../actions/workflows/terraform.yml/badge.svg)
 
 # Terraform AWS CloudAccess LZA
 
@@ -94,7 +94,7 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_cloudaccess_terraform_state_rw_policy_name"></a> [cloudaccess\_terraform\_state\_rw\_policy\_name](#input\_cloudaccess\_terraform\_state\_rw\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role | `string` | `"lza-cloudaccess-tfstate-rw"` | no |
 | <a name="input_costs_boundary_name"></a> [costs\_boundary\_name](#input\_costs\_boundary\_name) | Name of the IAM policy to use as a permissions boundary for cost-related roles | `string` | `"lza-costs-boundary"` | no |
 | <a name="input_default_permissions_boundary_name"></a> [default\_permissions\_boundary\_name](#input\_default\_permissions\_boundary\_name) | Name of the default IAM policy to use as a permissions boundary | `string` | `"lza-default-boundary"` | no |
-| <a name="input_enable_cis_alerts"></a> [enable\_cis\_alerts](#input\_enable\_cis\_alerts) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
+| <a name="input_enable_cis_alarms"></a> [enable\_cis\_alarms](#input\_enable\_cis\_alarms) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
 | <a name="input_landing_zone_repositories"></a> [landing\_zone\_repositories](#input\_landing\_zone\_repositories) | List of repository locations for the landing zone functionality | <pre>object({<br>    accelerator_repository_url  = optional(string)<br>    connectivity_repository_url = optional(string)<br>    firewall_repository_url     = optional(string)<br>    identity_repository_url     = optional(string)<br>  })</pre> | <pre>{<br>  "accelerator_repository_url": "",<br>  "connectivity_repository_url": "",<br>  "firewall_repository_url": "",<br>  "identity_repository_url": ""<br>}</pre> | no |
 | <a name="input_notification_emails"></a> [notification\_emails](#input\_notification\_emails) | List of email addresses to send notifications to | `list(string)` | `[]` | no |
 | <a name="input_permissive_permissions_boundary_name"></a> [permissive\_permissions\_boundary\_name](#input\_permissive\_permissions\_boundary\_name) | Name of the permissive IAM policy to use as a permissions boundary | `string` | `"lza-permissive-boundary"` | no |

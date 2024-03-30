@@ -38,7 +38,7 @@ module "alarm_baseline" {
   enable_iam_changes                  = false
   enable_mfa_console_signin_allow_sso = true
   enable_organizations_changes        = false
-  enable_cis_alarms                   = local.notification
+  notification                        = local.notification
   tags                                = var.tags
 }
 

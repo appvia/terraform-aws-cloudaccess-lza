@@ -81,6 +81,11 @@ module "management_sso_identity" {
   providers = {
     aws = aws.management
   }
+
+  depends_on = [
+    module.default_boundary,
+    module.permissive_boundary
+  ]
 }
 
 ## Used to manage and deploy the landing zone
@@ -106,4 +111,9 @@ module "management_landing_zone" {
   providers = {
     aws = aws.management
   }
+
+  depends_on = [
+    module.default_boundary,
+    module.permissive_boundary
+  ]
 }
