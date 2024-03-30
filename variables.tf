@@ -74,17 +74,24 @@ variable "notification_secret_name" {
 variable "landing_zone_repositories" {
   description = "List of repository locations for the landing zone functionality"
   type = object({
-    accelerator_repository_url  = optional(string)
-    connectivity_repository_url = optional(string)
-    firewall_repository_url     = optional(string)
-    identity_repository_url     = optional(string)
+    accelerator = optional(object({
+      url       = string
+      role_name = optional(string, "lza-accelerator")
+    }), null)
+    connectivity = optional(object({
+      url       = string
+      role_name = optional(string, "lza-connectivity")
+    }), null)
+    firewall = optional(object({
+      url       = string
+      role_name = optional(string, "lza-firewall")
+    }), null)
+    identity = optional(object({
+      url       = string
+      role_name = optional(string, "lza-identity")
+    }), null)
   })
-  default = {
-    accelerator_repository_url  = ""
-    connectivity_repository_url = ""
-    firewall_repository_url     = ""
-    identity_repository_url     = ""
-  }
+  default = {}
 }
 
 variable "tags" {

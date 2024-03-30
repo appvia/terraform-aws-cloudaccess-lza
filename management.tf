@@ -57,10 +57,10 @@ module "management_sso_identity" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.1.0"
 
-  name                = "lza-identity-center"
+  name                = var.landing_zone_repositories.identity.role_name
   description         = "Role is used to manage the identity center"
   permission_boundary = var.permissive_permissions_boundary_name
-  repository          = var.landing_zone_repositories.identity_repository_url
+  repository          = var.landing_zone_repositories.identity.url
   tags                = var.tags
 
   read_only_policy_arns = [
@@ -94,10 +94,10 @@ module "management_landing_zone" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.1.0"
 
-  name                = "lza-landing-zone"
+  name                = var.landing_zone_repositories.accelerator.role_name
   description         = "Used to manage and deploy the lanzing zone configuration"
   permission_boundary = var.default_permissions_boundary_name
-  repository          = var.landing_zone_repositories.accelerator_repository_url
+  repository          = var.landing_zone_repositories.accelerator.url
   tags                = var.tags
 
   read_only_policy_arns = [

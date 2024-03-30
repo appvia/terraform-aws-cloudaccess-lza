@@ -21,14 +21,15 @@ module "network_transit_gateway_admin" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.1.0"
 
-  name                = "lza-transitgateway-admin"
+  name                = var.landing_zone_repositories.connectivity.role_name
   description         = "Deployment role used to deploy the Transit Gateway"
   permission_boundary = var.default_permissions_boundary_name
-  repository          = var.landing_zone_repositories.connectivity_repository_url
+  repository          = var.landing_zone_repositories.connectivity.url
   tags                = var.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSResourceAccessManagerReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
   read_write_policy_arns = [
@@ -36,6 +37,7 @@ module "network_transit_gateway_admin" {
     "arn:aws:iam::aws:policy/AWSResourceAccessManagerFullAccess",
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     "arn:aws:iam::aws:policy/job-function/NetworkAdministrator",
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
   ]
 
   providers = {
@@ -54,10 +56,10 @@ module "network_inspection_vpc_admin" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.1.0"
 
-  name                = "lza-inspection-admin"
+  name                = var.landing_zone_repositories.firewall.role_name
   description         = "Deployment role used to deploy the inspection vpc"
   permission_boundary = var.default_permissions_boundary_name
-  repository          = var.landing_zone_repositories.firewall_repository_url
+  repository          = var.landing_zone_repositories.firewall.url
   tags                = var.tags
 
   read_only_policy_arns = [
