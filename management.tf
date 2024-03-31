@@ -85,7 +85,9 @@ module "management_sso_identity" {
 
   depends_on = [
     module.default_boundary,
-    module.permissive_boundary
+    module.permissive_boundary,
+    aws_cloudformation_stack_set.identity_stackset,
+    aws_cloudformation_stack_set_instance.identity_stack
   ]
 }
 
