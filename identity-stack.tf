@@ -19,8 +19,8 @@ locals {
   identity_role_ro_name = "lza-identity-permissions-ro"
   ## The parameters required for the identity stack
   identity_parameters = {
-    "IdentityRoleReadOnlyName"  = local.identity_role_ro_name,
-    "IdentityRoleReadWriteName" = local.identity_role_rw_name,
+    "IdentityRoleReadOnlyName"  = format("%s-ro", var.repositories.identity.role_name)
+    "IdentityRoleReadWriteName" = format("%s-rw", var.repositories.identity.role_name)
     "IdentityProviderName"      = local.identity_provider,
     "RepositoryName"            = var.repositories.identity.url
   }
@@ -50,21 +50,11 @@ resource "aws_cloudformation_stack_set" "identity_stackset" {
   }
 }
 
-## Deploy the permissive boundary to the organizational root 
+## Deploy the stackset to the root of the organizationa root 
 resource "aws_cloudformation_stack_set_instance" "identity_stack" {
   deployment_targets {
     organizational_unit_ids = [data.aws_organizations_organization.current.roots[0].id]
   }
   region         = var.region
   stack_set_name = local.identity_stack_name
-}
-
-## Deployment of same stacko the management account
-resource "aws_cloudformation_stack" "management" {
-  capabilities  = local.identity_capabilities
-  name          = local.identity_stack_name
-  on_failure    = "ROLLBACK"
-  parameters    = local.identity_parameters
-  tags          = var.tags
-  template_body = file("${path.module}/assets/cloudformation/${var.scm_name}-identity.yml")
 }
