@@ -1,0 +1,114 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Provision the IAM roles required for the identity management repository
+
+Parameters:
+  IdentityRoleReadWriteName:
+    Description: The name of the cloud access IAM Role used for provisioning resources
+    Type: String
+  IdentityRoleReadOnlyName:
+    Description: The name of the cloud access IAM Role used for validating changes
+    Type: String
+  IdentityProviderName:
+    Description: The name of the OIDC Identity Provider
+    Type: String
+  RepositoryName:
+    Description: The name of the repository allowed to assume the cloud access roles
+    Type: String
+
+Resources:
+  IdentityRoleReadWrite:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref IdentityRoleReadWriteName
+      Description: "IAM Role to be assumed for all changes"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated:
+                - !Sub "arn:aws:iam::${AWS::AccountId}:oidc-provider/${IdentityProviderName}"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                gitlab.com:aud: ["https://gitlab.com"]
+              StringLike:
+                gitlab.com:sub: [!Sub "project_path:${RepositoryName}:*"]
+      Path: "/"
+      Policies:
+        - PolicyName: allow-iam-policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: AllowPolicyReadWrite
+                Effect: Allow
+                Action:
+                  - "iam:GetPolicy"
+                  - "iam:GetPolicyVersion"
+                  - "iam:CreatePolicy"
+                  - "iam:CreatePolicyVersion"
+                  - "iam:DeletePolicy"
+                  - "iam:DeletePolicyVersion"
+                  - "iam:TagPolicy"
+                  - "iam:UntagPolicy"
+                  - "iam:ListPolicyTags"
+                  - "iam:ListPolicyVersions"
+                Resource: "*"
+      Tags:
+        - Key: Environment
+          Value: Production
+        - Key: GitRepo
+          Value: codecommit://aws-accelerator-config
+        - Key: Provisioner
+          Value: CloudFormation
+        - Key: aws-cloudformation-stack-id
+          Value: !Ref "AWS::StackId"
+        - Key: aws-cloudformation-stack-name
+          Value: !Ref "AWS::StackName"
+
+  IdentityRoleReadOnly:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref IdentityRoleReadOnlyName
+      Description: "IAM Role used to verify and validate changes"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated:
+                - !Sub "arn:aws:iam::${AWS::AccountId}:oidc-provider/${IdentityProviderName}"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                gitlab.com:aud: ["https://gitlab.com"]
+              StringLike:
+                gitlab.com:sub: [!Sub "project_path:${RepositoryName}:*"]
+      Path: "/"
+      Policies:
+        - PolicyName: allow-iam-policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: AllowPolicyRead
+                Effect: Allow
+                Action:
+                  - "iam:GetPolicy"
+                  - "iam:GetPolicyVersion"
+                  - "iam:ListPolicyTags"
+                  - "iam:ListPolicyVersions"
+                Resource: "*"
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: GitRepo
+          Value: codecommit://aws-accelerator-config
+        - Key: Provisioner
+          Value: CloudFormation
+        - Key: aws-cloudformation-stack-id
+          Value: !Ref "AWS::StackId"
+        - Key: aws-cloudformation-stack-name
+          Value: !Ref "AWS::StackName"

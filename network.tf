@@ -17,14 +17,14 @@ resource "aws_iam_policy" "ipam_admin" {
 }
 
 module "network_transit_gateway_admin" {
-  count   = var.landing_zone_repositories.connectivity_repository_url != "" ? 1 : 0
+  count   = var.repositories.connectivity != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
   version = "1.1.0"
 
-  name                = var.landing_zone_repositories.connectivity.role_name
+  name                = var.repositories.connectivity.role_name
   description         = "Deployment role used to deploy the Transit Gateway"
   permission_boundary = var.default_permissions_boundary_name
-  repository          = var.landing_zone_repositories.connectivity.url
+  repository          = var.repositories.connectivity.url
   tags                = var.tags
 
   read_only_policy_arns = [
@@ -52,14 +52,14 @@ module "network_transit_gateway_admin" {
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 module "network_inspection_vpc_admin" {
-  count   = var.landing_zone_repositories.firewall_repository_url != "" ? 1 : 0
+  count   = var.repositories.firewall != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
   version = "1.1.0"
 
-  name                = var.landing_zone_repositories.firewall.role_name
+  name                = var.repositories.firewall.role_name
   description         = "Deployment role used to deploy the inspection vpc"
   permission_boundary = var.default_permissions_boundary_name
-  repository          = var.landing_zone_repositories.firewall.url
+  repository          = var.repositories.firewall.url
   tags                = var.tags
 
   read_only_policy_arns = [

@@ -30,12 +30,6 @@ variable "default_permissions_boundary_name" {
   default     = "lza-default-boundary"
 }
 
-variable "enable_cis_alarms" {
-  description = "Indicates if we should enable CIS alerts"
-  type        = bool
-  default     = true
-}
-
 variable "region" {
   description = "AWS region to deploy into"
   type        = string
@@ -53,6 +47,12 @@ variable "permissive_permissions_boundary_name" {
   default     = "lza-permissive-boundary"
 }
 
+variable "enable_cis_alarms" {
+  description = "Indicates if we should enable CIS alerts"
+  type        = bool
+  default     = true
+}
+
 variable "enable_slack_notifications" {
   description = "Indicates if we should enable Slack notifications"
   type        = bool
@@ -66,13 +66,24 @@ variable "enable_teams_notifications" {
 }
 
 variable "notification_secret_name" {
-  description = "Name of the secret in AWS Secrets Manager that contains the secrets"
+  description = "Name of the secret in AWS Secrets Manager that contains the secrets for notifications"
   type        = string
   default     = ""
 }
 
-variable "landing_zone_repositories" {
-  description = "List of repository locations for the landing zone functionality"
+variable "scm_name" {
+  description = "Name of the source control management system (github or gitlab)"
+  type        = string
+  default     = "github"
+
+  validation {
+    condition     = can(regex("^(github|gitlab)$", var.scm_name))
+    error_message = "SCM name must be either 'github' or 'gitlab'"
+  }
+}
+
+variable "repositories" {
+  description = "List of repository locations for the pipelines"
   type = object({
     accelerator = optional(object({
       url       = string
