@@ -44,10 +44,6 @@ resource "aws_cloudformation_stack_set" "identity_stackset" {
     retain_stacks_on_account_removal = true
   }
 
-  managed_execution {
-    active = true
-  }
-
   operation_preferences {
     failure_tolerance_count = 0
     max_concurrent_count    = 10
