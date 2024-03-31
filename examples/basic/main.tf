@@ -12,16 +12,16 @@ module "landing_zone" {
 
   repositories = {
     accelerator = {
-      url = "github.com/<ORG>/aws-accelerator-config"
+      url = "<ORG>/aws-accelerator-config"
     }
     connectivity = {
-      url = "github.com/<ORG>/terrafom-aws-connectivity"
+      url = "<ORG>/terrafom-aws-connectivity"
     }
     firewall = {
-      url = "github.com/<ORG>/terrafom-aws-firewall"
+      url = "<ORG>/terrafom-aws-firewall"
     }
     identity = {
-      url = "github.com/<ORG>/terrafom-aws-identity"
+      url = "<ORG>/terrafom-aws-identity"
     }
   }
 
