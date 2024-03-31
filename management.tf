@@ -53,14 +53,14 @@ resource "aws_iam_policy" "costs_viewer" {
 
 ## Used to manage identity center
 module "management_sso_identity" {
-  count   = var.landing_zone_repositories.identity_repository_url != "" ? 1 : 0
+  count   = var.repositories.identity != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
   version = "1.1.0"
 
-  name                = var.landing_zone_repositories.identity.role_name
+  name                = var.repositories.identity.role_name
   description         = "Role is used to manage the identity center"
   permission_boundary = var.permissive_permissions_boundary_name
-  repository          = var.landing_zone_repositories.identity.url
+  repository          = var.repositories.identity.url
   tags                = var.tags
 
   read_only_policy_arns = [
@@ -90,14 +90,14 @@ module "management_sso_identity" {
 
 ## Used to manage and deploy the landing zone
 module "management_landing_zone" {
-  count   = var.landing_zone_repositories.accelerator_repository_url != "" ? 1 : 0
+  count   = var.repositories.accelerator != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
   version = "1.1.0"
 
-  name                = var.landing_zone_repositories.accelerator.role_name
+  name                = var.repositories.accelerator.role_name
   description         = "Used to manage and deploy the lanzing zone configuration"
   permission_boundary = var.default_permissions_boundary_name
-  repository          = var.landing_zone_repositories.accelerator.url
+  repository          = var.repositories.accelerator.url
   tags                = var.tags
 
   read_only_policy_arns = [

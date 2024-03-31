@@ -104,6 +104,9 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 
 | Name | Type |
 |------|------|
+| [aws_cloudformation_stack.management](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudformation_stack) | resource |
+| [aws_cloudformation_stack_set.identity_stackset](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudformation_stack_set) | resource |
+| [aws_cloudformation_stack_set_instance.identity_stack](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudformation_stack_set_instance) | resource |
 | [aws_iam_policy.code_contributor](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.code_release](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.cost_iam_boundary](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -111,6 +114,7 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | [aws_iam_policy.costs_viewer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ipam_admin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.user_management](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_organizations_organization.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
 | [aws_secretsmanager_secret.notification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret) | data source |
 | [aws_secretsmanager_secret_version.notification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 
@@ -126,11 +130,12 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_enable_cis_alarms"></a> [enable\_cis\_alarms](#input\_enable\_cis\_alarms) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
 | <a name="input_enable_slack_notifications"></a> [enable\_slack\_notifications](#input\_enable\_slack\_notifications) | Indicates if we should enable Slack notifications | `bool` | `false` | no |
 | <a name="input_enable_teams_notifications"></a> [enable\_teams\_notifications](#input\_enable\_teams\_notifications) | Indicates if we should enable Teams notifications | `bool` | `false` | no |
-| <a name="input_landing_zone_repositories"></a> [landing\_zone\_repositories](#input\_landing\_zone\_repositories) | List of repository locations for the landing zone functionality | <pre>object({<br>    accelerator_repository_url  = optional(string)<br>    connectivity_repository_url = optional(string)<br>    firewall_repository_url     = optional(string)<br>    identity_repository_url     = optional(string)<br>  })</pre> | <pre>{<br>  "accelerator_repository_url": "",<br>  "connectivity_repository_url": "",<br>  "firewall_repository_url": "",<br>  "identity_repository_url": ""<br>}</pre> | no |
 | <a name="input_notification_emails"></a> [notification\_emails](#input\_notification\_emails) | List of email addresses to send notifications to | `list(string)` | `[]` | no |
-| <a name="input_notification_secret_name"></a> [notification\_secret\_name](#input\_notification\_secret\_name) | Name of the secret in AWS Secrets Manager that contains the secrets | `string` | `""` | no |
+| <a name="input_notification_secret_name"></a> [notification\_secret\_name](#input\_notification\_secret\_name) | Name of the secret in AWS Secrets Manager that contains the secrets for notifications | `string` | `""` | no |
 | <a name="input_permissive_permissions_boundary_name"></a> [permissive\_permissions\_boundary\_name](#input\_permissive\_permissions\_boundary\_name) | Name of the permissive IAM policy to use as a permissions boundary | `string` | `"lza-permissive-boundary"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region to deploy into | `string` | n/a | yes |
+| <a name="input_repositories"></a> [repositories](#input\_repositories) | List of repository locations for the pipelines | <pre>object({<br>    accelerator = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-accelerator")<br>    }), null)<br>    connectivity = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-connectivity")<br>    }), null)<br>    firewall = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-firewall")<br>    }), null)<br>    identity = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-identity")<br>    }), null)<br>  })</pre> | `{}` | no |
+| <a name="input_scm_name"></a> [scm\_name](#input\_scm\_name) | Name of the source control management system (github or gitlab) | `string` | `"github"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | n/a | yes |
 
 ## Outputs
@@ -139,6 +144,9 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 |------|-------------|
 | <a name="output_cloudaccess_terraform_state_ro_policy_name"></a> [cloudaccess\_terraform\_state\_ro\_policy\_name](#output\_cloudaccess\_terraform\_state\_ro\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role |
 | <a name="output_cloudaccess_terraform_state_rw_policy_name"></a> [cloudaccess\_terraform\_state\_rw\_policy\_name](#output\_cloudaccess\_terraform\_state\_rw\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role |
-| <a name="output_default_permissions_boundary_name"></a> [default\_permissions\_boundary\_name](#output\_default\_permissions\_boundary\_name) | The name of the default permissions boundary |
-| <a name="output_default_permissive_boundary_name"></a> [default\_permissive\_boundary\_name](#output\_default\_permissive\_boundary\_name) | The name of the default permissive boundary |
+| <a name="output_default_permission_boundary_name"></a> [default\_permission\_boundary\_name](#output\_default\_permission\_boundary\_name) | The name of the default permissions iam boundary |
+| <a name="output_default_permissive_boundary_name"></a> [default\_permissive\_boundary\_name](#output\_default\_permissive\_boundary\_name) | The name of the default permissive iam boundary |
+| <a name="output_identity_role_ro_name"></a> [identity\_role\_ro\_name](#output\_identity\_role\_ro\_name) | The name of the IAM readonly role which can be assumed by the identity stack in all accounts |
+| <a name="output_identity_role_rw_name"></a> [identity\_role\_rw\_name](#output\_identity\_role\_rw\_name) | The name of the IAM readwrite role which can be assumed by the identity stack in all accounts |
+| <a name="output_identity_stack_name"></a> [identity\_stack\_name](#output\_identity\_stack\_name) | The name of the identity stack |
 <!-- END_TF_DOCS -->
