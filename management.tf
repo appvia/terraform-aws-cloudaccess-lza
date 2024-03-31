@@ -58,6 +58,7 @@ module "management_sso_identity" {
   version = "1.1.0"
 
   name                = var.repositories.identity.role_name
+  common_provider     = var.scm_name
   description         = "Role is used to manage the identity center"
   permission_boundary = var.permissive_permissions_boundary_name
   repository          = var.repositories.identity.url
@@ -95,6 +96,7 @@ module "management_landing_zone" {
   version = "1.1.0"
 
   name                = var.repositories.accelerator.role_name
+  common_provider     = var.scm_name
   description         = "Used to manage and deploy the lanzing zone configuration"
   permission_boundary = var.default_permissions_boundary_name
   repository          = var.repositories.accelerator.url

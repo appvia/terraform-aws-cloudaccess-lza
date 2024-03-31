@@ -1,8 +1,9 @@
 variable "aws_accounts" {
   description = "Map of AWS account names to their account IDs"
   type = object({
-    management_account_id = string
-    network_account_id    = string
+    management_account_id   = string
+    network_account_id      = optional(string, "")
+    remoteaccess_account_id = optional(string, "")
   })
 }
 

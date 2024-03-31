@@ -22,6 +22,7 @@ module "network_transit_gateway_admin" {
   version = "1.1.0"
 
   name                = var.repositories.connectivity.role_name
+  common_provider     = var.scm_name
   description         = "Deployment role used to deploy the Transit Gateway"
   permission_boundary = var.default_permissions_boundary_name
   repository          = var.repositories.connectivity.url
@@ -57,6 +58,7 @@ module "network_inspection_vpc_admin" {
   version = "1.1.0"
 
   name                = var.repositories.firewall.role_name
+  common_provider     = var.scm_name
   description         = "Deployment role used to deploy the inspection vpc"
   permission_boundary = var.default_permissions_boundary_name
   repository          = var.repositories.firewall.url
