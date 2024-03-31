@@ -3,6 +3,10 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Provision the IAM roles required for the identity management repository
 
 Parameters:
+  Environment:
+    Description: The environment for the resources
+    Type: String
+    Default: Production
   IdentityRoleReadWriteName:
     Description: The name of the cloud access IAM Role used for provisioning resources
     Type: String
