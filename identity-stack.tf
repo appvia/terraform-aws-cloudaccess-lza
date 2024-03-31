@@ -13,11 +13,7 @@ locals {
   identity_gitlab_provider = var.scm_name == "gitlab" ? "gitlab.com" : null
   ## The name of the identity provider depending on the on the scm_name
   identity_provider = coalesce(local.identity_github_provider, local.identity_gitlab_provider)
-  ## The name of the read write role which can be assumed on all accounts 
-  identity_role_rw_name = "lza-identity-permissions-rw"
-  ## The name of the read only role which can be assumed on all accounts 
-  identity_role_ro_name = "lza-identity-permissions-ro"
-  ## The parameters required for the identity stack
+  ## The parameters for the identity stack
   identity_parameters = {
     "IdentityRoleReadOnlyName"  = format("%s-ro", var.repositories.identity.role_name)
     "IdentityRoleReadWriteName" = format("%s-rw", var.repositories.identity.role_name)
