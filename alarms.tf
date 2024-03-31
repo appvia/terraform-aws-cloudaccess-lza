@@ -46,7 +46,7 @@ data "aws_secretsmanager_secret_version" "notification" {
 ## Provision the CIS AWS Foundations CloudWatch Alarms
 module "alarm_baseline" {
   count  = var.enable_cis_alarms ? 1 : 0
-  source = "https://github.com/appvia/terraform-aws-alarm-baseline?ref=main"
+  source = "github.com/appvia/terraform-aws-alarm-baseline?ref=main"
 
   enable_iam_changes                  = false
   enable_mfa_console_signin_allow_sso = true
