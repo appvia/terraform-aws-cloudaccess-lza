@@ -55,7 +55,7 @@ resource "aws_iam_policy" "costs_viewer" {
 module "management_sso_identity" {
   count   = var.repositories.identity != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.1.0"
+  version = "1.2.0"
 
   name                = var.repositories.identity.role_name
   common_provider     = var.scm_name
@@ -95,7 +95,7 @@ module "management_sso_identity" {
 module "management_landing_zone" {
   count   = var.repositories.accelerator != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.1.0"
+  version = "1.2.0"
 
   name                = var.repositories.accelerator.role_name
   common_provider     = var.scm_name
