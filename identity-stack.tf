@@ -16,7 +16,7 @@ locals {
   ## The name of the read only role for the identity stack 
   identity_role_ro_name = format("%s-ro", var.repositories.identity.role_name)
   ## The name of the read write role for the identity stack 
-  identity_role_rw_name = format("%s-rw", var.repositories.identity.role_name)
+  identity_role_rw_name = format("%s", var.repositories.identity.role_name)
   ## The parameters for the identity stack
   identity_parameters = {
     "IdentityRoleReadOnlyName"  = local.identity_role_ro_name
