@@ -2,10 +2,6 @@
 ## Related to the network account 
 #
 
-locals {
-  network_account_id = var.aws_accounts.network_account_id
-}
-
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "ipam_admin" {
   description = "Provides the permissions to manage the ipam service"
