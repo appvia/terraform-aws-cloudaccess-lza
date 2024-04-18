@@ -2,10 +2,6 @@
 ## Permissions related to the management account
 #
 
-locals {
-  management_account_id = var.aws_accounts.management_account_id
-}
-
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "user_management" {
   name        = "lza-user-management"
