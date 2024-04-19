@@ -2,6 +2,9 @@
 ## Find the aws organization
 data "aws_organizations_organization" "current" {}
 
+## Find the current region 
+data "aws_region" "current" {}
+
 ## We need to lookup the value from secret manager
 data "aws_secretsmanager_secret" "notification" {
   count = var.notification_secret_name != "" ? 1 : 0

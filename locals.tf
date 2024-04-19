@@ -4,6 +4,17 @@ locals {
   network_account_id = var.aws_accounts.network_account_id
   ## The account id of the management account
   management_account_id = data.aws_organizations_organization.current.master_account_id
+  ## The current region name 
+  region = data.aws_region.current.name
+
+  ## The name of the aws support stackset 
+  aws_support_stack_name = "LZA-AWS-Support-Role"
+  ## The capabilities required for the aws support stackset 
+  aws_support_capabilities = ["CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND", "CAPABILITY_IAM"]
+  ## The parameters for the aws support stackset 
+  aws_support_parameters = {
+    "RoleName" = var.aws_support_role_name
+  }
 
   ## The name of the identity stack 
   identity_stack_name = "LZA-Identity-Permissions"

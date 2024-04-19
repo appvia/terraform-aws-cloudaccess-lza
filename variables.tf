@@ -47,6 +47,18 @@ variable "permissive_permissions_boundary_name" {
   default     = "lza-permissive-boundary"
 }
 
+variable "aws_support_role_name" {
+  description = "Name of the AWS Support role"
+  type        = string
+  default     = "AWSSupportAccess"
+}
+
+variable "enable_aws_support" {
+  description = "Indicates if we should enable AWS Support role"
+  type        = bool
+  default     = true
+}
+
 variable "enable_cis_alarms" {
   description = "Indicates if we should enable CIS alerts"
   type        = bool
