@@ -40,7 +40,6 @@ Resources:
               - "config:*"
               - "cur:*"
               - "savingsplans:*"
-              - "sso:*"
             Resource: "*"
           - Sid: DenyPermBoundaryIAMPolicyAlteration
             Effect: Deny
