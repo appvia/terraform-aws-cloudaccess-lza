@@ -226,7 +226,7 @@ resource "aws_iam_user" "breakglass" {
 
 ## Attach the breakglass users to the breakglass group 
 resource "aws_iam_user_group_membership" "breakglass" {
-  for_each = var.enable_breakglass ? toset(aws_iam_user.breakglass[*].name) : toset({})
+  for_each = var.enable_breakglass ? aws_iam_user.breakglass : {}
 
   user   = each.key
   groups = [aws_iam_group.breakglass[0].name]
