@@ -203,7 +203,7 @@ resource "aws_iam_group_policy_attachment" "test-attach" {
   count = var.enable_breakglass ? 1 : 0
 
   group      = aws_iam_group.breakglass[0].name
-  policy_arn = data.aws_iam_policy_document.breakglass[0].json
+  policy_arn = aws_iam_policy.breakglass[0].arn
 
   provider = aws.management
 }
