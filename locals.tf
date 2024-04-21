@@ -8,7 +8,7 @@ locals {
   region = data.aws_region.current.name
 
   ## The name of the aws support stackset 
-  aws_support_stack_name = "LZA-AWS-Support-Role"
+  aws_support_stack_name = "LZA-IAM-Support-Role"
   ## The capabilities required for the aws support stackset 
   aws_support_capabilities = ["CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND", "CAPABILITY_IAM"]
   ## The parameters for the aws support stackset 
