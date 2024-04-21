@@ -198,6 +198,8 @@ resource "aws_iam_group" "breakglass" {
 
 ## Attach the MFA policy to the breakglass group 
 resource "aws_iam_group_policy_attachment" "test-attach" {
+  count = var.enable_breakglass ? 1 : 0
+
   group      = aws_iam_group.breakglass[0].name
   policy_arn = data.aws_iam_policy_document.breakglass.json
 
@@ -226,9 +228,9 @@ resource "aws_iam_user" "breakglass" {
 
 ## Attach the breakglass users to the breakglass group 
 resource "aws_iam_user_group_membership" "breakglass" {
-  for_each = var.enable_breakglass ? aws_iam_user.breakglass : {}
+  count = var.enable_breakglass ? var.breakglass_users : 0
 
-  user   = each.key
+  user   = aws_iam_user.breakglass[count.index].name
   groups = [aws_iam_group.breakglass[0].name]
 
   provider = aws.management
