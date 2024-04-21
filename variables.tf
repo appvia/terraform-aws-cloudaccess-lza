@@ -65,6 +65,18 @@ variable "enable_cis_alarms" {
   default     = true
 }
 
+variable "breakglass_users" {
+  description = "The number of breakglass users to create"
+  type        = number
+  default     = 2
+}
+
+variable "enable_breakglass" {
+  description = "Indicates if we should enable breakglass users and group"
+  type        = bool
+  default     = false
+}
+
 variable "enable_slack_notifications" {
   description = "Indicates if we should enable Slack notifications"
   type        = bool

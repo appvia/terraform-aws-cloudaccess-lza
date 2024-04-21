@@ -23,6 +23,8 @@ resource "aws_cloudformation_stack_set" "identity_stackset" {
     failure_tolerance_count = 0
     max_concurrent_count    = 10
   }
+
+  provider = aws.management
 }
 
 ## Deploy the stackset to the root of the organizationa root 
@@ -32,4 +34,6 @@ resource "aws_cloudformation_stack_set_instance" "identity_stack" {
   }
   region         = var.region
   stack_set_name = local.identity_stack_name
+
+  provider = aws.management
 }

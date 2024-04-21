@@ -24,6 +24,8 @@ resource "aws_cloudformation_stack_set" "aws_support_stack" {
     failure_tolerance_count = 0
     max_concurrent_count    = 10
   }
+
+  provider = aws.management
 }
 
 ## Deploy the stackset to the root of the organizationa root 
@@ -37,6 +39,7 @@ resource "aws_cloudformation_stack_set_instance" "aws_support_stack_instance" {
   stack_set_name = local.aws_support_stack_name
 
   depends_on = [aws_cloudformation_stack_set.aws_support_stack]
+  provider   = aws.management
 }
 
 ## Deployment of same stack the management account
@@ -49,4 +52,6 @@ resource "aws_cloudformation_stack" "aws_support_stack_instance_management_accou
   parameters    = local.aws_support_parameters
   tags          = var.tags
   template_body = file("${path.module}/assets/cloudformation/aws-support-role.yaml")
+
+  provider = aws.management
 }

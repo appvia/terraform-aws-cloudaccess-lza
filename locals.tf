@@ -6,6 +6,8 @@ locals {
   management_account_id = data.aws_organizations_organization.current.master_account_id
   ## The current region name 
   region = data.aws_region.current.name
+  ## The current account id 
+  account_id = data.aws_caller_identity.current.account_id
 
   ## The name of the aws support stackset 
   aws_support_stack_name = "LZA-IAM-Support-Role"
