@@ -179,6 +179,8 @@ data "aws_iam_policy_document" "breakglass" {
 
 ## Provision the IAM policy used to enforce MFA 
 resource "aws_iam_policy" "breakglass" {
+  count = var.enable_breakglass ? 1 : 0
+
   name        = "lza-breakglass-mfa"
   description = "Ensures the user MUST use MFA to access the account, but allows basic visibility without MFA."
   policy      = data.aws_iam_policy_document.breakglass.json
@@ -201,7 +203,7 @@ resource "aws_iam_group_policy_attachment" "test-attach" {
   count = var.enable_breakglass ? 1 : 0
 
   group      = aws_iam_group.breakglass[0].name
-  policy_arn = data.aws_iam_policy_document.breakglass.json
+  policy_arn = data.aws_iam_policy_document.breakglass[0].json
 
   provider = aws.management
 }
