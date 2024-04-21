@@ -191,7 +191,7 @@ resource "aws_iam_policy" "breakglass" {
 resource "aws_iam_group" "breakglass" {
   count = var.enable_breakglass ? 1 : 0
 
-  name = "breakglass"
+  name = "lza-breakglass"
 
   provider = aws.management
 }
@@ -218,7 +218,7 @@ resource "aws_iam_group_policy_attachment" "breakglass" {
 resource "aws_iam_user" "breakglass" {
   count = var.enable_breakglass ? var.breakglass_users : 0
 
-  name = "breakglass${count.index}"
+  name = "lza-breakglass${count.index}"
   tags = var.tags
 
   provider = aws.management
