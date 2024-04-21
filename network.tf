@@ -67,6 +67,8 @@ module "network_inspection_vpc_admin" {
   read_write_policy_arns = [
     "arn:aws:iam::aws:policy/AWSResourceAccessManagerFullAccess",
     "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
+    "arn:aws:iam::aws:policy/CloudformationFullAccess",
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     "arn:aws:iam::aws:policy/job-function/NetworkAdministrator",
   ]
