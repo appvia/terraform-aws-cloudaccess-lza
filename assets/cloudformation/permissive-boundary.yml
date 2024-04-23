@@ -7,10 +7,6 @@ Parameters:
     Type: String
     Description: The name of the Permissive Permissions Boundary
     Default: PermissivePermissionsBoundary
-  Environment:
-    Description: The environment for the resources
-    Type: String
-    Default: Production
   TerraformStateROPolicyName:
     Type: String
     Description: The name of the Terraform State Read Only Policy

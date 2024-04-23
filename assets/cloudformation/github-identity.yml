@@ -3,10 +3,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Provision the IAM roles required for identity management repository
 
 Parameters:
-  Environment:
-    Description: The environment for the resources
-    Type: String
-    Default: Production
   IdentityRoleReadWriteName:
     Description: The name of the Identity IAM Role used for provisioning policies
     Type: String
@@ -61,8 +57,6 @@ Resources:
                   - "iam:ListPolicyVersions"
                 Resource: "*"
       Tags:
-        - Key: Environment
-          Value: !Ref Environment
         - Key: GitRepo
           Value: codecommit://aws-accelerator-config
         - Key: Provisioner
@@ -107,8 +101,6 @@ Resources:
                   - "iam:ListPolicyVersions"
                 Resource: "*"
       Tags:
-        - Key: Environment
-          Value: Production
         - Key: GitRepo
           Value: codecommit://aws-accelerator-config
         - Key: Provisioner

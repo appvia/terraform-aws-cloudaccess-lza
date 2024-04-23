@@ -34,7 +34,6 @@ locals {
   identity_role_rw_name = format("%s", var.repositories.identity.role_name)
   ## The parameters for the identity stack
   identity_parameters = {
-    "Environment"               = "Production"
     "IdentityRoleReadOnlyName"  = local.identity_role_ro_name
     "IdentityRoleReadWriteName" = local.identity_role_rw_name
     "IdentityProviderName"      = local.identity_provider,
