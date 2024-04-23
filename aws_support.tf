@@ -12,7 +12,7 @@ resource "aws_cloudformation_stack_set" "aws_support_stack" {
   description      = "Provision a role for AWS Support to access resources in the account"
   parameters       = local.aws_support_parameters
   permission_model = "SERVICE_MANAGED"
-  template_body    = file("${path.module}/assets/cloudformation/aws-support-role.yaml")
+  template_body    = file("${path.module}/assets/cloudformation/aws-support-role.yml")
   tags             = var.tags
 
   auto_deployment {
@@ -51,7 +51,7 @@ resource "aws_cloudformation_stack" "aws_support_stack_instance_management_accou
   on_failure    = "ROLLBACK"
   parameters    = local.aws_support_parameters
   tags          = var.tags
-  template_body = file("${path.module}/assets/cloudformation/aws-support-role.yaml")
+  template_body = file("${path.module}/assets/cloudformation/aws-support-role.yml")
 
   provider = aws.management
 }

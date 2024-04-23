@@ -45,6 +45,7 @@ data "aws_iam_policy_document" "breakglass" {
   }
 
   statement {
+    sid    = "AllowPolicyVersionManagement"
     effect = "Allow"
     actions = [
       "iam:GetUser",
@@ -56,6 +57,7 @@ data "aws_iam_policy_document" "breakglass" {
   }
 
   statement {
+    sid    = "AllowListGroups"
     effect = "Allow"
     actions = [
       "iam:ListGroups",
@@ -66,6 +68,7 @@ data "aws_iam_policy_document" "breakglass" {
   }
 
   statement {
+    sid    = "AllowListPolicies"
     effect = "Allow"
     actions = [
       "iam:ListAttachedGroupPolicies",
