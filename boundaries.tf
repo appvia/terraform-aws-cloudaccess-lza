@@ -37,7 +37,7 @@ module "default_boundary" {
 # tfsec:ignore:aws-iam-no-policy-wildcards
 module "permissive_boundary" {
   source  = "appvia/boundary-stack/aws"
-  version = "0.0.2"
+  version = "0.1.2"
 
   description               = "Used to deploy the permissive permissions boundary for the pipelines."
   enable_management_account = true
