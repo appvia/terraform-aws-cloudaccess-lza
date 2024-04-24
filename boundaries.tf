@@ -3,6 +3,7 @@
 #
 
 ## This is used by pipelines that need to interact with the AWS cost management APIs
+# tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "cost_iam_boundary" {
   name        = var.costs_boundary_name
   description = "IAM boundary used by the cost management pipelines"
