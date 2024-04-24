@@ -41,10 +41,9 @@ module "network_transit_gateway_admin" {
     aws = aws.network
   }
 
-  #  depends_on = [
-  #    module.default_boundary,
-  #    module.permissive_boundary
-  #  ]
+  depends_on = [
+    module.default_boundary,
+  ]
 }
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
@@ -159,8 +158,7 @@ module "network_inspection_vpc_admin" {
     aws = aws.network
   }
 
-  #  depends_on = [
-  #    module.default_boundary,
-  #    module.permissive_boundary
-  #  ]
+  depends_on = [
+    module.default_boundary,
+  ]
 }

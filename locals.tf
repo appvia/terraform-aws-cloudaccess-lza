@@ -12,7 +12,7 @@ locals {
   ## The name of the aws support stackset 
   aws_support_stack_name = "LZA-IAM-Support-Role"
   ## The capabilities required for the aws support stackset 
-  aws_support_capabilities = ["CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND", "CAPABILITY_IAM"]
+  aws_support_capabilities = ["CAPABILITY_IAM"]
   ## The parameters for the aws support stackset 
   aws_support_parameters = {
     "RoleName" = var.aws_support_role_name
@@ -21,7 +21,7 @@ locals {
   ## The name of the identity stack 
   identity_stack_name = "LZA-Identity-Permissions"
   ## The capabilities required for the identity stack
-  identity_capabilities = ["CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND", "CAPABILITY_IAM"]
+  identity_capabilities = ["CAPABILITY_IAM"]
   ## The name of the identity provider if github is used
   identity_github_provider = var.scm_name == "github" ? "token.actions.githubusercontent.com" : null
   ## The name of the identity provider if gitlab is used
