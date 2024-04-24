@@ -25,6 +25,12 @@ resource "aws_cloudformation_stack_set" "aws_support_stack" {
     max_concurrent_count    = 10
   }
 
+  lifecycle {
+    ignore_changes = [
+      administration_role_arn
+    ]
+  }
+
   provider = aws.management
 }
 
