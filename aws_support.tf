@@ -27,7 +27,8 @@ resource "aws_cloudformation_stack_set" "aws_support_stack" {
 
   lifecycle {
     ignore_changes = [
-      administration_role_arn
+      administration_role_arn,
+      capabilities,
     ]
   }
 
@@ -58,6 +59,13 @@ resource "aws_cloudformation_stack" "aws_support_stack_instance_management_accou
   parameters    = local.aws_support_parameters
   tags          = var.tags
   template_body = file("${path.module}/assets/cloudformation/aws-support-role.yml")
+
+  lifecycle {
+    ignore_changes = [
+      capabilities,
+      outputs,
+    ]
+  }
 
   provider = aws.management
 }
