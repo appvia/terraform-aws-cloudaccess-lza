@@ -16,7 +16,7 @@ resource "aws_iam_policy" "cost_iam_boundary" {
 # tfsec:ignore:aws-iam-no-policy-wildcards
 module "default_boundary" {
   source  = "appvia/boundary-stack/aws"
-  version = "0.1.3"
+  version = "0.1.4"
 
   description               = "Used to deploy the default permissions boundary for the pipelines."
   enable_management_account = true
@@ -39,7 +39,7 @@ module "default_boundary" {
 # tfsec:ignore:aws-iam-no-policy-wildcards
 module "permissive_boundary" {
   source  = "appvia/boundary-stack/aws"
-  version = "0.1.3"
+  version = "0.1.4"
 
   description               = "Used to deploy the permissive permissions boundary for the pipelines."
   enable_management_account = true
