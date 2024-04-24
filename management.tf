@@ -84,12 +84,12 @@ module "management_sso_identity" {
     aws = aws.management
   }
 
-  depends_on = [
-    module.default_boundary,
-    module.permissive_boundary,
-    aws_cloudformation_stack_set.identity_stackset,
-    aws_cloudformation_stack_set_instance.identity_stack
-  ]
+  #  depends_on = [
+  #    module.default_boundary,
+  #    module.permissive_boundary,
+  #    aws_cloudformation_stack_set.identity_stackset,
+  #    aws_cloudformation_stack_set_instance.identity_stack
+  #  ]
 }
 
 ## Used to manage and deploy the landing zone
@@ -117,8 +117,8 @@ module "management_landing_zone" {
     aws = aws.management
   }
 
-  depends_on = [
-    module.default_boundary,
-    module.permissive_boundary
-  ]
+  #  depends_on = [
+  #    module.default_boundary,
+  #    module.permissive_boundary
+  #  ]
 }
