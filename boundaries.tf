@@ -7,8 +7,9 @@ resource "aws_iam_policy" "cost_iam_boundary" {
   name        = var.costs_boundary_name
   description = "IAM boundary used by the cost management pipelines"
   policy      = file("${path.module}/assets/boundaries/costs-boundary.json")
-  provider    = aws.management
   tags        = var.tags
+
+  provider = aws.management
 }
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
