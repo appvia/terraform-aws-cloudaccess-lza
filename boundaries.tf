@@ -23,16 +23,11 @@ module "default_boundary" {
 
   description               = "Used to deploy the default permissions boundary for the pipelines."
   enable_management_account = true
-  name                      = "LZA-IAM-DefaultBoundary"
-  region                    = var.region
+  name                      = local.boundary_default_stack_name
+  parameters                = local.boundary_default_stack_parameters
+  region                    = local.region
   tags                      = var.tags
   template                  = file("${path.module}/assets/cloudformation/default-boundary.yml")
-
-  parameters = {
-    "BoundaryName"               = var.default_permissions_boundary_name
-    "TerraformStateROPolicyName" = var.cloudaccess_terraform_state_ro_policy_name
-    "TerraformStateRWPolicyName" = var.cloudaccess_terraform_state_rw_policy_name
-  }
 
   providers = {
     aws = aws.management
@@ -46,16 +41,11 @@ module "permissive_boundary" {
 
   description               = "Used to deploy the permissive permissions boundary for the pipelines."
   enable_management_account = true
-  name                      = "LZA-IAM-PermissiveBoundary"
-  region                    = var.region
+  name                      = local.boundary_permissive_stack_name
+  parameters                = local.boundary_permissive_stack_parameters
+  region                    = local.region
   tags                      = var.tags
   template                  = file("${path.module}/assets/cloudformation/permissive-boundary.yml")
-
-  parameters = {
-    "BoundaryName"               = var.permissive_permissions_boundary_name
-    "TerraformStateROPolicyName" = var.cloudaccess_terraform_state_ro_policy_name
-    "TerraformStateRWPolicyName" = var.cloudaccess_terraform_state_rw_policy_name
-  }
 
   providers = {
     aws = aws.management

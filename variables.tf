@@ -30,11 +30,6 @@ variable "default_permissions_boundary_name" {
   default     = "lza-default-boundary"
 }
 
-variable "region" {
-  description = "AWS region to deploy into"
-  type        = string
-}
-
 variable "notification_emails" {
   description = "List of email addresses to send notifications to"
   type        = list(string)

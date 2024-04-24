@@ -7,7 +7,6 @@ module "landing_zone" {
   source = "../.."
 
   aws_accounts = var.aws_accounts
-  region       = var.region
   tags         = var.tags
 
   repositories = {

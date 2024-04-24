@@ -38,7 +38,7 @@ resource "aws_cloudformation_stack_set_instance" "identity_stack" {
   deployment_targets {
     organizational_unit_ids = [data.aws_organizations_organization.current.roots[0].id]
   }
-  region         = var.region
+  region         = local.region
   stack_set_name = local.identity_stack_name
 
   provider = aws.management
