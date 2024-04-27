@@ -126,7 +126,7 @@ module "cost_management" {
   version = "1.2.1"
 
   name                    = var.repositories.cost_management.role_name
-  description             = "Used to provision a cost controls and awareness"
+  description             = "Used to provision a collection of cost controls and notifications"
   repository              = var.repositories.cost_management.url
   tags                    = var.tags
   permission_boundary_arn = aws_iam_policy.cost_iam_boundary.arn
@@ -195,7 +195,7 @@ module "cost_management" {
   ]
 
   read_write_policy_arns = [
-    "arn:aws:iam::${var.aws_accounts["management"]}:policy/${aws_iam_policy.costs_admin.name}",
+    "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.costs_admin.name}",
     "arn:aws:iam::aws:policy/AWSBillingReadOnlyAccess",
     "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
     "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
