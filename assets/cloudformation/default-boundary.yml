@@ -32,9 +32,7 @@ Resources:
             Action:
               - "account:*"
               - "aws-portal:*"
-              - "ce:*"
               - "config:*"
-              - "cur:*"
               - "savingsplans:*"
             Resource: "*"
           - Sid: DenyPermBoundaryIAMPolicyAlteration
