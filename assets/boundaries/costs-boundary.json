@@ -14,14 +14,14 @@
         "iam:DeletePolicyVersion",
         "iam:SetDefaultPolicyVersion"
       ],
-      "Resource": ["arn:aws:iam::536471746696:policy/CostManagementBoundary"],
+      "Resource": ["arn:aws:iam::${account_id}:policy/${boundary_name}"],
       "Effect": "Deny",
       "Sid": "DenyPermBoundaryIAMPolicyAlteration"
     },
     {
       "Condition": {
         "StringEquals": {
-          "iam:PermissionsBoundary": "arn:aws:iam::536471746696:policy/CostManagementBoundary"
+          "iam:PermissionsBoundary": "arn:aws:iam::${account_id}:policy/${boundary_name}"
         }
       },
       "Action": [
@@ -29,8 +29,8 @@
         "iam:DeleteUserPermissionsBoundary"
       ],
       "Resource": [
-        "arn:aws:iam::536471746696:user/*",
-        "arn:aws:iam::536471746696:role/*"
+        "arn:aws:iam::${account_id}:user/*",
+        "arn:aws:iam::${account_id}:role/*"
       ],
       "Effect": "Deny",
       "Sid": "DenyRemovalOfPermBoundaryFromAnyUserOrRole"
@@ -38,7 +38,7 @@
     {
       "Condition": {
         "StringNotEquals": {
-          "iam:PermissionsBoundary": "arn:aws:iam::536471746696:policy/CostManagementBoundary"
+          "iam:PermissionsBoundary": "arn:aws:iam::${account_id}:policy/${boundary_name}"
         }
       },
       "Action": [
@@ -46,8 +46,8 @@
         "iam:PutUserPermissionsBoundary"
       ],
       "Resource": [
-        "arn:aws:iam::536471746696:user/*",
-        "arn:aws:iam::536471746696:role/*"
+        "arn:aws:iam::${account_id}:user/*",
+        "arn:aws:iam::${account_id}:role/*"
       ],
       "Effect": "Deny",
       "Sid": "DenyAccessIfRequiredPermBoundaryIsNotBeingApplied"
@@ -67,20 +67,20 @@
     {
       "Action": ["dynamoDB:DeleteTable"],
       "Resource": [
-        "arn:aws:dynamodb::536471746696:table/536471746696-eu-west-2-tflock"
+        "arn:aws:dynamodb::${account_id}:table/${account_id}-eu-west-2-tflock"
       ],
       "Effect": "Deny",
       "Sid": "ProtectDynamoDBRemoteStateLock"
     },
     {
       "Action": ["s3:DeleteBucket"],
-      "Resource": ["arn:aws:s3:::536471746696-eu-west-2-tfstate"],
+      "Resource": ["arn:aws:s3:::${account_id}-eu-west-2-tfstate"],
       "Effect": "Deny",
       "Sid": "ProtectS3RemoteState"
     },
     {
       "Action": ["cloudwatch:*"],
-      "Resource": ["arn:aws:cloudwatch::536471746696:alarm:*"],
+      "Resource": ["arn:aws:cloudwatch::${account_id}:alarm:*"],
       "Effect": "Deny",
       "Sid": "DenyCloudWatchAlarms"
     }

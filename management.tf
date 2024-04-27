@@ -118,3 +118,93 @@ module "management_landing_zone" {
     module.default_boundary,
   ]
 }
+
+# tfsec:ignore:aws-iam-no-policy-wildcards
+module "cost_management" {
+  count   = var.repositories.cost_management != null ? 1 : 0
+  source  = "appvia/oidc/aws//modules/role"
+  version = "1.2.1"
+
+  name                    = var.repositories.cost_management.role_name
+  description             = "Used to provision a cost controls and awareness"
+  repository              = var.repositories.cost_management.url
+  tags                    = var.tags
+  permission_boundary_arn = aws_iam_policy.cost_iam_boundary.arn
+
+  read_only_inline_policies = {
+    CostManagement = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = [
+            "ce:Describe*",
+            "ce:Get*",
+            "logs:Describe*",
+            "logs:Get*",
+            "logs:List*",
+            "secretsmanager:DescribeSecret",
+            "secretsmanager:GetResourcePolicy",
+            "secretsmanager:GetSecretValue",
+            "sns:Describe*",
+            "sns:Get*",
+            "sns:List*",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+      ]
+    })
+  }
+
+  read_write_inline_policies = {
+    CostManagement = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = [
+            "ce:CreateAnomalyMonitor",
+            "ce:CreateAnomalySubscription",
+            "ce:DeleteAnomalyMonitor",
+            "ce:DeleteAnomalySubscription",
+            "ce:Describe*",
+            "ce:Get*",
+            "logs:CreateLogGroup",
+            "logs:DeleteLogGroup",
+            "logs:Describe*",
+            "logs:Get*",
+            "logs:List*",
+            "logs:TagResource",
+            "secretsmanager:DescribeSecret",
+            "secretsmanager:GetResourcePolicy",
+            "secretsmanager:GetSecretValue",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+      ]
+    })
+  }
+
+  read_only_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSBillingConductorReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSBillingReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AmazonSNSReadOnlyAccess",
+    "arn:aws:iam::aws:policy/CostOptimizationHubReadOnlyAccess",
+    "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+  ]
+
+  read_write_policy_arns = [
+    "arn:aws:iam::${var.aws_accounts["management"]}:policy/${aws_iam_policy.costs_admin.name}",
+    "arn:aws:iam::aws:policy/AWSBillingReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
+    "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
+    "arn:aws:iam::aws:policy/CostOptimizationHubAdminAccess",
+    "arn:aws:iam::aws:policy/IAMFullAccess",
+    "arn:aws:iam::aws:policy/job-function/Billing",
+  ]
+
+  providers = {
+    aws = aws.management
+  }
+}

@@ -117,6 +117,10 @@ variable "repositories" {
       url       = string
       role_name = optional(string, "lza-connectivity")
     }), null)
+    cost_management = optional(object({
+      url       = string
+      role_name = optional(string, "lza-cost-management")
+    }), null)
     firewall = optional(object({
       url       = string
       role_name = optional(string, "lza-firewall")
