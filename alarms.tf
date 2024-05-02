@@ -8,6 +8,7 @@ module "alarm_baseline" {
   source  = "appvia/alarm-baseline/aws"
   version = "0.1.4"
 
+  create_sns_topic                    = true
   enable_iam_changes                  = false
   enable_mfa_console_signin_allow_sso = true
   enable_organizations_changes        = false
