@@ -60,7 +60,7 @@ module "management_sso_identity" {
 
   name                = var.repositories.identity.role_name
   common_provider     = var.scm_name
-  description         = "Role is used to manage the identity center"
+  description         = "Used to manage the identity center permissionsets and assignments"
   permission_boundary = var.permissive_permissions_boundary_name
   repository          = var.repositories.identity.url
   tags                = var.tags
@@ -79,6 +79,22 @@ module "management_sso_identity" {
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     "arn:aws:iam::aws:policy/IAMFullAccess",
   ]
+
+  read_write_inline_policies = {
+    "additional" = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = [
+            "sso:DeleteInlinePolicyFromPermissionSet",
+            "sso:PutInlinePolicyToPermissionSet",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+      ]
+    })
+  }
 
   providers = {
     aws = aws.management
