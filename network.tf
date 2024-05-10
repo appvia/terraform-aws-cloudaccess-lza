@@ -38,7 +38,7 @@ module "network_transit_gateway_admin" {
   ]
 
   read_write_inline_policies = {
-    "additional" = jsonencode({
+    "endpoints" = jsonencode({
       Version = "2012-10-17"
       Statement = [
         {
@@ -49,7 +49,9 @@ module "network_transit_gateway_admin" {
             "route53resolver:Disassociate*",
             "route53resolver:Get*",
             "route53resolver:List*",
+            "route53resolver:Tag*",
             "route53resolver:Update*",
+            "Route53resolver:UnTag*"
           ]
           Effect   = "Allow"
           Resource = "*"
