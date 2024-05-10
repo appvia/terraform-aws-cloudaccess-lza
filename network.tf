@@ -37,6 +37,27 @@ module "network_transit_gateway_admin" {
     "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
   ]
 
+  read_write_inline_policies = {
+    "additional" = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = [
+            "route53resolver:Associate*",
+            "route53resolver:Create*",
+            "route53resolver:Delete*",
+            "route53resolver:Disassociate*",
+            "route53resolver:Get*",
+            "route53resolver:List*",
+            "route53resolver:Update*",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+        }
+      ]
+    })
+  }
+
   providers = {
     aws = aws.network
   }
@@ -50,7 +71,7 @@ module "network_transit_gateway_admin" {
 module "network_inspection_vpc_admin" {
   count   = var.repositories.firewall != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.2.1"
+  version = "1.2.2"
 
   name                = var.repositories.firewall.role_name
   common_provider     = var.scm_name
@@ -88,13 +109,6 @@ module "network_inspection_vpc_admin" {
             "network-firewall:Tag*",
             "network-firewall:Untag*",
             "network-firewall:Update*",
-            "route53resolver:Associate*",
-            "route53resolver:Create*",
-            "route53resolver:Delete*",
-            "route53resolver:Disassociate*",
-            "route53resolver:Get*",
-            "route53resolver:List*",
-            "route53resolver:Update*",
           ]
           Effect   = "Allow"
           Resource = "*"
