@@ -15,7 +15,7 @@ resource "aws_iam_policy" "ipam_admin" {
 module "network_transit_gateway_admin" {
   count   = var.repositories.connectivity != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.2.1"
+  version = "1.2.2"
 
   name                = var.repositories.connectivity.role_name
   common_provider     = var.scm_name
