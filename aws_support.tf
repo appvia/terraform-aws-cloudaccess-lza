@@ -63,7 +63,6 @@ resource "aws_cloudformation_stack" "aws_support_stack_instance_management_accou
   lifecycle {
     ignore_changes = [
       capabilities,
-      outputs,
     ]
   }
 

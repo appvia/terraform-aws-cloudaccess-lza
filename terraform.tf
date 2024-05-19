@@ -7,6 +7,7 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
       configuration_aliases = [
+        aws.audit,
         aws.management,
         aws.network,
       ]
