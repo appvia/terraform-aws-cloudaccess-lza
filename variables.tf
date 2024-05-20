@@ -54,6 +54,24 @@ variable "securityhub_severity_filter" {
   default     = ["CRITICAL", "HIGH"]
 }
 
+variable "securityhub_lambda_role_name" {
+  description = "Name of the IAM role for the Security Hub Lambda function"
+  type        = string
+  default     = "lza-securityhub-lambda-role"
+}
+
+variable "securityhub_lambda_function_name" {
+  description = "Name of the Security Hub Lambda function"
+  type        = string
+  default     = "lza-securityhub-lambda-forwarder"
+}
+
+variable "securityhub_lambda_runtime" {
+  description = "Runtime for the Security Hub Lambda function"
+  type        = string
+  default     = "python3.12"
+}
+
 variable "permissive_permissions_boundary_name" {
   description = "Name of the permissive IAM policy to use as a permissions boundary"
   type        = string

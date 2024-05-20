@@ -54,7 +54,7 @@ module "securityhub_notifications" {
 resource "aws_iam_role" "securityhub_lambda_role" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
-  name               = "lza-securityhub-lambda-role"
+  name               = var.securityhub_lambda_role_name
   tags               = var.tags
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 
@@ -82,10 +82,10 @@ resource "aws_lambda_function" "securityhub_lambda_function" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
   filename         = "./builds/securityhub-findings-forwarder.zip"
-  function_name    = "lza-securityhub-lambda-forwarder"
+  function_name    = var.securityhub_lambda_function_name
   handler          = "lambda_function.lambda_handler"
   role             = aws_iam_role.securityhub_lambda_role[0].arn
-  runtime          = "python3.12"
+  runtime          = var.securityhub_lambda_runtime
   source_code_hash = data.archive_file.securityhub_lambda_package[0].output_base64sha256
   tags             = var.tags
   timeout          = 5
