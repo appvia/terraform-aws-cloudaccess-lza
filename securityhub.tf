@@ -94,6 +94,8 @@ resource "aws_cloudwatch_log_group" "securityhub_lambda_log_group" {
   name              = "/aws/lambda/${var.securityhub_lambda_function_name}"
   retention_in_days = 3
   tags              = var.tags
+
+  provider = aws.audit
 }
 
 ## Provision the lamda function to forward the security hub findings to the messaging channel  
