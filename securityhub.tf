@@ -165,4 +165,3 @@ resource "aws_cloudwatch_event_target" "security_hub_findings_target" {
 
   provider = aws.audit
 }
-
