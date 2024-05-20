@@ -65,7 +65,7 @@ locals {
   ## The configuration for the slack notification 
   slack = local.enable_slack_notifications ? {
     channel     = var.notifications.slack.channel
-    lambda_name = "lza-notifications-slack"
+    lambda_name = "lza-ca-notifications-slack"
     username    = ":aws: Security Notifications"
     webhook_url = var.notifications.slack.webhook_url
   } : null
