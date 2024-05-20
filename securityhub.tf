@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "securityhub_lambda_cloudwatch_logs_policy" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["arn:aws:logs:*:*:${var.securityhub_lambda_function_name}"]
+    resources = ["arn:aws:logs:*:*:log-group:/aws/lambda/${var.securityhub_lambda_function_name}"]
   }
 }
 
