@@ -1,6 +1,3 @@
-#
-## Related to CloudWatch Alarms 
-#
 
 ## Provision the CIS AWS Foundations CloudWatch Alarms
 module "alarm_baseline" {
@@ -14,5 +11,9 @@ module "alarm_baseline" {
   enable_organizations_changes        = false
   notification                        = local.notifications
   tags                                = var.tags
+
+  providers = {
+    aws = aws.management
+  }
 }
 

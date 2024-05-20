@@ -30,10 +30,22 @@ variable "default_permissions_boundary_name" {
   default     = "lza-default-boundary"
 }
 
-variable "notification_emails" {
-  description = "List of email addresses to send notifications to"
-  type        = list(string)
-  default     = []
+variable "enable_securityhub_alarms" {
+  description = "Indicates if we should enable SecurityHub alarms"
+  type        = bool
+  default     = true
+}
+
+variable "securityhub_sns_topic_name" {
+  description = "Name of the SNS topic to send Security Hub findings to"
+  type        = string
+  default     = "lza-securityhub-alerts"
+}
+
+variable "securityhub_event_bridge_rule_name" {
+  description = "Display name of the EventBridge rule for Security Hub findings"
+  type        = string
+  default     = "lza-securityhub-alerts"
 }
 
 variable "permissive_permissions_boundary_name" {
@@ -60,6 +72,29 @@ variable "enable_cis_alarms" {
   default     = true
 }
 
+variable "notifications" {
+  description = "Configuration for the notifications"
+  type = object({
+    email = optional(object({
+      addresses = list(string)
+    }), null)
+    slack = optional(object({
+      webhook_url = string
+      channel     = string
+    }), null)
+    teams = optional(object({
+      webhook_url = string
+    }), null)
+  })
+  default = {
+    email = {
+      addresses = []
+    }
+    slack = null
+    teams = null
+  }
+}
+
 variable "breakglass_users" {
   description = "The number of breakglass users to create"
   type        = number
@@ -70,24 +105,6 @@ variable "enable_breakglass" {
   description = "Indicates if we should enable breakglass users and group"
   type        = bool
   default     = false
-}
-
-variable "enable_slack_notifications" {
-  description = "Indicates if we should enable Slack notifications"
-  type        = bool
-  default     = false
-}
-
-variable "enable_teams_notifications" {
-  description = "Indicates if we should enable Teams notifications"
-  type        = bool
-  default     = false
-}
-
-variable "notification_secret_name" {
-  description = "Name of the secret in AWS Secrets Manager that contains the secrets for notifications"
-  type        = string
-  default     = ""
 }
 
 variable "scm_name" {

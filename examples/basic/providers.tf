@@ -1,26 +1,18 @@
 
 provider "aws" {
-  region = var.region
+  alias   = "management"
+  region  = var.region
+  profile = "appvia-io-master"
 }
 
 provider "aws" {
-  alias  = "management"
-  region = var.region
-
-  assume_role_with_web_identity {
-    role_arn                = "arn:aws:iam::${var.aws_accounts["management"]}:role/${data.aws_iam_session_context.current.issuer_name}"
-    session_name            = var.provider_session_name
-    web_identity_token_file = var.provider_web_identity_token_file
-  }
+  alias   = "network"
+  region  = var.region
+  profile = "appvia-io-network"
 }
 
 provider "aws" {
-  alias  = "network"
-  region = var.region
-
-  assume_role_with_web_identity {
-    role_arn                = "arn:aws:iam::${var.aws_accounts["network"]}:role/${data.aws_iam_session_context.current.issuer_name}"
-    session_name            = var.provider_session_name
-    web_identity_token_file = var.provider_web_identity_token_file
-  }
+  alias   = "audit"
+  region  = var.region
+  profile = "appvia-io-audit"
 }

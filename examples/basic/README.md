@@ -8,9 +8,7 @@
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.43.0 |
+No providers.
 
 ## Modules
 
@@ -20,18 +18,13 @@
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_session_context.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_session_context) | data source |
+No resources.
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_accounts"></a> [aws\_accounts](#input\_aws\_accounts) | Map of AWS account names to their account IDs | `map(string)` | <pre>{<br>  "management": "123456789012",<br>  "network": "123456789012"<br>}</pre> | no |
-| <a name="input_provider_session_name"></a> [provider\_session\_name](#input\_provider\_session\_name) | Name of the session to use when assuming the IAM role | `string` | `"terraform-aws-cloudaccess"` | no |
-| <a name="input_provider_web_identity_token_file"></a> [provider\_web\_identity\_token\_file](#input\_provider\_web\_identity\_token\_file) | Path to the web identity token file | `string` | `"/tmp/web_identity_token_file"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region to deploy resources in | `string` | `"us-west-2"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | `{}` | no |
 

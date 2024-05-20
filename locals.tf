@@ -18,6 +18,11 @@ locals {
     "RoleName" = var.aws_support_role_name
   }
 
+  ## Indicates if the notifications for slack are enabled 
+  enable_slack_notifications = var.notifications.slack != null
+  ## Indicates if the notifications for email are enabled 
+  enable_email_notifications = length(var.notifications.email.addresses) > 0
+
   ## The name of the default iam boundary used the pipelines 
   boundary_default_stack_name = "LZA-IAM-DefaultBoundary"
   ## The name of the permissive boundary used the pipelines 
@@ -58,28 +63,19 @@ locals {
   }
 
   ## The configuration for the slack notification 
-  slack_notification = var.enable_slack_notifications ? {
-    slack = {
-      channel     = jsondecode(data.aws_secretsmanager_secret_version.notification[0].secret_string).channel
-      webhook_url = jsondecode(data.aws_secretsmanager_secret_version.notification[0].secret_string).webhook_url
-    }
-  } : {}
+  slack = local.enable_slack_notifications ? {
+    channel     = var.notifications.slack.channel
+    lambda_name = "lza-notifications-slack"
+    username    = ":aws: Security Notifications"
+    webhook_url = var.notifications.slack.webhook_url
+  } : null
 
-  ## The configuration for the teams notification
-  teams_notification = var.enable_teams_notifications ? {
-    teams = {
-      webhook_url = jsondecode(data.aws_secretsmanager_secret_version.notification[0].secret_string).webhook_url
-    }
-  } : {}
+  email = {
+    addresses = var.notifications.email.addresses
+  }
 
-  ## The configuration for the notifications
-  notifications = merge(
-    {
-      email = {
-        addresses = var.notification_emails
-      }
-    },
-    local.slack_notification,
-    local.teams_notification
-  )
+  notifications = {
+    email = (local.enable_email_notifications ? local.email : null)
+    slack = (local.enable_slack_notifications ? local.slack : null)
+  }
 }
