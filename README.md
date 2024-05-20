@@ -1,6 +1,6 @@
 ![Github Actions](../../actions/workflows/terraform.yml/badge.svg)
 
-# Terraform AWS CloudAccess LZA
+# Terraform AWS Landing Zone Baseline
 
 ## Description
 
@@ -43,25 +43,26 @@ This module can configure CIS alarms and notifications. To enable this functiona
 
 ```hcl
 enable_cis_alarms = true
-notifications_emails = ["security@example.com"]
+enable_email_notifications = true
+notifications = {
+  email = {
+    addresses = ["security@example.com"]
+  }
+}
 ```
 
 For notifications to slack
 
-1. Create a JSON secret `lza/cloudaccess/alarms` in AWS Secrets Manager with the following format:
-
-```json
-{
-  "webhook_url": "https://hooks.slack.com/services/..."
-  "channel": "cloud-notifications"
-}
-```
-
-2. Use the `slack_notification_secret_name` variable to specify the name of the secret in AWS Secrets Manager that contains the Slack webhook URL.
+1. Configuration the notifications block accordingly
 
 ```hcl
-enable_cis_alarms = true
-notification_secret_name = "lza/cloudaccess/alarms"
+enable_email_notifications = true
+notifications = {
+  slack = {
+    webhook_url = "https://hooks.slack.com/services/..."
+    channel = "cloud-notifications"
+  }
+}
 ```
 
 ## Update Documentation
@@ -84,10 +85,10 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.48.0 |
-| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.48.0 |
-| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.48.0 |
-| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.48.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.49.0 |
+| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.49.0 |
+| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.49.0 |
+| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.49.0 |
 
 ## Modules
 
