@@ -2,6 +2,7 @@
 ## Craft an IAM policy document to allow the lambda function to assume the role 
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
   statement {
+    sid     = "AllowLambdaAssumeRole"
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
     principals {
@@ -15,15 +16,14 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 # See also the following AWS managed policy: AWSLambdaBasicExecutionRole
 data "aws_iam_policy_document" "securityhub_lambda_cloudwatch_logs_policy" {
   statement {
+    sid    = "AllowLogging"
     effect = "Allow"
-
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
     ]
-
-    resources = ["arn:aws:logs:*:*:log-group:/aws/lambda/${var.securityhub_lambda_function_name}"]
+    resources = ["arn:aws:logs:*:*:*"]
   }
 }
 
