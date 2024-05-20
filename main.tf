@@ -3,7 +3,7 @@
 module "alarm_baseline" {
   count   = var.enable_cis_alarms ? 1 : 0
   source  = "appvia/alarm-baseline/aws"
-  version = "0.1.7"
+  version = "0.2.0"
 
   create_sns_topic                    = true
   enable_iam_changes                  = false
