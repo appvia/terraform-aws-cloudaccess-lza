@@ -133,7 +133,7 @@ resource "aws_cloudwatch_event_rule" "security_hub_findings" {
 resource "aws_cloudwatch_event_target" "security_hub_findings_target" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
-  arn       = aws_lambda_function.securityhub_lambda_function.arn
+  arn       = aws_lambda_function.securityhub_lambda_function[0].arn
   rule      = aws_cloudwatch_event_rule.security_hub_findings[0].name
   target_id = "security_hub_findings_target"
 
