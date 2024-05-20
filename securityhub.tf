@@ -5,15 +5,22 @@ resource "aws_cloudwatch_event_rule" "security_hub_findings" {
   name        = var.securityhub_event_bridge_rule_name
   description = "Capture Security Hub findings of a specific severities and publish to the SNS topic (LZA)"
   event_pattern = jsonencode({
-    source = ["aws.securityhub"]
     detail = {
       findings = {
+        Compliance = {
+          Status = ["FAILED"]
+        }
+        RecordState = ["ACTIVE"],
         Severity = {
           Label = ["CRITICAL", "HIGH"]
-        },
-        Workflow = ["NEW"]
+        }
+        Workflow = {
+          Status = ["NEW"]
+        }
       }
     }
+    detail-type = ["Security Hub Findings - Imported"]
+    source      = ["aws.securityhub"]
   })
   tags = var.tags
 
