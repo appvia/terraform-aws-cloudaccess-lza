@@ -48,6 +48,12 @@ variable "securityhub_event_bridge_rule_name" {
   default     = "lza-securityhub-alerts"
 }
 
+variable "securityhub_severity_filter" {
+  description = "Indicates if we should enable SecurityHub"
+  type        = list(string)
+  default     = ["CRITICAL", "HIGH"]
+}
+
 variable "permissive_permissions_boundary_name" {
   description = "Name of the permissive IAM policy to use as a permissions boundary"
   type        = string
