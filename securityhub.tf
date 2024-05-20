@@ -27,6 +27,7 @@ module "securityhub_notifications" {
   version = "0.1.5"
 
   allowed_aws_services = ["events.amazonaws.com", "lambda.amazonaws.com"]
+  create_sns_topic     = true
   email                = local.email
   slack                = local.slack
   sns_topic_name       = var.securityhub_sns_topic_name
