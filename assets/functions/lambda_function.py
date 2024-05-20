@@ -1,4 +1,5 @@
 import json
+import os
 import boto3
 
 SNS_TOPIC_ARN=os.getenv('SNS_TOPIC_ARN')
