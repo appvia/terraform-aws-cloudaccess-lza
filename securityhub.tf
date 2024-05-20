@@ -29,7 +29,7 @@ data "archive_file" "securityhub_lambda_package" {
 
   type        = "zip"
   source_file = "${path.module}/functions/securityhub.py"
-  output_path = "builds/securityhub-findings-forwarder.zip"
+  output_path = "./builds/securityhub-findings-forwarder.zip"
 }
 
 ## Provision the notifications to forward the security hub findings to the messaging channel 
@@ -50,28 +50,6 @@ module "securityhub_notifications" {
   }
 }
 
-## Provision the IAM policy to allow the lambda function to publish messages to the SNS topic 
-resource "aws_iam_policy" "securityhub_notifications_policy" {
-  count = var.enable_securityhub_alarms ? 1 : 0
-
-  name        = "lza-securityhub-lambda-policy"
-  description = "IAM policy to allow the lambda function to publish messages to the SNS topic (LZA)"
-  policy      = data.aws_iam_policy_document.securityhub_notifications_policy[0].json
-  tags        = var.tags
-
-  provider = aws.audit
-}
-
-## Attach the IAM policy to the IAM role 
-resource "aws_iam_role_policy_attachment" "securityhub_lambda_policy_attachment" {
-  count = var.enable_securityhub_alarms ? 1 : 0
-
-  role       = aws_iam_role.securityhub_lambda_role[0].name
-  policy_arn = aws_iam_policy.securityhub_notifications_policy[0].arn
-
-  provider = aws.audit
-}
-
 ## Provision an IAM role for the lambda function to run under 
 resource "aws_iam_role" "securityhub_lambda_role" {
   count = var.enable_securityhub_alarms ? 1 : 0
@@ -79,6 +57,11 @@ resource "aws_iam_role" "securityhub_lambda_role" {
   name               = "lza-securityhub-lambda-role"
   tags               = var.tags
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+
+  inline_policy {
+    name   = "lza-securityhub-lambda-policy"
+    policy = data.aws_iam_policy_document.securityhub_notifications_policy[0].json
+  }
 
   provider = aws.audit
 }
@@ -98,7 +81,7 @@ resource "aws_iam_role_policy_attachment" "securityhub_lambda_cloudwatch_logs" {
 resource "aws_lambda_function" "securityhub_lambda_function" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
-  filename         = "builds/securityhub-findings-forwarder.zip"
+  filename         = "./builds/securityhub-findings-forwarder.zip"
   function_name    = "lza-securityhub-lambda-forwarder"
   handler          = "lambda_function.lambda_handler"
   role             = aws_iam_role.securityhub_lambda_role[0].arn
@@ -112,6 +95,8 @@ resource "aws_lambda_function" "securityhub_lambda_function" {
       "SNS_TOPIC_ARN" = module.securityhub_notifications[0].sns_topic_arn
     }
   }
+
+  depends_on = [data.archive_file.securityhub_lambda_package]
 }
 
 ## Provision the event bridge rule to capture security hub findings, of a specific severities
