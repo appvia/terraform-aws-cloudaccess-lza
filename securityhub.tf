@@ -11,7 +11,23 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
   }
 }
 
-## Craft and IAM polciy perform access to publish messages to the SNS topic 
+## Craft an IAM polciy to push logs to cloudwatch log group 
+# See also the following AWS managed policy: AWSLambdaBasicExecutionRole
+data "aws_iam_policy_document" "securityhub_lambda_cloudwatch_logs_policy" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = ["arn:aws:logs:*:*:${var.securityhub_lambda_function_name}"]
+  }
+}
+
+## Craft an IAM polciy perform access to publish messages to the SNS topic 
 data "aws_iam_policy_document" "securityhub_notifications_policy" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
@@ -63,17 +79,21 @@ resource "aws_iam_role" "securityhub_lambda_role" {
     policy = data.aws_iam_policy_document.securityhub_notifications_policy[0].json
   }
 
+  inline_policy {
+    name   = "lza-securityhub-lambda-logs-policy"
+    policy = data.aws_iam_policy_document.securityhub_lambda_cloudwatch_logs_policy.json
+  }
+
   provider = aws.audit
 }
 
-## Attach the managed permission to allow lambda to send logs to cloudwatch 
-resource "aws_iam_role_policy_attachment" "securityhub_lambda_cloudwatch_logs" {
-  count = var.enable_securityhub_alarms ? 1 : 0
-
-  role       = aws_iam_role.securityhub_lambda_role[0].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-
-  provider = aws.audit
+## Provision a cloudwatch log group to capture the logs from the lambda function 
+resource "aws_cloudwatch_log_group" "securityhub_lambda_log_group" {
+  kms_key_id        = local.enable_log_group_encryption ? data.aws_kms_alias.cloudwatch_logs[0].target_key_id : null
+  log_group_class   = "STANDARD"
+  name              = "/aws/lambda/${var.securityhub_lambda_function_name}"
+  retention_in_days = 3
+  tags              = var.tags
 }
 
 ## Provision the lamda function to forward the security hub findings to the messaging channel  
@@ -96,8 +116,12 @@ resource "aws_lambda_function" "securityhub_lambda_function" {
     }
   }
 
-  depends_on = [data.archive_file.securityhub_lambda_package]
-  provider   = aws.audit
+  depends_on = [
+    data.archive_file.securityhub_lambda_package,
+    aws_cloudwatch_log_group.securityhub_lambda_log_group,
+  ]
+
+  provider = aws.audit
 }
 
 ## Provision the event bridge rule to capture security hub findings, of a specific severities

@@ -72,6 +72,12 @@ variable "securityhub_lambda_runtime" {
   default     = "python3.12"
 }
 
+variable "securityhub_lambda_log_group_kms_alias" {
+  description = "Name of the KMS alias for the CloudWatch log group"
+  type        = string
+  default     = "alias/accelerator/kms/cloudwatch/key"
+}
+
 variable "permissive_permissions_boundary_name" {
   description = "Name of the permissive IAM policy to use as a permissions boundary"
   type        = string
