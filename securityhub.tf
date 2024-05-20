@@ -97,6 +97,7 @@ resource "aws_lambda_function" "securityhub_lambda_function" {
   }
 
   depends_on = [data.archive_file.securityhub_lambda_package]
+  provider   = aws.audit
 }
 
 ## Provision the event bridge rule to capture security hub findings, of a specific severities
