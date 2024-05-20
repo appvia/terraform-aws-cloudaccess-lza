@@ -9,9 +9,11 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 ## Find the kms for the cloudwatch logs 
-data "aws_kms_alias" "cloudwatch_logs" {
+data "aws_kms_alias" "securityhub_kms_key" {
   count = local.enable_log_group_encryption != "" ? 1 : 0
 
   name = var.securityhub_lambda_log_group_kms_alias
+
+  provider = aws.audit
 }
 

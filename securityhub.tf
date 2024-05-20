@@ -89,7 +89,7 @@ resource "aws_iam_role" "securityhub_lambda_role" {
 
 ## Provision a cloudwatch log group to capture the logs from the lambda function 
 resource "aws_cloudwatch_log_group" "securityhub_lambda_log_group" {
-  kms_key_id        = local.enable_log_group_encryption ? data.aws_kms_alias.cloudwatch_logs[0].target_key_id : null
+  kms_key_id        = local.enable_log_group_encryption ? data.aws_kms_alias.securityhub_kms_key[0].id : null
   log_group_class   = "STANDARD"
   name              = "/aws/lambda/${var.securityhub_lambda_function_name}"
   retention_in_days = 3
