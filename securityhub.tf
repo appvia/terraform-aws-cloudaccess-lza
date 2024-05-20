@@ -9,17 +9,17 @@ resource "aws_cloudwatch_event_rule" "security_hub_findings" {
       findings = {
         Compliance = {
           Status = ["FAILED"]
-        }
+        },
         RecordState = ["ACTIVE"],
         Severity = {
           Label = ["CRITICAL", "HIGH"]
-        }
+        },
         Workflow = {
           Status = ["NEW"]
         }
       }
-    }
-    detail-type = ["Security Hub Findings - Imported"]
+    },
+    detail-type = ["Security Hub Findings - Imported"],
     source      = ["aws.securityhub"]
   })
   tags = var.tags
