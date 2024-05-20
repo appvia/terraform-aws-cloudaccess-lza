@@ -28,7 +28,7 @@ data "archive_file" "securityhub_lambda_package" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
   type        = "zip"
-  source_file = "${path.module}/functions/securityhub.py"
+  source_file = "${path.module}/assets/functions/securityhub.py"
   output_path = "./builds/securityhub-findings-forwarder.zip"
 }
 
