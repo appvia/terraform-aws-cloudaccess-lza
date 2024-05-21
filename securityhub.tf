@@ -126,6 +126,15 @@ resource "aws_lambda_function" "securityhub_lambda_function" {
   provider = aws.audit
 }
 
+## Allow eventbridge to invoke the lambda function
+resource "aws_lambda_permission" "allow_cloudwatch" {
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.securityhub_lambda_function[0].arn
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.security_hub_findings[0].arn
+  statement_id  = "AllowExecutionFromEventBridge"
+}
+
 ## Provision the event bridge rule to capture security hub findings, of a specific severities
 resource "aws_cloudwatch_event_rule" "security_hub_findings" {
   count       = var.enable_securityhub_alarms ? 1 : 0

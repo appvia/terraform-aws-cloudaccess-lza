@@ -87,10 +87,10 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | Name | Version |
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | 2.4.2 |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.49.0 |
-| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.49.0 |
-| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.49.0 |
-| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.49.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.50.0 |
+| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.50.0 |
+| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.50.0 |
+| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.50.0 |
 
 ## Modules
 
@@ -133,6 +133,7 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | [aws_iam_user.breakglass](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user) | resource |
 | [aws_iam_user_group_membership.breakglass](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_group_membership) | resource |
 | [aws_lambda_function.securityhub_lambda_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
+| [aws_lambda_permission.allow_cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [archive_file.securityhub_lambda_package](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.breakglass](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
