@@ -127,16 +127,16 @@ resource "aws_lambda_function" "securityhub_lambda_function" {
 }
 
 ## Allow eventbridge to invoke the lambda function
-resource "aws_lambda_permission" "allow_cloudwatch" {
+resource "aws_lambda_permission" "securityhub_event_bridge" {
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.securityhub_lambda_function[0].arn
+  function_name = aws_lambda_function.securityhub_lambda_function[0].function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.security_hub_findings[0].arn
   statement_id  = "AllowExecutionFromEventBridge"
 }
 
 ## Provision the event bridge rule to capture security hub findings, of a specific severities
-resource "aws_cloudwatch_event_rule" "security_hub_findings" {
+resource "aws_cloudwatch_event_rule" "securityhub_findings" {
   count       = var.enable_securityhub_alarms ? 1 : 0
   name        = var.securityhub_event_bridge_rule_name
   description = "Capture Security Hub findings of a specific severities and publish to the SNS topic (LZA)"
