@@ -131,7 +131,7 @@ resource "aws_lambda_permission" "securityhub_event_bridge" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.securityhub_lambda_function[0].function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.security_hub_findings[0].arn
+  source_arn    = aws_cloudwatch_event_rule.securityhub_findings[0].arn
   statement_id  = "AllowExecutionFromEventBridge"
 }
 
@@ -169,7 +169,7 @@ resource "aws_cloudwatch_event_target" "security_hub_findings_target" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
   arn       = aws_lambda_function.securityhub_lambda_function[0].arn
-  rule      = aws_cloudwatch_event_rule.security_hub_findings[0].name
+  rule      = aws_cloudwatch_event_rule.securityhub_findings[0].name
   target_id = "security_hub_findings_target"
 
   provider = aws.audit
