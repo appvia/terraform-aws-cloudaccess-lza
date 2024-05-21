@@ -133,6 +133,8 @@ resource "aws_lambda_permission" "securityhub_event_bridge" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.securityhub_findings[0].arn
   statement_id  = "AllowExecutionFromEventBridge"
+
+  provider = aws.audit
 }
 
 ## Provision the event bridge rule to capture security hub findings, of a specific severities
