@@ -87,7 +87,7 @@ variable "permissive_permissions_boundary_name" {
 variable "aws_support_role_name" {
   description = "Name of the AWS Support role"
   type        = string
-  default     = "AWSSupportAccess"
+  default     = "AWSSupportAccessRole"
 }
 
 variable "enable_aws_support" {
