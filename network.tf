@@ -60,6 +60,9 @@ module "network_transit_gateway_admin" {
     })
   }
 
+  # We can share our state with the firewall module 
+  shared_repositories = var.repositories.firewall != null ? [var.repositories.firewall.url] : []
+
   providers = {
     aws = aws.network
   }
