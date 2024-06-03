@@ -53,8 +53,13 @@ run "basic" {
   command = plan
 
   variables {
-    aws_accounts = {}
-    tags         = {}
+    aws_accounts = {
+      network_account_id      = "135791357913"
+      remoteaccess_account_id = "246824682468"
+    }
+    tags = {
+      environment = "dev"
+    }
     repositories = {
       identity = {
         role_name = "terrafom-aws-identity"
