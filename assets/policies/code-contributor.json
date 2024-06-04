@@ -7,7 +7,7 @@
           "codecommit:References": "false"
         },
         "StringEqualsIfExists": {
-          "codecommit:References": ["refs/heads/main"]
+          "codecommit:References": ["refs/heads/main", "refs/heads/main/*"]
         }
       },
       "Action": [
@@ -23,6 +23,12 @@
       "Resource": "arn:aws:codecommit:*:*:aws-accelerator-config",
       "Effect": "Deny",
       "Sid": "DenyPushToMain"
+    },
+    {
+      "Action": ["codecommit:*"],
+      "Resource": "arn:aws:codecommit:*:*:aws-accelerator-config",
+      "Effect": "Allow",
+      "Sid": "AllowCodeCommit"
     },
     {
       "Action": "cloudformation:ValidateTemplate",
