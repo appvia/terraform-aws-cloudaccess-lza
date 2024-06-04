@@ -87,10 +87,10 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | Name | Version |
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | 2.4.2 |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.50.0 |
-| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.50.0 |
-| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.50.0 |
-| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.50.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.52.0 |
+| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.52.0 |
+| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.52.0 |
+| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.52.0 |
 
 ## Modules
 
@@ -149,7 +149,7 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_accounts"></a> [aws\_accounts](#input\_aws\_accounts) | Map of AWS account names to their account IDs | <pre>object({<br>    network_account_id      = optional(string, "")<br>    remoteaccess_account_id = optional(string, "")<br>  })</pre> | n/a | yes |
-| <a name="input_aws_support_role_name"></a> [aws\_support\_role\_name](#input\_aws\_support\_role\_name) | Name of the AWS Support role | `string` | `"AWSSupportAccess"` | no |
+| <a name="input_aws_support_role_name"></a> [aws\_support\_role\_name](#input\_aws\_support\_role\_name) | Name of the AWS Support role | `string` | `"AWSSupportAccessRole"` | no |
 | <a name="input_breakglass_users"></a> [breakglass\_users](#input\_breakglass\_users) | The number of breakglass users to create | `number` | `2` | no |
 | <a name="input_cloudaccess_terraform_state_ro_policy_name"></a> [cloudaccess\_terraform\_state\_ro\_policy\_name](#input\_cloudaccess\_terraform\_state\_ro\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role | `string` | `"lza-cloudaccess-tfstate-ro"` | no |
 | <a name="input_cloudaccess_terraform_state_rw_policy_name"></a> [cloudaccess\_terraform\_state\_rw\_policy\_name](#input\_cloudaccess\_terraform\_state\_rw\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role | `string` | `"lza-cloudaccess-tfstate-rw"` | no |
