@@ -25,6 +25,18 @@
       "Sid": "DenyPushToMain"
     },
     {
+      "Action": ["sts:GetCallerIdentity"],
+      "Effect": "Allow"
+      "Resource": "*",
+      "Sid": "AllowSTS"
+    },
+    {
+      "Action": ["organizations:ListAccounts"],
+      "Effect": "Allow"
+      "Resource": "*",
+      "Sid": "AllowOrganizationList"
+    },
+    {
       "Action": ["codecommit:*"],
       "Resource": "arn:aws:codecommit:*:*:aws-accelerator-config",
       "Effect": "Allow",
