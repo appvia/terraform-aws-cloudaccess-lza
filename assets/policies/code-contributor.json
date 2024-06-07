@@ -26,13 +26,13 @@
     },
     {
       "Action": ["sts:GetCallerIdentity"],
-      "Effect": "Allow"
+      "Effect": "Allow",
       "Resource": "*",
       "Sid": "AllowSTS"
     },
     {
       "Action": ["organizations:ListAccounts"],
-      "Effect": "Allow"
+      "Effect": "Allow",
       "Resource": "*",
       "Sid": "AllowOrganizationList"
     },
