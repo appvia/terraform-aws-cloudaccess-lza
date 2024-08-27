@@ -127,12 +127,7 @@ module "network_inspection_vpc_admin" {
           Action   = ["logs:*"],
           Effect   = "Allow",
           Resource = ["*"]
-        }
-      ]
-
-
-      Version = "2012-10-17"
-      Statement = [
+        },
         {
           Action = [
             "network-firewall:Describe*",
