@@ -156,7 +156,6 @@ module "cost_management" {
             "budgets:Describe*",
             "budgets:Get*",
             "budgets:List*",
-            "budgets:ListTagsForResource",
             "ce:Describe*",
             "ce:Get*",
             "logs:Describe*",
