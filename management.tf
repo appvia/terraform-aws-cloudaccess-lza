@@ -153,6 +153,10 @@ module "cost_management" {
       Statement = [
         {
           Action = [
+            "budgets:Describe*",
+            "budgets:Get*",
+            "budgets:List*",
+            "budgets:ListTagsForResource",
             "ce:Describe*",
             "ce:Get*",
             "logs:Describe*",
@@ -178,6 +182,7 @@ module "cost_management" {
       Statement = [
         {
           Action = [
+            "budgets:*",
             "ce:CreateAnomalyMonitor",
             "ce:CreateAnomalySubscription",
             "ce:DeleteAnomalyMonitor",
