@@ -53,13 +53,20 @@ module "securityhub_notifications" {
   count   = var.enable_securityhub_alarms ? 1 : 0
   source  = "appvia/notifications/aws"
   version = "0.1.7"
+  # version = "1.0.3"
 
   allowed_aws_services = ["events.amazonaws.com", "lambda.amazonaws.com"]
   create_sns_topic     = true
-  email                = local.email
-  slack                = local.slack
   sns_topic_name       = var.securityhub_sns_topic_name
-  tags                 = var.tags
+
+  email = local.email
+
+  # cloudwatch_log_group_retention = 3
+  # enable_slack         = true
+  # slack                = local.slack
+
+  tags = var.tags
+  # accounts_id_to_name  = var.accounts_id_to_name
 
   providers = {
     aws = aws.audit
