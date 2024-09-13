@@ -52,7 +52,7 @@ data "archive_file" "securityhub_lambda_package" {
 module "securityhub_notifications" {
   count   = var.enable_securityhub_alarms ? 1 : 0
   source  = "appvia/notifications/aws"
-  version = "1.0.3"
+  version = "1.0.4"
 
   allowed_aws_services = ["events.amazonaws.com", "lambda.amazonaws.com"]
   create_sns_topic     = true
@@ -64,8 +64,10 @@ module "securityhub_notifications" {
   enable_slack                   = true
   slack                          = local.slack
 
-  tags                = var.tags
-  accounts_id_to_name = var.accounts_id_to_name
+  tags                      = var.tags
+  accounts_id_to_name       = var.accounts_id_to_name
+  identity_center_start_url = var.identity_center_start_url
+  identity_center_role      = var.security_hub_identity_center_role
 
   providers = {
     aws = aws.audit
