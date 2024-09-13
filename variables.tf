@@ -184,3 +184,15 @@ variable "accounts_id_to_name" {
   type        = map(string)
   default     = {}
 }
+
+variable "identity_center_start_url" {
+  description = "The start URL of your Identity Center instance"
+  type        = string
+  default     = null
+}
+
+variable "identity_center_role" {
+  description = "The name of the role to use when redirecting through Identity Center"
+  type        = string
+  default     = null
+}

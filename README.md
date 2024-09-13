@@ -63,6 +63,12 @@ notifications = {
     channel = "cloud-notifications"
   }
 }
+accounts_id_to_name = {
+  "1234567890" = "mgmt"
+}
+cloudwatch_log_group_retention = 3
+identity_center_start_url = "<your identity center start url - if relevant>"
+identity_center_role = "<your your identity center role - consistent across accounts typically read only - if relevant>"
 ```
 
 ## Update Documentation
@@ -87,16 +93,16 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | Name | Version |
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | 2.5.0 |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.65.0 |
-| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.65.0 |
-| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.65.0 |
-| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.65.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.66.0 |
+| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.66.0 |
+| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.66.0 |
+| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.66.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_alarm_baseline"></a> [alarm\_baseline](#module\_alarm\_baseline) | appvia/alarm-baseline/aws | 0.2.4 |
+| <a name="module_alarm_baseline"></a> [alarm\_baseline](#module\_alarm\_baseline) | appvia/alarm-baseline/aws | 0.2.5 |
 | <a name="module_cost_management"></a> [cost\_management](#module\_cost\_management) | appvia/oidc/aws//modules/role | 1.3.2 |
 | <a name="module_default_boundary"></a> [default\_boundary](#module\_default\_boundary) | appvia/boundary-stack/aws | 0.1.7 |
 | <a name="module_management_landing_zone"></a> [management\_landing\_zone](#module\_management\_landing\_zone) | appvia/oidc/aws//modules/role | 1.3.2 |
@@ -104,7 +110,7 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="module_network_inspection_vpc_admin"></a> [network\_inspection\_vpc\_admin](#module\_network\_inspection\_vpc\_admin) | appvia/oidc/aws//modules/role | 1.3.2 |
 | <a name="module_network_transit_gateway_admin"></a> [network\_transit\_gateway\_admin](#module\_network\_transit\_gateway\_admin) | appvia/oidc/aws//modules/role | 1.3.2 |
 | <a name="module_permissive_boundary"></a> [permissive\_boundary](#module\_permissive\_boundary) | appvia/boundary-stack/aws | 0.1.7 |
-| <a name="module_securityhub_notifications"></a> [securityhub\_notifications](#module\_securityhub\_notifications) | appvia/notifications/aws | 1.0.3 |
+| <a name="module_securityhub_notifications"></a> [securityhub\_notifications](#module\_securityhub\_notifications) | appvia/notifications/aws | 1.0.4 |
 
 ## Resources
 
@@ -160,6 +166,8 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_enable_breakglass"></a> [enable\_breakglass](#input\_enable\_breakglass) | Indicates if we should enable breakglass users and group | `bool` | `false` | no |
 | <a name="input_enable_cis_alarms"></a> [enable\_cis\_alarms](#input\_enable\_cis\_alarms) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
 | <a name="input_enable_securityhub_alarms"></a> [enable\_securityhub\_alarms](#input\_enable\_securityhub\_alarms) | Indicates if we should enable SecurityHub alarms | `bool` | `true` | no |
+| <a name="input_identity_center_role"></a> [identity\_center\_role](#input\_identity\_center\_role) | The name of the role to use when redirecting through Identity Center | `string` | `null` | no |
+| <a name="input_identity_center_start_url"></a> [identity\_center\_start\_url](#input\_identity\_center\_start\_url) | The start URL of your Identity Center instance | `string` | `null` | no |
 | <a name="input_notifications"></a> [notifications](#input\_notifications) | Configuration for the notifications | <pre>object({<br>    email = optional(object({<br>      addresses = list(string)<br>    }), null)<br>    slack = optional(object({<br>      webhook_url = string<br>    }), null)<br>    teams = optional(object({<br>      webhook_url = string<br>    }), null)<br>  })</pre> | <pre>{<br>  "email": {<br>    "addresses": []<br>  },<br>  "slack": null,<br>  "teams": null<br>}</pre> | no |
 | <a name="input_permissive_permissions_boundary_name"></a> [permissive\_permissions\_boundary\_name](#input\_permissive\_permissions\_boundary\_name) | Name of the permissive IAM policy to use as a permissions boundary | `string` | `"lza-permissive-boundary"` | no |
 | <a name="input_repositories"></a> [repositories](#input\_repositories) | List of repository locations for the pipelines | <pre>object({<br>    accelerator = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-accelerator")<br>    }), null)<br>    connectivity = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-connectivity")<br>    }), null)<br>    cost_management = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-cost-management")<br>    }), null)<br>    firewall = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-firewall")<br>    }), null)<br>    identity = optional(object({<br>      url       = string<br>      role_name = optional(string, "lza-identity")<br>    }), null)<br>  })</pre> | `{}` | no |
