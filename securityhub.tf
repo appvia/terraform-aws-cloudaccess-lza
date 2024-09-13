@@ -67,7 +67,7 @@ module "securityhub_notifications" {
   tags                      = var.tags
   accounts_id_to_name       = var.accounts_id_to_name
   identity_center_start_url = var.identity_center_start_url
-  identity_center_role      = var.identity_center_role
+  identity_center_role      = var.security_hub_identity_center_role
 
   providers = {
     aws = aws.audit

@@ -14,7 +14,7 @@ module "alarm_baseline" {
   accounts_id_to_name                 = var.accounts_id_to_name
   cloudwatch_log_group_retention      = 3
   identity_center_start_url           = var.identity_center_start_url
-  identity_center_role                = var.identity_center_role
+  identity_center_role                = var.cloudwatch_identity_center_role
 
   providers = {
     aws = aws.management
