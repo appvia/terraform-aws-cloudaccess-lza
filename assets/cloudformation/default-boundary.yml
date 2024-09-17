@@ -116,7 +116,7 @@ Resources:
               - cloudwatch:*
             Resource:
               - !Sub "arn:aws:cloudwatch::$${AWS::AccountId}:alarm:*"
-          {% if enable_tagging_enforcment ~}
+          %{ if enable_tagging_enforcement ~}
           - Sid: EnforceTaggingPolicy
             Effect: Deny 
             Action: 
@@ -132,4 +132,4 @@ Resources:
                   %{ for tag in tags ~}
                   "aws:RequestTag/${tag}": "true"
                   %{ endfor ~}
-          {% endif ~}
+          %{ endif ~}
