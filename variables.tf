@@ -36,6 +36,63 @@ variable "enable_securityhub_alarms" {
   default     = true
 }
 
+variable "enable_tag_enforcement" {
+  description = "Indicates if we should enable tagging enforcement"
+  type        = bool
+  default     = false
+}
+
+variable "enforcable_tags" {
+  description = "List of enforceable tags"
+  type        = list(string)
+  default     = []
+}
+
+variable "enforcable_tagging_policy_name" {
+  description = "Name of the IAM policy to use as a permissions boundary for enforceable tags"
+  type        = string
+  default     = "lza-enforceable-tags-boundary"
+}
+
+variable "enforcable_tagging_resources" {
+  description = "List of enforceable tagging resources"
+  type        = list(string)
+  default     = ["*"]
+}
+
+variable "enforcable_tagging_actions" {
+  description = "List of enforceable tagging actions"
+  type        = list(string)
+  default = [
+    "ec2:CreateInternetGateway",
+    "ec2:CreateVolume",
+    "ec2:CreateVpcPeeringConnection",
+    "ec2:RunInstances",
+    "ecs:CreateCluster",
+    "ecs:CreateService",
+    "ecs:CreateTaskSet",
+    "eks:CreateCluster",
+    "elasticfilesystem:CreateAccessPoint",
+    "elasticfilesystem:CreateFileSystem",
+    "elasticloadbalancing:CreateListener",
+    "elasticloadbalancing:CreateLoadBalancer",
+    "elasticloadbalancing:CreateRule",
+    "elasticloadbalancing:CreateTargetGroup",
+    "elasticloadbalancing:CreateTrustStore",
+    "network-firewall:CreateFirewall",
+    "network-firewall:CreateFirewallPolicy",
+    "network-firewall:CreateRuleGroup",
+    "ram:CreatePermission",
+    "ram:CreateResourceShare",
+    "redshift:CreateCluster",
+    "redshift:CreateClusterParameterGroup",
+    "redshift:CreateClusterSecurityGroup",
+    "redshift:CreateClusterSubnetGroup",
+    "route53:CreateHostedZone",
+    "secretsmanager:CreateSecret",
+  ]
+}
+
 variable "securityhub_sns_topic_name" {
   description = "Name of the SNS topic to send Security Hub findings to"
   type        = string

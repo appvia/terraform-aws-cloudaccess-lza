@@ -43,6 +43,13 @@ locals {
   }
 
 
+  # Is the stack name of the tagging enforcement iam boundary
+  boundary_tagging_stack_name = "LZA-IAM-TaggingBoundary"
+  # The parameters for the tagging enforcement boundary_tagging_stack_name
+  boundary_tagging_stack_parameters = {
+    "BoundaryName" = var.enforcable_tagging_policy_name
+  }
+
   ## The name of the identity stack 
   identity_stack_name = "LZA-Identity-Permissions"
   ## The capabilities required for the identity stack
