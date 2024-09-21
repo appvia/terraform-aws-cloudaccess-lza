@@ -29,6 +29,7 @@ terraform.rc
 # Other
 .DS_Store
 todo.md
+*.orig
 
 # Ignore securityhub-findings-forwarder lambda deployment package
 builds

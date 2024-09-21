@@ -27,7 +27,13 @@ module "default_boundary" {
   parameters                = local.boundary_default_stack_parameters
   region                    = local.region
   tags                      = var.tags
-  template                  = file("${path.module}/assets/cloudformation/default-boundary.yml")
+
+  template = templatefile("${path.module}/assets/cloudformation/default-boundary.yml", {
+    actions                    = var.enforcable_tagging_actions
+    enable_tagging_enforcement = var.enable_tag_enforcement
+    resources                  = var.enforcable_tagging_resources
+    tags                       = var.enforcable_tags
+  })
 
   providers = {
     aws = aws.management
@@ -45,7 +51,37 @@ module "permissive_boundary" {
   parameters                = local.boundary_permissive_stack_parameters
   region                    = local.region
   tags                      = var.tags
-  template                  = file("${path.module}/assets/cloudformation/permissive-boundary.yml")
+
+  template = templatefile("${path.module}/assets/cloudformation/permissive-boundary.yml", {
+    actions                    = var.enforcable_tagging_actions
+    enable_tagging_enforcement = var.enable_tag_enforcement
+    resources                  = var.enforcable_tagging_resources
+    tags                       = var.enforcable_tags
+  })
+
+  providers = {
+    aws = aws.management
+  }
+}
+
+# tfsec:ignore:aws-iam-no-policy-wildcards
+module "tagging_boundary" {
+  count   = var.enable_tag_enforcement ? 1 : 0
+  source  = "appvia/boundary-stack/aws"
+  version = "0.1.7"
+
+  description               = "Used to deploy the tagging boundary policy, used by human roles"
+  enable_management_account = true
+  name                      = local.boundary_tagging_stack_name
+  parameters                = local.boundary_tagging_stack_parameters
+  region                    = local.region
+  tags                      = var.tags
+
+  template = templatefile("${path.module}/assets/cloudformation/tagging-boundary.yml", {
+    actions   = var.enforcable_tagging_actions
+    resources = var.enforcable_tagging_resources
+    tags      = var.enforcable_tags
+  })
 
   providers = {
     aws = aws.management
