@@ -9,6 +9,10 @@ locals {
   ## The current account id 
   account_id = data.aws_caller_identity.current.account_id
 
+  ## Indicates we have to inject the enforcement of tagging into the 
+  ## IAM boundaries we create 
+  enforce_tagging_enforcement = length(var.enforcable_tags) > 0
+
   ## The name of the aws support stackset 
   aws_support_stack_name = "LZA-IAM-Support-Role"
   ## The capabilities required for the aws support stackset 

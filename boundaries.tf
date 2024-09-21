@@ -30,7 +30,7 @@ module "default_boundary" {
 
   template = templatefile("${path.module}/assets/cloudformation/default-boundary.yml", {
     actions                    = var.enforcable_tagging_actions
-    enable_tagging_enforcement = var.enable_tag_enforcement
+    enable_tagging_enforcement = local.enforce_tagging_enforcement
     resources                  = var.enforcable_tagging_resources
     tags                       = var.enforcable_tags
   })
@@ -54,7 +54,7 @@ module "permissive_boundary" {
 
   template = templatefile("${path.module}/assets/cloudformation/permissive-boundary.yml", {
     actions                    = var.enforcable_tagging_actions
-    enable_tagging_enforcement = var.enable_tag_enforcement
+    enable_tagging_enforcement = local.enforce_tagging_enforcement
     resources                  = var.enforcable_tagging_resources
     tags                       = var.enforcable_tags
   })
@@ -66,7 +66,7 @@ module "permissive_boundary" {
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 module "tagging_boundary" {
-  count   = var.enable_tag_enforcement ? 1 : 0
+  count   = local.enforce_tagging_enforcement ? 1 : 0
   source  = "appvia/boundary-stack/aws"
   version = "0.1.7"
 

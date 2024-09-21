@@ -36,12 +36,6 @@ variable "enable_securityhub_alarms" {
   default     = true
 }
 
-variable "enable_tag_enforcement" {
-  description = "Indicates if we should enable tagging enforcement"
-  type        = bool
-  default     = false
-}
-
 variable "enforcable_tags" {
   description = "List of enforceable tags"
   type        = list(string)

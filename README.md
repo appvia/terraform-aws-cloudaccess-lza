@@ -98,11 +98,11 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 
 | Name | Version |
 |------|---------|
-| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.5.0 |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.66.0 |
-| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.66.0 |
-| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.66.0 |
-| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.66.0 |
+| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.6.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.67.0 |
+| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | 5.67.0 |
+| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | 5.67.0 |
+| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | 5.67.0 |
 
 ## Modules
 
@@ -174,7 +174,6 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_enable_breakglass"></a> [enable\_breakglass](#input\_enable\_breakglass) | Indicates if we should enable breakglass users and group | `bool` | `false` | no |
 | <a name="input_enable_cis_alarms"></a> [enable\_cis\_alarms](#input\_enable\_cis\_alarms) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
 | <a name="input_enable_securityhub_alarms"></a> [enable\_securityhub\_alarms](#input\_enable\_securityhub\_alarms) | Indicates if we should enable SecurityHub alarms | `bool` | `true` | no |
-| <a name="input_enable_tag_enforcement"></a> [enable\_tag\_enforcement](#input\_enable\_tag\_enforcement) | Indicates if we should enable tagging enforcement | `bool` | `false` | no |
 | <a name="input_enforcable_tagging_actions"></a> [enforcable\_tagging\_actions](#input\_enforcable\_tagging\_actions) | List of enforceable tagging actions | `list(string)` | <pre>[<br/>  "ec2:CreateInternetGateway",<br/>  "ec2:CreateVolume",<br/>  "ec2:CreateVpcPeeringConnection",<br/>  "ec2:RunInstances",<br/>  "ecs:CreateCluster",<br/>  "ecs:CreateService",<br/>  "ecs:CreateTaskSet",<br/>  "eks:CreateCluster",<br/>  "elasticfilesystem:CreateAccessPoint",<br/>  "elasticfilesystem:CreateFileSystem",<br/>  "elasticloadbalancing:CreateListener",<br/>  "elasticloadbalancing:CreateLoadBalancer",<br/>  "elasticloadbalancing:CreateRule",<br/>  "elasticloadbalancing:CreateTargetGroup",<br/>  "elasticloadbalancing:CreateTrustStore",<br/>  "network-firewall:CreateFirewall",<br/>  "network-firewall:CreateFirewallPolicy",<br/>  "network-firewall:CreateRuleGroup",<br/>  "ram:CreatePermission",<br/>  "ram:CreateResourceShare",<br/>  "redshift:CreateCluster",<br/>  "redshift:CreateClusterParameterGroup",<br/>  "redshift:CreateClusterSecurityGroup",<br/>  "redshift:CreateClusterSubnetGroup",<br/>  "route53:CreateHostedZone",<br/>  "secretsmanager:CreateSecret"<br/>]</pre> | no |
 | <a name="input_enforcable_tagging_policy_name"></a> [enforcable\_tagging\_policy\_name](#input\_enforcable\_tagging\_policy\_name) | Name of the IAM policy to use as a permissions boundary for enforceable tags | `string` | `"lza-enforceable-tags-boundary"` | no |
 | <a name="input_enforcable_tagging_resources"></a> [enforcable\_tagging\_resources](#input\_enforcable\_tagging\_resources) | List of enforceable tagging resources | `list(string)` | <pre>[<br/>  "*"<br/>]</pre> | no |
