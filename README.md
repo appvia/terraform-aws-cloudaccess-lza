@@ -77,6 +77,67 @@ The tagging enforcement feature updates the default IAM boundaries deployed by t
 
 Switching on the feature will also deploy a stackset across the entire organization implementing the tagging policy deny logic. This should be referenced by roles within the account.
 
+The IAM policy which is used to enforce the tagging policy follows the below template
+
+```yaml
+- Sid: EnforceTaggingPolicy
+  Effect: Deny
+  Action:
+    %{ for action in actions ~}
+    - "${action}"
+    %{ endfor ~}
+  Resource: [
+    %{ for resource in resources ~}
+    - "${resource}"
+    %{ endfor ~}
+  Condition:
+      Null:
+        %{ for tag in tags ~}
+        "aws:RequestTag/${tag}": "true"
+        %{ endfor ~}
+```
+
+An example supplying the following tags - `Environment`, `Product`, `Owner`, `GitRepo` and using the default actions defined in the variables would render to.
+
+```yaml
+- Sid: EnforceTaggingPolicy
+  Effect: Deny
+  Action:
+    - ec2:CreateInternetGateway
+    - ec2:CreateVolume
+    - ec2:CreateVpcPeeringConnection
+    - ec2:RunInstances
+    - ecs:CreateCluster
+    - ecs:CreateService
+    - ecs:CreateTaskSet
+    - eks:CreateCluster
+    - elasticfilesystem:CreateAccessPoint
+    - elasticfilesystem:CreateFileSystem
+    - elasticloadbalancing:CreateListener
+    - elasticloadbalancing:CreateLoadBalancer
+    - elasticloadbalancing:CreateRule
+    - elasticloadbalancing:CreateTargetGroup
+    - elasticloadbalancing:CreateTrustStore
+    - network-firewall:CreateFirewall
+    - network-firewall:CreateFirewallPolicy
+    - network-firewall:CreateRuleGroup
+    - ram:CreatePermission
+    - ram:CreateResourceShare
+    - redshift:CreateCluster
+    - redshift:CreateClusterParameterGroup
+    - redshift:CreateClusterSecurityGroup
+    - redshift:CreateClusterSubnetGroup
+    - route53:CreateHostedZone
+    - secretsmanager:CreateSecret
+  Resource: ["*"]
+  Condition:
+    Null:
+      "aws:RequestTag/Environment": "true"
+      "aws:RequestTag/Product": "true"
+      "aws:RequestTag/Owner": "true"
+      "aws:RequestTag/GitRepo": "true"
+```
+
 ## Update Documentation
 
 The `terraform-docs` utility is used to generate this README. Follow the below steps to update:
