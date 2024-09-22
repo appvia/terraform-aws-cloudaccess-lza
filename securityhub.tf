@@ -54,20 +54,17 @@ module "securityhub_notifications" {
   source  = "appvia/notifications/aws"
   version = "1.0.4"
 
-  allowed_aws_services = ["events.amazonaws.com", "lambda.amazonaws.com"]
-  create_sns_topic     = true
-  sns_topic_name       = var.securityhub_sns_topic_name
-
-  email = local.email
-
+  accounts_id_to_name            = var.accounts_id_to_name
+  allowed_aws_services           = ["events.amazonaws.com", "lambda.amazonaws.com"]
   cloudwatch_log_group_retention = 3
+  create_sns_topic               = true
+  email                          = local.email
   enable_slack                   = true
+  identity_center_role           = var.security_hub_identity_center_role
+  identity_center_start_url      = var.identity_center_start_url
   slack                          = local.slack
-
-  tags                      = var.tags
-  accounts_id_to_name       = var.accounts_id_to_name
-  identity_center_start_url = var.identity_center_start_url
-  identity_center_role      = var.security_hub_identity_center_role
+  sns_topic_name                 = var.securityhub_sns_topic_name
+  tags                           = var.tags
 
   providers = {
     aws = aws.audit
@@ -147,9 +144,12 @@ resource "aws_lambda_permission" "securityhub_event_bridge" {
 
 ## Provision the event bridge rule to capture security hub findings, of a specific severities
 resource "aws_cloudwatch_event_rule" "securityhub_findings" {
-  count       = var.enable_securityhub_alarms ? 1 : 0
+  count = var.enable_securityhub_alarms ? 1 : 0
+
   name        = var.securityhub_event_bridge_rule_name
   description = "Capture Security Hub findings of a specific severities and publish to the SNS topic (LZA)"
+  tags        = var.tags
+
   event_pattern = jsonencode({
     detail = {
       findings = {
@@ -168,7 +168,6 @@ resource "aws_cloudwatch_event_rule" "securityhub_findings" {
     detail-type = ["Security Hub Findings - Imported"],
     source      = ["aws.securityhub"]
   })
-  tags = var.tags
 
   provider = aws.audit
 }
