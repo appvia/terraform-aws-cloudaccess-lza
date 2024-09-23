@@ -29,8 +29,11 @@ resource "aws_iam_policy" "code_contributor" {
 resource "aws_iam_policy" "code_release" {
   name        = "lza-code-release"
   description = "Provides the permissions to release the landing zone code"
-  policy      = file("${path.module}/assets/policies/code-release.json")
-  tags        = var.tags
+  policy = templatefile("${path.module}/assets/policies/code-release.json", {
+    management_account_id = local.management_account_id
+    region                = local.region
+  })
+  tags = var.tags
 
   provider = aws.management
 }
