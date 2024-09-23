@@ -2,6 +2,24 @@
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:GetBucketPolicy",
+        "s3:GetBucketVersioning",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:ListBucket",
+        "s3:ListBucketMultipartUploads",
+        "s3:ListBucketVersions"
+      ],
+      "Resource": [
+        "arn:aws:s3:::aws-accelerator-config-${management_account_id}-${region}/zipped/aws-accelerator-config.zip",
+        "arn:aws:s3:::aws-accelerator-config-${management_account_id}-${region}/*"
+      ],
+      "Effect": "Allow",
+      "Sid": "AllowAcceleratorConfigFromS3"
+    },
+    {
       "Condition": {
         "Null": {
           "codecommit:References": "false"

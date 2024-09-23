@@ -16,8 +16,11 @@ resource "aws_iam_policy" "user_management" {
 resource "aws_iam_policy" "code_contributor" {
   name        = "lza-code-contributor"
   description = "Provides the permissions to validate the landing zone code"
-  policy      = file("${path.module}/assets/policies/code-contributor.json")
-  tags        = var.tags
+  policy = templatefile("${path.module}/assets/policies/code-contributor.json", {
+    management_account_id = local.management_account_id
+    region                = local.region
+  })
+  tags = var.tags
 
   provider = aws.management
 }
