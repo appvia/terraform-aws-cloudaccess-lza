@@ -135,10 +135,9 @@ An example supplying the following tags - `Environment`, `Product`, `Owner`, `Gi
   Condition:
     Null:
       "aws:RequestTag/Environment": "true"
-      "aws:RequestTag/Product": "true"
-      "aws:RequestTag/Owner": "true"
-      "aws:RequestTag/GitRepo": "true"
 ```
+
+Not, due to the nature of conditions within IAM policies, using a logical OR, in order to apply this policy to all tags, the policy will need to be duplicated for each tag.
 
 ## Update Documentation
 
