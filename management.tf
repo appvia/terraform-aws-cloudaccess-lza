@@ -200,6 +200,7 @@ module "cost_management" {
             "logs:Get*",
             "logs:List*",
             "logs:TagResource",
+            "logs:UntagResource",
             "secretsmanager:DescribeSecret",
             "secretsmanager:GetResourcePolicy",
             "secretsmanager:GetSecretValue",
