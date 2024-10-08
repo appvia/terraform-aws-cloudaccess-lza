@@ -40,7 +40,7 @@ Resources:
               - "${resource}"
 %{ endfor ~}
             Condition: 
-                Null: 
+              "Null": 
 %{ for tag in tags ~}
-                  "aws:RequestTag/${tag}": "true"
+                "aws:RequestTag/${tag}": "true"
 %{ endfor ~} 

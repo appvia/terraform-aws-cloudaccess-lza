@@ -94,6 +94,6 @@ Resources:
               - "${resource}"
 %{ endfor ~}
             Condition: 
-              Null: 
+              "Null": 
                 "aws:RequestTag/${tag}": "true"
 %{ endfor }
