@@ -123,8 +123,8 @@ Resources:
 %{ endfor ~}
             Condition:
               ForAllValues:StringEquals:
-%{ for tag in tags ~}
                 aws:TagKeys:
+%{ for tag in tags ~}
                   - ${tag}
 %{ endfor ~}
               'Null':
