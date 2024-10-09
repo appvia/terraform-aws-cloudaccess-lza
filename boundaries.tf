@@ -29,10 +29,7 @@ module "default_boundary" {
   tags                      = var.tags
 
   template = templatefile("${path.module}/assets/cloudformation/default-boundary.yml", {
-    actions                = var.enforcable_tagging_actions
-    enable_tag_enforcement = length(var.enforcable_tags) > 0
-    resources              = var.enforcable_tagging_resources
-    tags                   = var.enforcable_tags
+    additional_policy = var.permissions_boundary_statements
   })
 
   providers = {
@@ -53,10 +50,7 @@ module "permissive_boundary" {
   tags                      = var.tags
 
   template = templatefile("${path.module}/assets/cloudformation/permissive-boundary.yml", {
-    actions                = var.enforcable_tagging_actions
-    enable_tag_enforcement = length(var.enforcable_tags) > 0
-    resources              = var.enforcable_tagging_resources
-    tags                   = var.enforcable_tags
+    additional_policy = var.permissions_boundary_statements
   })
 
   providers = {
