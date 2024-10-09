@@ -119,7 +119,6 @@ Resources:
             Resource:
               - arn:aws:ec2:*:*:key-pair/*
               - arn:aws:ec2:*:*:launch-template/*
-              - arn:aws:ec2:*:*:subnet/*
             Condition:
               'Null':
 %{ for tag in tags ~}
