@@ -29,7 +29,7 @@ module "default_boundary" {
   tags                      = var.tags
 
   template = templatefile("${path.module}/assets/cloudformation/default-boundary.yml", {
-    additional_policy = var.permissions_boundary_statements
+    additional_policy = ""
   })
 
   providers = {
@@ -50,7 +50,7 @@ module "permissive_boundary" {
   tags                      = var.tags
 
   template = templatefile("${path.module}/assets/cloudformation/permissive-boundary.yml", {
-    additional_policy = var.permissions_boundary_statements
+    additional_policy = ""
   })
 
   providers = {

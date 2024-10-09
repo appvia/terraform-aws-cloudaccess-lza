@@ -33,3 +33,7 @@ output "identity_stack_name" {
   value       = local.identity_stack_name
 }
 
+output "additional_permissions_boundary_statements" {
+  description = "Additional policy to attach to the permissions boundary (YAML)"
+  value       = var.permissions_boundary_statements
+}
