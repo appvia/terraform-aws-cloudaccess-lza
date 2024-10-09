@@ -112,7 +112,7 @@ Resources:
 %{ for tag in tags ~}
                   - ${tag}
 %{ endfor ~}
-          - Sid: DenyTagRunInstancesResoruces
+          - Sid: DenyTagRunInstancesResources
             Effect: Deny
             Action:
               - ec2:RunInstances
