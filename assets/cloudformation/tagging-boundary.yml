@@ -29,9 +29,22 @@ Resources:
               - iam:SetDefaultPolicyVersion
             Resource:
               - !Sub "arn:aws:iam::$${AWS::AccountId}:policy/$${BoundaryName}"
-          - Sid: EnforceTaggingPolicy
-            Effect: Deny 
-            Action: 
+%{ if enable_tag_enforcement ~}
+          - Sid: DenyNonTaggingRunInstances
+            Effect: Deny
+            Action:
+              - ec2:RunInstances
+            Resource:
+              - arn:aws:ec2:*:*:instance/*
+            Condition:
+              ForAllValues:StringEquals:
+                aws:TagKeys:
+%{ for tag in tags ~}
+                - ${tag}
+%{ endfor ~}
+          - Sid: DenyTaggingViolation
+            Effect: Deny
+            Action:
 %{ for action in actions ~}
               - "${action}"
 %{ endfor ~}
@@ -39,8 +52,14 @@ Resources:
 %{ for resource in resources ~} 
               - "${resource}"
 %{ endfor ~}
-            Condition: 
-              "Null": 
+            Condition:
+              ForAllValues:StringEquals:
 %{ for tag in tags ~}
-                "aws:RequestTag/${tag}": "true"
-%{ endfor ~} 
+                aws:TagKeys:
+                  - ${tag}
+%{ endfor ~}
+              'Null':
+%{ for tag in tags ~}
+                aws:RequestTag/${tag}: 'true'
+%{ endfor ~}
+%{ endif ~}
