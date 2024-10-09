@@ -29,9 +29,10 @@ Resources:
           - Sid: DenyAccess
             Effect: Deny
             Action:
-              - "account:*"
-              - "aws-portal:*"
-              - "config:*"
+              - "account:Delete*"
+              - "account:Update*"
+              - "aws-portal:Delete*"
+              - "aws-portal:Update*"
               - "savingsplans:*"
             Resource: "*"
           - Sid: DenyPermBoundaryIAMPolicyAlteration
