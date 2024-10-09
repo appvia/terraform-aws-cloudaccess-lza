@@ -40,7 +40,19 @@ Resources:
               ForAllValues:StringEquals:
                 aws:TagKeys:
 %{ for tag in tags ~}
-                - ${tag}
+                  - ${tag}
+%{ endfor ~}
+          - Sid: DenyTagRunInstancesResources
+            Effect: Deny
+            Action:
+              - ec2:RunInstances
+            Resource:
+              - arn:aws:ec2:*:*:key-pair/*
+              - arn:aws:ec2:*:*:launch-template/*
+            Condition:
+              'Null':
+%{ for tag in tags ~}
+                aws:ResourceTag/${tag}: 'true'
 %{ endfor ~}
           - Sid: DenyTaggingViolation
             Effect: Deny
