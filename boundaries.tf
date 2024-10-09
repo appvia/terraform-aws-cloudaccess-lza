@@ -63,28 +63,3 @@ module "permissive_boundary" {
     aws = aws.management
   }
 }
-
-# tfsec:ignore:aws-iam-no-policy-wildcards
-module "tagging_boundary" {
-  count   = local.enforce_tagging_enforcement ? 1 : 0
-  source  = "appvia/boundary-stack/aws"
-  version = "0.1.7"
-
-  description               = "Used to deploy the tagging boundary policy, used by human roles"
-  enable_management_account = true
-  name                      = local.boundary_tagging_stack_name
-  parameters                = local.boundary_tagging_stack_parameters
-  region                    = local.region
-  tags                      = var.tags
-
-  template = templatefile("${path.module}/assets/cloudformation/tagging-boundary.yml", {
-    actions                = var.enforcable_tagging_actions
-    enable_tag_enforcement = length(var.enforcable_tags) > 0
-    resources              = var.enforcable_tagging_resources
-    tags                   = var.enforcable_tags
-  })
-
-  providers = {
-    aws = aws.management
-  }
-}
