@@ -60,25 +60,38 @@ Resources:
             Action:
               - dynamoDB:DeleteTable
             Resource:
-              - !Sub "arn:aws:dynamodb::$${AWS::AccountId}:table/$${AWS::AccountId}-$${AWS::Region}-tflock"
+              - !Sub "arn:aws:dynamodb:*:$${AWS::AccountId}:table/$${AWS::AccountId}-*-tflock"
           - Sid: ProtectS3RemoteState
             Effect: Deny
             Action:
               - s3:DeleteBucket
             Resource:
-              - !Sub "arn:aws:s3:::$${AWS::AccountId}-$${AWS::Region}-tfstate"
+              - !Sub "arn:aws:s3:::$${AWS::AccountId}-*-tfstate"
 %{ if enable_tag_enforcement ~}
-          - Sid: DenyNonTaggingRunInstances
+          - Sid: DenyTagRunInstances
             Effect: Deny
             Action:
               - ec2:RunInstances
             Resource:
-              - arn:aws:ec2:*:*:instance/*
+              - "arn:aws:ec2:*:*:instance/*"
             Condition:
               ForAllValues:StringEquals:
                 aws:TagKeys:
 %{ for tag in tags ~}
-                - ${tag}
+                  - ${tag}
+%{ endfor ~}
+          - Sid: DenyTagRunInstancesResoruces
+            Effect: Deny
+            Action:
+              - ec2:RunInstances
+            Resource:
+              - arn:aws:ec2:*:*:key-pair/*
+              - arn:aws:ec2:*:*:launch-template/*
+              - arn:aws:ec2:*:*:subnet/*
+            Condition:
+              'Null':
+%{ for tag in tags ~}
+                aws:ResourceTag/${tag}: 'true'
 %{ endfor ~}
           - Sid: DenyTaggingViolation
             Effect: Deny
