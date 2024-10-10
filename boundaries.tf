@@ -17,19 +17,19 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
     resources = ["*"]
   }
 
-  #  statement {
-  #    sid    = "DenyPermBoundaryIAMPolicyAlteration"
-  #    effect = "Deny"
-  #    actions = [
-  #      "iam:CreatePolicyVersion",
-  #      "iam:DeletePolicy",
-  #      "iam:DeletePolicyVersion",
-  #      "iam:SetDefaultPolicyVersion"
-  #    ]
-  #    resources = [
-  #      "arn:aws:iam:${each.value}:policy/${var.default_permissions_boundary_name}"
-  #    ]
-  #  }
+  statement {
+    sid    = "DenyPermBoundaryIAMPolicyAlteration"
+    effect = "Deny"
+    actions = [
+      "iam:CreatePolicyVersion",
+      "iam:DeletePolicy",
+      "iam:DeletePolicyVersion",
+      "iam:SetDefaultPolicyVersion"
+    ]
+    resources = [
+      "arn:aws:iam:${each.value}:policy/${var.default_permissions_boundary_name}"
+    ]
+  }
   #
   #  statement {
   #    sid       = "ProtectDynamoDBRemoteStateLock"
