@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
       "iam:SetDefaultPolicyVersion"
     ]
     resources = [
-      "arn:aws:iam:${local.account_id}:policy/${var.default_permissions_boundary_name}"
+      "arn:aws:iam:${aws:AccountId}:policy/${var.default_permissions_boundary_name}"
     ]
   }
 
@@ -30,14 +30,14 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
     sid       = "ProtectDynamoDBRemoteStateLock"
     effect    = "Deny"
     actions   = ["dynamoDB:DeleteTable"]
-    resources = ["arn:aws:dynamodb:*:${local.account_id}:table/${local.account_id}-*-tflock"]
+    resources = ["arn:aws:dynamodb:*:${aws:AccountId}:table/${aws:AccountId}-*-tflock"]
   }
 
   statement {
     sid       = "ProtectS3RemoteState"
     effect    = "Deny"
     actions   = ["s3:DeleteBucket"]
-    resources = ["arn:aws:s3:::${local.account_id}-*-tfstate"]
+    resources = ["arn:aws:s3:::${aws:AccountId}-*-tfstate"]
   }
 }
 
