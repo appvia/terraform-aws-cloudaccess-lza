@@ -1,11 +1,11 @@
 <!-- markdownlint-disable -->
+
 <a href="https://www.appvia.io/"><img src="./appvia_banner.jpg" alt="Appvia Banner"/></a><br/><p align="right"> <a href="https://registry.terraform.io/modules/appvia/cloudaccess-lza/aws/latest"><img src="https://img.shields.io/static/v1?label=APPVIA&message=Terraform%20Registry&color=191970&style=for-the-badge" alt="Terraform Registry"/></a></a> <a href="https://github.com/appvia/terraform-aws-cloudaccess-lza/releases/latest"><img src="https://img.shields.io/github/release/appvia/terraform-aws-cloudaccess-lza.svg?style=for-the-badge&color=006400" alt="Latest Release"/></a> <a href="https://appvia-community.slack.com/join/shared_invite/zt-1s7i7xy85-T155drryqU56emm09ojMVA#/shared-invite/email"><img src="https://img.shields.io/badge/Slack-Join%20Community-purple?style=for-the-badge&logo=slack" alt="Slack Community"/></a> <a href="https://github.com/appvia/terraform-aws-cloudaccess-lza/graphs/contributors"><img src="https://img.shields.io/github/contributors/appvia/terraform-aws-cloudaccess-lza.svg?style=for-the-badge&color=FF8C00" alt="Contributors"/></a>
 
 <!-- markdownlint-restore -->
 <!--
   ***** CAUTION: DO NOT EDIT ABOVE THIS LINE ******
 -->
-
 
 ## Description
 
@@ -76,72 +76,6 @@ identity_center_start_url = "<your identity center start url - if relevant>"
 identity_center_role = "<your your identity center role - consistent across accounts typically read only - if relevant>"
 ```
 
-## Tagging Enforcement
-
-The tagging enforcement feature updates the default IAM boundaries deployed by this module to include additional policy blocking the creation of resources without the required tags; defined in the `var.enforcable_tags` variable. The restrictions will be applied to all actions found in the `var.enforcable_tagging_actions`. These are the same IAM boundaries which are intended to be used by machine roles (i.e. CI/CD).
-
-Switching on the feature will also deploy a stackset across the entire organization implementing the tagging policy deny logic. This should be referenced by roles within the account.
-
-The IAM policy which is used to enforce the tagging policy follows the below template
-
-```yaml
-- Sid: EnforceTaggingPolicy
-  Effect: Deny
-  Action:
-    %{ for action in actions ~}
-    - "${action}"
-    %{ endfor ~}
-  Resource: [
-    %{ for resource in resources ~}
-    - "${resource}"
-    %{ endfor ~}
-  Condition:
-      Null:
-        %{ for tag in tags ~}
-        "aws:RequestTag/${tag}": "true"
-        %{ endfor ~}
-```
-
-An example supplying the following tags - `Environment`, `Product`, `Owner`, `GitRepo` and using the default actions defined in the variables would render to.
-
-```yaml
-- Sid: EnforceTaggingPolicy
-  Effect: Deny
-  Action:
-    - ec2:CreateInternetGateway
-    - ec2:CreateVolume
-    - ec2:CreateVpcPeeringConnection
-    - ec2:RunInstances
-    - ecs:CreateCluster
-    - ecs:CreateService
-    - ecs:CreateTaskSet
-    - eks:CreateCluster
-    - elasticfilesystem:CreateAccessPoint
-    - elasticfilesystem:CreateFileSystem
-    - elasticloadbalancing:CreateListener
-    - elasticloadbalancing:CreateLoadBalancer
-    - elasticloadbalancing:CreateRule
-    - elasticloadbalancing:CreateTargetGroup
-    - elasticloadbalancing:CreateTrustStore
-    - network-firewall:CreateFirewall
-    - network-firewall:CreateFirewallPolicy
-    - network-firewall:CreateRuleGroup
-    - ram:CreatePermission
-    - ram:CreateResourceShare
-    - redshift:CreateCluster
-    - redshift:CreateClusterParameterGroup
-    - redshift:CreateClusterSecurityGroup
-    - redshift:CreateClusterSubnetGroup
-    - route53:CreateHostedZone
-    - secretsmanager:CreateSecret
-  Resource: ["*"]
-  Condition:
-    Null:
-      "aws:RequestTag/Environment": "true"
-```
-
-Not, due to the nature of conditions within IAM policies, using a logical OR, in order to apply this policy to all tags, the policy will need to be duplicated for each tag.
-
 ## Update Documentation
 
 The `terraform-docs` utility is used to generate this README. Follow the below steps to update:
@@ -175,12 +109,10 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 |------|--------|---------|
 | <a name="module_alarm_baseline"></a> [alarm\_baseline](#module\_alarm\_baseline) | appvia/alarm-baseline/aws | 0.2.5 |
 | <a name="module_cost_management"></a> [cost\_management](#module\_cost\_management) | appvia/oidc/aws//modules/role | 1.3.3 |
-| <a name="module_default_boundary"></a> [default\_boundary](#module\_default\_boundary) | appvia/boundary-stack/aws | 0.1.7 |
 | <a name="module_management_landing_zone"></a> [management\_landing\_zone](#module\_management\_landing\_zone) | appvia/oidc/aws//modules/role | 1.3.3 |
 | <a name="module_management_sso_identity"></a> [management\_sso\_identity](#module\_management\_sso\_identity) | appvia/oidc/aws//modules/role | 1.3.3 |
 | <a name="module_network_inspection_vpc_admin"></a> [network\_inspection\_vpc\_admin](#module\_network\_inspection\_vpc\_admin) | appvia/oidc/aws//modules/role | 1.3.3 |
 | <a name="module_network_transit_gateway_admin"></a> [network\_transit\_gateway\_admin](#module\_network\_transit\_gateway\_admin) | appvia/oidc/aws//modules/role | 1.3.3 |
-| <a name="module_permissive_boundary"></a> [permissive\_boundary](#module\_permissive\_boundary) | appvia/boundary-stack/aws | 0.1.7 |
 | <a name="module_securityhub_notifications"></a> [securityhub\_notifications](#module\_securityhub\_notifications) | appvia/notifications/aws | 1.0.5 |
 
 ## Resources
@@ -204,6 +136,8 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | [aws_iam_policy.cost_iam_boundary](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.costs_admin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.costs_viewer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.default_permissions_boundary_management](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.default_permissions_boundary_network](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.ipam_admin](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.user_management](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.securityhub_lambda_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
@@ -214,6 +148,7 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | [archive_file.securityhub_lambda_package](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.breakglass](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.default_permissions_boundary](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.lambda_assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.securityhub_lambda_cloudwatch_logs_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.securityhub_notifications_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -229,22 +164,15 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_aws_accounts"></a> [aws\_accounts](#input\_aws\_accounts) | Map of AWS account names to their account IDs | <pre>object({<br/>    network_account_id      = optional(string, "")<br/>    remoteaccess_account_id = optional(string, "")<br/>  })</pre> | n/a | yes |
 | <a name="input_aws_support_role_name"></a> [aws\_support\_role\_name](#input\_aws\_support\_role\_name) | Name of the AWS Support role | `string` | `"AWSSupportAccessRole"` | no |
 | <a name="input_breakglass_users"></a> [breakglass\_users](#input\_breakglass\_users) | The number of breakglass users to create | `number` | `2` | no |
-| <a name="input_cloudaccess_terraform_state_ro_policy_name"></a> [cloudaccess\_terraform\_state\_ro\_policy\_name](#input\_cloudaccess\_terraform\_state\_ro\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role | `string` | `"lza-cloudaccess-tfstate-ro"` | no |
-| <a name="input_cloudaccess_terraform_state_rw_policy_name"></a> [cloudaccess\_terraform\_state\_rw\_policy\_name](#input\_cloudaccess\_terraform\_state\_rw\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role | `string` | `"lza-cloudaccess-tfstate-rw"` | no |
 | <a name="input_cloudwatch_identity_center_role"></a> [cloudwatch\_identity\_center\_role](#input\_cloudwatch\_identity\_center\_role) | The name of the role to use when redirecting through Identity Center for cloudwatch events | `string` | `null` | no |
 | <a name="input_costs_boundary_name"></a> [costs\_boundary\_name](#input\_costs\_boundary\_name) | Name of the IAM policy to use as a permissions boundary for cost-related roles | `string` | `"lza-costs-boundary"` | no |
-| <a name="input_default_permissions_boundary_name"></a> [default\_permissions\_boundary\_name](#input\_default\_permissions\_boundary\_name) | Name of the default IAM policy to use as a permissions boundary | `string` | `"lza-default-boundary"` | no |
+| <a name="input_default_permissions_boundary_name"></a> [default\_permissions\_boundary\_name](#input\_default\_permissions\_boundary\_name) | Name of the default IAM policy used by roles we provision | `string` | `"lza-base-default-boundary"` | no |
 | <a name="input_enable_aws_support"></a> [enable\_aws\_support](#input\_enable\_aws\_support) | Indicates if we should enable AWS Support role | `bool` | `true` | no |
 | <a name="input_enable_breakglass"></a> [enable\_breakglass](#input\_enable\_breakglass) | Indicates if we should enable breakglass users and group | `bool` | `false` | no |
 | <a name="input_enable_cis_alarms"></a> [enable\_cis\_alarms](#input\_enable\_cis\_alarms) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
 | <a name="input_enable_securityhub_alarms"></a> [enable\_securityhub\_alarms](#input\_enable\_securityhub\_alarms) | Indicates if we should enable SecurityHub alarms | `bool` | `true` | no |
-| <a name="input_enforcable_tagging_actions"></a> [enforcable\_tagging\_actions](#input\_enforcable\_tagging\_actions) | List of enforceable tagging actions | `list(string)` | <pre>[<br/>  "autoscaling:CreateAutoScalingGroup",<br/>  "autoscaling:CreateOrUpdateTags",<br/>  "backup:CreateBackupPlan",<br/>  "backup:CreateBackupVault",<br/>  "cloudtrail:CreateTrail",<br/>  "logs:CreateLogAnomalyDetector",<br/>  "logs:CreateLogGroup",<br/>  "ec2:CreateClientVpnEndpoint",<br/>  "ec2:CreateFlowLogs",<br/>  "ec2:CreateInternetGateway",<br/>  "ec2:CreateKeyPair",<br/>  "ec2:CreateLaunchTemplate",<br/>  "ec2:CreateNatGateway",<br/>  "ec2:CreateNetworkAcl",<br/>  "ec2:CreateRouteTable",<br/>  "ec2:CreateSecurityGroup",<br/>  "ec2:CreateSnapshots",<br/>  "ec2:CreateTransitGatewayVpcAttachment",<br/>  "ec2:CreateVolume",<br/>  "ec2:CreateVpc",<br/>  "ec2:CreateVpcEndpoint",<br/>  "ec2:CreateVpcPeeringConnection",<br/>  "ec2:CreateVpnConnection",<br/>  "ecs:CreateCluster",<br/>  "ecs:CreateService",<br/>  "eks:CreateCluster",<br/>  "eks:CreateFargateProfile",<br/>  "eks:CreateNodegroup",<br/>  "elasticfilesystem:CreateAccessPoint",<br/>  "elasticfilesystem:CreateFileSystem",<br/>  "elasticloadbalancing:CreateListener",<br/>  "elasticloadbalancing:CreateLoadBalancer",<br/>  "elasticloadbalancing:CreateRule",<br/>  "elasticloadbalancing:CreateTargetGroup",<br/>  "lambda:CreateFunction",<br/>  "rds:CreateDBCluster",<br/>  "rds:CreateDBClusterEndpoint",<br/>  "rds:CreateDBClusterSnapshot",<br/>  "rds:CreateDBInstance",<br/>  "rds:CreateDBInstanceReadReplica",<br/>  "rds:CreateGlobalCluster",<br/>  "sns:CreateTopic",<br/>  "sqs:CreateQueue"<br/>]</pre> | no |
-| <a name="input_enforcable_tagging_policy_name"></a> [enforcable\_tagging\_policy\_name](#input\_enforcable\_tagging\_policy\_name) | Name of the IAM policy to use as a permissions boundary for enforceable tags | `string` | `"lza-enforceable-tags-boundary"` | no |
-| <a name="input_enforcable_tagging_resources"></a> [enforcable\_tagging\_resources](#input\_enforcable\_tagging\_resources) | List of enforceable tagging resources | `list(string)` | <pre>[<br/>  "arn:aws:autoscaling:*:*:autoScalingGroup:*",<br/>  "arn:aws:backup:*:*:backup-plan/*",<br/>  "arn:aws:backup:*:*:backup-vault/*",<br/>  "arn:aws:cloudtrail:*:*:trail/*",<br/>  "arn:aws:logs:*:*:log-anomaly-detector/*",<br/>  "arn:aws:logs:*:*:log-group/*",<br/>  "arn:aws:ec2:*:*:client-vpn-endpoint/*",<br/>  "arn:aws:ec2:*:*:flow-log/*",<br/>  "arn:aws:ec2:*:*:instance/*",<br/>  "arn:aws:ec2:*:*:internet-gateway/*",<br/>  "arn:aws:ec2:*:*:key-pair/*",<br/>  "arn:aws:ec2:*:*:launch-template/*",<br/>  "arn:aws:ec2:*:*:natgateway/*",<br/>  "arn:aws:ec2:*:*:network-acl/*",<br/>  "arn:aws:ec2:*:*:route-table/*",<br/>  "arn:aws:ec2:*:*:security-group/*",<br/>  "arn:aws:ec2:*:*:snapshot/*",<br/>  "arn:aws:ec2:*:*:transit-gateway-attachment/*",<br/>  "arn:aws:ec2:*:*:volume/*",<br/>  "arn:aws:ec2:*:*:vpc-endpoint/*",<br/>  "arn:aws:ec2:*:*:vpc-peering-connection/*",<br/>  "arn:aws:ec2:*:*:vpc/*",<br/>  "arn:aws:ec2:*:*:vpn-connection/*",<br/>  "arn:aws:ecs:*:*:cluster/*",<br/>  "arn:aws:ecs:*:*:service/*",<br/>  "arn:aws:eks:*:*:cluster/*",<br/>  "arn:aws:elasticfilesystem:*:*:access-point/*",<br/>  "arn:aws:elasticfilesystem:*:*:file-system/*",<br/>  "arn:aws:elasticloadbalancing:*:*:listener/*",<br/>  "arn:aws:elasticloadbalancing:*:*:loadbalancer/*",<br/>  "arn:aws:elasticloadbalancing:*:*:rule/*",<br/>  "arn:aws:elasticloadbalancing:*:*:targetgroup/*",<br/>  "arn:aws:lambda:*:*:function:*",<br/>  "arn:aws:rds:*:*::*",<br/>  "arn:aws:sns:*:*:topic/*",<br/>  "arn:aws:sqs:*:*:queue/*"<br/>]</pre> | no |
-| <a name="input_enforcable_tags"></a> [enforcable\_tags](#input\_enforcable\_tags) | List of enforceable tags | `list(string)` | `[]` | no |
 | <a name="input_identity_center_start_url"></a> [identity\_center\_start\_url](#input\_identity\_center\_start\_url) | The start URL of your Identity Center instance | `string` | `null` | no |
 | <a name="input_notifications"></a> [notifications](#input\_notifications) | Configuration for the notifications | <pre>object({<br/>    email = optional(object({<br/>      addresses = list(string)<br/>    }), null)<br/>    slack = optional(object({<br/>      webhook_url = string<br/>    }), null)<br/>    teams = optional(object({<br/>      webhook_url = string<br/>    }), null)<br/>  })</pre> | <pre>{<br/>  "email": {<br/>    "addresses": []<br/>  },<br/>  "slack": null,<br/>  "teams": null<br/>}</pre> | no |
-| <a name="input_permissive_permissions_boundary_name"></a> [permissive\_permissions\_boundary\_name](#input\_permissive\_permissions\_boundary\_name) | Name of the permissive IAM policy to use as a permissions boundary | `string` | `"lza-permissive-boundary"` | no |
 | <a name="input_repositories"></a> [repositories](#input\_repositories) | List of repository locations for the pipelines | <pre>object({<br/>    accelerator = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-accelerator")<br/>    }), null)<br/>    connectivity = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-connectivity")<br/>    }), null)<br/>    cost_management = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-cost-management")<br/>    }), null)<br/>    firewall = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-firewall")<br/>    }), null)<br/>    identity = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-identity")<br/>    }), null)<br/>  })</pre> | `{}` | no |
 | <a name="input_scm_name"></a> [scm\_name](#input\_scm\_name) | Name of the source control management system (github or gitlab) | `string` | `"github"` | no |
 | <a name="input_security_hub_identity_center_role"></a> [security\_hub\_identity\_center\_role](#input\_security\_hub\_identity\_center\_role) | The name of the role to use when redirecting through Identity Center for security hub events | `string` | `null` | no |
@@ -261,10 +189,6 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cloudaccess_terraform_state_ro_policy_name"></a> [cloudaccess\_terraform\_state\_ro\_policy\_name](#output\_cloudaccess\_terraform\_state\_ro\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role |
-| <a name="output_cloudaccess_terraform_state_rw_policy_name"></a> [cloudaccess\_terraform\_state\_rw\_policy\_name](#output\_cloudaccess\_terraform\_state\_rw\_policy\_name) | Name of the IAM policy to attach to the CloudAccess Terraform state role |
-| <a name="output_default_permission_boundary_name"></a> [default\_permission\_boundary\_name](#output\_default\_permission\_boundary\_name) | The name of the default permissions iam boundary |
-| <a name="output_default_permissive_boundary_name"></a> [default\_permissive\_boundary\_name](#output\_default\_permissive\_boundary\_name) | The name of the default permissive iam boundary |
 | <a name="output_identity_role_ro_name"></a> [identity\_role\_ro\_name](#output\_identity\_role\_ro\_name) | The name of the IAM readonly role which can be assumed by the identity stack in all accounts |
 | <a name="output_identity_role_rw_name"></a> [identity\_role\_rw\_name](#output\_identity\_role\_rw\_name) | The name of the IAM readwrite role which can be assumed by the identity stack in all accounts |
 | <a name="output_identity_stack_name"></a> [identity\_stack\_name](#output\_identity\_stack\_name) | The name of the identity stack |

@@ -9,10 +9,6 @@ locals {
   ## The current account id 
   account_id = data.aws_caller_identity.current.account_id
 
-  ## Indicates we have to inject the enforcement of tagging into the 
-  ## IAM boundaries we create 
-  enforce_tagging_enforcement = length(var.enforcable_tags) > 0
-
   ## The name of the aws support stackset 
   aws_support_stack_name = "LZA-IAM-Support-Role"
   ## The capabilities required for the aws support stackset 
@@ -29,30 +25,6 @@ locals {
   enable_slack_notifications = var.notifications.slack != null
   ## Indicates if the notifications for email are enabled 
   enable_email_notifications = length(var.notifications.email.addresses) > 0
-
-  ## The name of the default iam boundary used the pipelines 
-  boundary_default_stack_name = "LZA-IAM-DefaultBoundary"
-  ## The name of the permissive boundary used the pipelines 
-  boundary_permissive_stack_name = "LZA-IAM-PermissiveBoundary"
-  ## The boundary stack parameters 
-  boundary_default_stack_parameters = {
-    "BoundaryName"               = var.default_permissions_boundary_name
-    "TerraformStateROPolicyName" = var.cloudaccess_terraform_state_ro_policy_name
-    "TerraformStateRWPolicyName" = var.cloudaccess_terraform_state_rw_policy_name
-  }
-  boundary_permissive_stack_parameters = {
-    "BoundaryName"               = var.permissive_permissions_boundary_name
-    "TerraformStateROPolicyName" = var.cloudaccess_terraform_state_ro_policy_name
-    "TerraformStateRWPolicyName" = var.cloudaccess_terraform_state_rw_policy_name
-  }
-
-
-  # Is the stack name of the tagging enforcement iam boundary
-  boundary_tagging_stack_name = "LZA-IAM-TaggingBoundary"
-  # The parameters for the tagging enforcement boundary_tagging_stack_name
-  boundary_tagging_stack_parameters = {
-    "BoundaryName" = var.enforcable_tagging_policy_name
-  }
 
   ## The name of the identity stack 
   identity_stack_name = "LZA-Identity-Permissions"

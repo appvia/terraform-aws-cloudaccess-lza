@@ -2,6 +2,45 @@
 ## Related to provisioning the IAM boundaries used by the pipelines
 #
 
+## Craft a permissions boundary that is used by the pipelines we provision here 
+# tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "default_permissions_boundary" {
+  statement {
+    sid       = "AllowAdminAccess"
+    effect    = "Allow"
+    actions   = ["*"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "DenyPermBoundaryIAMPolicyAlteration"
+    effect = "Deny"
+    actions = [
+      "iam:CreatePolicyVersion",
+      "iam:DeletePolicy",
+      "iam:DeletePolicyVersion",
+      "iam:SetDefaultPolicyVersion"
+    ]
+    resources = [
+      "arn:aws:iam:${local.account_id}:policy/${var.default_permissions_boundary_name}"
+    ]
+  }
+
+  statement {
+    sid       = "ProtectDynamoDBRemoteStateLock"
+    effect    = "Deny"
+    actions   = ["dynamoDB:DeleteTable"]
+    resources = ["arn:aws:dynamodb:*:${local.account_id}:table/${local.account_id}-*-tflock"]
+  }
+
+  statement {
+    sid       = "ProtectS3RemoteState"
+    effect    = "Deny"
+    actions   = ["s3:DeleteBucket"]
+    resources = ["arn:aws:s3:::${local.account_id}-*-tfstate"]
+  }
+}
+
 ## This is used by pipelines that need to interact with the AWS cost management APIs
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "cost_iam_boundary" {
@@ -14,52 +53,4 @@ resource "aws_iam_policy" "cost_iam_boundary" {
   tags = var.tags
 
   provider = aws.management
-}
-
-# tfsec:ignore:aws-iam-no-policy-wildcards
-module "default_boundary" {
-  source  = "appvia/boundary-stack/aws"
-  version = "0.1.7"
-
-  description               = "Used to deploy the default permissions boundary for the pipelines."
-  enable_management_account = true
-  name                      = local.boundary_default_stack_name
-  parameters                = local.boundary_default_stack_parameters
-  region                    = local.region
-  tags                      = var.tags
-
-  template = templatefile("${path.module}/assets/cloudformation/default-boundary.yml", {
-    actions                = var.enforcable_tagging_actions
-    enable_tag_enforcement = length(var.enforcable_tags) > 0
-    resources              = var.enforcable_tagging_resources
-    tags                   = var.enforcable_tags
-  })
-
-  providers = {
-    aws = aws.management
-  }
-}
-
-# tfsec:ignore:aws-iam-no-policy-wildcards
-module "permissive_boundary" {
-  source  = "appvia/boundary-stack/aws"
-  version = "0.1.7"
-
-  description               = "Used to deploy the permissive permissions boundary for the pipelines."
-  enable_management_account = true
-  name                      = local.boundary_permissive_stack_name
-  parameters                = local.boundary_permissive_stack_parameters
-  region                    = local.region
-  tags                      = var.tags
-
-  template = templatefile("${path.module}/assets/cloudformation/permissive-boundary.yml", {
-    actions                = var.enforcable_tagging_actions
-    enable_tag_enforcement = length(var.enforcable_tags) > 0
-    resources              = var.enforcable_tagging_resources
-    tags                   = var.enforcable_tags
-  })
-
-  providers = {
-    aws = aws.management
-  }
 }
