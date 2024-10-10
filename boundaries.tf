@@ -27,23 +27,23 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
       "iam:SetDefaultPolicyVersion"
     ]
     resources = [
-      "arn:aws:iam:${each.value}:policy/${var.default_permissions_boundary_name}"
+      "arn:aws:iam::${each.value}:policy/${var.default_permissions_boundary_name}"
     ]
   }
-  #
-  #  statement {
-  #    sid       = "ProtectDynamoDBRemoteStateLock"
-  #    effect    = "Deny"
-  #    actions   = ["dynamodb:DeleteTable"]
-  #    resources = ["arn:aws:dynamodb:*:${each.value}:table/${each.value}-*-tflock"]
-  #  }
-  #
-  #  statement {
-  #    sid       = "ProtectS3RemoteState"
-  #    effect    = "Deny"
-  #    actions   = ["s3:DeleteBucket"]
-  #    resources = ["arn:aws:s3:::${each.value}-*-tfstate"]
-  #  }
+
+  statement {
+    sid       = "ProtectDynamoDBRemoteStateLock"
+    effect    = "Deny"
+    actions   = ["dynamodb:DeleteTable"]
+    resources = ["arn:aws:dynamodb:*:${each.value}:table/${each.value}-*-tflock"]
+  }
+
+  statement {
+    sid       = "ProtectS3RemoteState"
+    effect    = "Deny"
+    actions   = ["s3:DeleteBucket"]
+    resources = ["arn:aws:s3:::${each.value}-*-tfstate"]
+  }
 }
 
 ## This is used by pipelines that need to interact with the AWS cost management APIs
