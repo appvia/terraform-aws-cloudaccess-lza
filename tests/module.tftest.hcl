@@ -18,27 +18,6 @@ mock_provider "aws" {
 
 mock_provider "aws" {
   alias = "management"
-
-  override_data {
-    target = module.default_boundary.data.aws_organizations_organization.current
-    values = {
-      roots = [
-        {
-          id = "r-123abc"
-        }
-      ]
-    }
-  }
-  override_data {
-    target = module.permissive_boundary.data.aws_organizations_organization.current
-    values = {
-      roots = [
-        {
-          id = "r-123abc"
-        }
-      ]
-    }
-  }
 }
 
 mock_provider "aws" {

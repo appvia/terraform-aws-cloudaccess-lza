@@ -12,34 +12,16 @@ variable "costs_boundary_name" {
   default     = "lza-costs-boundary"
 }
 
-variable "cloudaccess_terraform_state_ro_policy_name" {
-  description = "Name of the IAM policy to attach to the CloudAccess Terraform state role"
-  type        = string
-  default     = "lza-cloudaccess-tfstate-ro"
-}
-
-variable "cloudaccess_terraform_state_rw_policy_name" {
-  description = "Name of the IAM policy to attach to the CloudAccess Terraform state role"
-  type        = string
-  default     = "lza-cloudaccess-tfstate-rw"
-}
-
 variable "default_permissions_boundary_name" {
-  description = "Name of the default IAM policy to use as a permissions boundary"
+  description = "Name of the default IAM policy used by roles we provision"
   type        = string
-  default     = "lza-default-boundary"
+  default     = "lza-base-default-boundary"
 }
 
 variable "enable_securityhub_alarms" {
   description = "Indicates if we should enable SecurityHub alarms"
   type        = bool
   default     = true
-}
-
-variable "permissions_boundary_statements" {
-  description = "Additional policy to attach to the permissions boundary (YAML)"
-  type        = string
-  default     = ""
 }
 
 variable "securityhub_sns_topic_name" {
@@ -82,12 +64,6 @@ variable "securityhub_lambda_log_group_kms_alias" {
   description = "Name of the KMS alias for the CloudWatch log group"
   type        = string
   default     = "alias/accelerator/kms/cloudwatch/key"
-}
-
-variable "permissive_permissions_boundary_name" {
-  description = "Name of the permissive IAM policy to use as a permissions boundary"
-  type        = string
-  default     = "lza-permissive-boundary"
 }
 
 variable "aws_support_role_name" {

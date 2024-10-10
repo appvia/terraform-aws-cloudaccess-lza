@@ -26,22 +26,6 @@ locals {
   ## Indicates if the notifications for email are enabled 
   enable_email_notifications = length(var.notifications.email.addresses) > 0
 
-  ## The name of the default iam boundary used the pipelines 
-  boundary_default_stack_name = "LZA-IAM-DefaultBoundary"
-  ## The name of the permissive boundary used the pipelines 
-  boundary_permissive_stack_name = "LZA-IAM-PermissiveBoundary"
-  ## The boundary stack parameters 
-  boundary_default_stack_parameters = {
-    "BoundaryName"               = var.default_permissions_boundary_name
-    "TerraformStateROPolicyName" = var.cloudaccess_terraform_state_ro_policy_name
-    "TerraformStateRWPolicyName" = var.cloudaccess_terraform_state_rw_policy_name
-  }
-  boundary_permissive_stack_parameters = {
-    "BoundaryName"               = var.permissive_permissions_boundary_name
-    "TerraformStateROPolicyName" = var.cloudaccess_terraform_state_ro_policy_name
-    "TerraformStateRWPolicyName" = var.cloudaccess_terraform_state_rw_policy_name
-  }
-
   ## The name of the identity stack 
   identity_stack_name = "LZA-Identity-Permissions"
   ## The capabilities required for the identity stack

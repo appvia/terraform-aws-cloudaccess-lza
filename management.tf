@@ -58,6 +58,16 @@ resource "aws_iam_policy" "costs_viewer" {
   provider = aws.management
 }
 
+## Provision the iam boundary within the management account 
+resource "aws_iam_policy" "default_permissions_boundary_management" {
+  name        = var.default_permissions_boundary_name
+  description = "Used by the LZA pipelines to enforce permissions"
+  policy      = data.aws_iam_policy_document.default_permissions_boundary.json
+  tags        = var.tags
+
+  provider = aws.management
+}
+
 ## Used to manage identity center
 module "management_sso_identity" {
   count   = var.repositories.identity != null ? 1 : 0
@@ -67,7 +77,7 @@ module "management_sso_identity" {
   name                = var.repositories.identity.role_name
   common_provider     = var.scm_name
   description         = "Used to manage the identity center permissionsets and assignments"
-  permission_boundary = var.permissive_permissions_boundary_name
+  permission_boundary = aws_iam_policy.default_permissions_boundary_management.name
   repository          = var.repositories.identity.url
   tags                = var.tags
 
@@ -107,7 +117,7 @@ module "management_sso_identity" {
   }
 
   depends_on = [
-    module.permissive_boundary,
+    aws_iam_policy.default_permissions_boundary_management,
   ]
 }
 
@@ -118,9 +128,8 @@ module "management_landing_zone" {
   version = "1.3.3"
 
   name                = var.repositories.accelerator.role_name
-  common_provider     = var.scm_name
   description         = "Used to manage and deploy the lanzing zone configuration"
-  permission_boundary = var.default_permissions_boundary_name
+  permission_boundary = aws_iam_policy.default_permissions_boundary_management.name
   repository          = var.repositories.accelerator.url
   tags                = var.tags
 
@@ -137,7 +146,7 @@ module "management_landing_zone" {
   }
 
   depends_on = [
-    module.default_boundary,
+    aws_iam_policy.default_permissions_boundary_management,
   ]
 }
 
@@ -147,11 +156,11 @@ module "cost_management" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.3.3"
 
-  name                    = var.repositories.cost_management.role_name
-  description             = "Used to provision a collection of cost controls and notifications"
-  repository              = var.repositories.cost_management.url
-  tags                    = var.tags
-  permission_boundary_arn = aws_iam_policy.cost_iam_boundary.arn
+  name                = var.repositories.cost_management.role_name
+  description         = "Used to provision a collection of cost controls and notifications"
+  permission_boundary = aws_iam_policy.cost_iam_boundary.name
+  repository          = var.repositories.cost_management.url
+  tags                = var.tags
 
   read_only_inline_policies = {
     CostManagement = jsonencode({
@@ -234,4 +243,8 @@ module "cost_management" {
   providers = {
     aws = aws.management
   }
+
+  depends_on = [
+    aws_iam_policy.default_permissions_boundary_management,
+  ]
 }

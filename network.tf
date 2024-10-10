@@ -12,15 +12,24 @@ resource "aws_iam_policy" "ipam_admin" {
   provider = aws.network
 }
 
+## Provision the iam boundary within the network account 
+resource "aws_iam_policy" "default_permissions_boundary_network" {
+  name        = var.default_permissions_boundary_name
+  description = "Used by the LZA pipelines to enforce permissions"
+  policy      = data.aws_iam_policy_document.default_permissions_boundary.json
+  tags        = var.tags
+
+  provider = aws.network
+}
+
 module "network_transit_gateway_admin" {
   count   = var.repositories.connectivity != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
   version = "1.3.3"
 
   name                = var.repositories.connectivity.role_name
-  common_provider     = var.scm_name
   description         = "Deployment role used to deploy the Transit Gateway"
-  permission_boundary = var.default_permissions_boundary_name
+  permission_boundary = aws_iam_policy.default_permissions_boundary_network.name
   repository          = var.repositories.connectivity.url
   tags                = var.tags
 
@@ -68,7 +77,7 @@ module "network_transit_gateway_admin" {
   }
 
   depends_on = [
-    module.default_boundary,
+    aws_iam_policy.default_permissions_boundary_network,
   ]
 }
 
@@ -79,9 +88,8 @@ module "network_inspection_vpc_admin" {
   version = "1.3.3"
 
   name                = var.repositories.firewall.role_name
-  common_provider     = var.scm_name
   description         = "Deployment role used to deploy the inspection vpc"
-  permission_boundary = var.default_permissions_boundary_name
+  permission_boundary = aws_iam_policy.default_permissions_boundary_network.name
   repository          = var.repositories.firewall.url
   tags                = var.tags
 
@@ -180,6 +188,6 @@ module "network_inspection_vpc_admin" {
   }
 
   depends_on = [
-    module.default_boundary,
+    aws_iam_policy.default_permissions_boundary_network,
   ]
 }
