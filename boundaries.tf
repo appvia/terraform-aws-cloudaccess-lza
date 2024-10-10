@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
   statement {
     sid       = "ProtectDynamoDBRemoteStateLock"
     effect    = "Deny"
-    actions   = ["dynamoDB:DeleteTable"]
+    actions   = ["dynamodb:DeleteTable"]
     resources = ["arn:aws:dynamodb:*:${each.value}:table/${each.value}-*-tflock"]
   }
 
