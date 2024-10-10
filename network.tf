@@ -16,7 +16,7 @@ resource "aws_iam_policy" "ipam_admin" {
 resource "aws_iam_policy" "default_permissions_boundary_network" {
   name        = var.default_permissions_boundary_name
   description = "Used by the LZA pipelines to enforce permissions"
-  policy      = data.aws_iam_policy_document.default_permissions_boundary.json
+  policy      = data.aws_iam_policy_document.default_permissions_boundary["network"].json
   tags        = var.tags
 
   provider = aws.network

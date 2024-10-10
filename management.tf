@@ -62,7 +62,7 @@ resource "aws_iam_policy" "costs_viewer" {
 resource "aws_iam_policy" "default_permissions_boundary_management" {
   name        = var.default_permissions_boundary_name
   description = "Used by the LZA pipelines to enforce permissions"
-  policy      = data.aws_iam_policy_document.default_permissions_boundary.json
+  policy      = data.aws_iam_policy_document.default_permissions_boundary["management"].json
   tags        = var.tags
 
   provider = aws.management

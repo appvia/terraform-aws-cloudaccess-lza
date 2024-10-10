@@ -5,6 +5,11 @@
 ## Craft a permissions boundary that is used by the pipelines we provision here 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "default_permissions_boundary" {
+  for_each = {
+    management = local.management_account_id
+    network    = local.network_account_id
+  }
+
   statement {
     sid       = "AllowAdminAccess"
     effect    = "Allow"
@@ -22,7 +27,7 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
       "iam:SetDefaultPolicyVersion"
     ]
     resources = [
-      "arn:aws:iam:${aws:AccountId}:policy/${var.default_permissions_boundary_name}"
+      "arn:aws:iam:${each.value}:policy/${var.default_permissions_boundary_name}"
     ]
   }
 
@@ -30,14 +35,14 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
     sid       = "ProtectDynamoDBRemoteStateLock"
     effect    = "Deny"
     actions   = ["dynamoDB:DeleteTable"]
-    resources = ["arn:aws:dynamodb:*:${aws:AccountId}:table/${aws:AccountId}-*-tflock"]
+    resources = ["arn:aws:dynamodb:*:${each.value}:table/${each.value}-*-tflock"]
   }
 
   statement {
     sid       = "ProtectS3RemoteState"
     effect    = "Deny"
     actions   = ["s3:DeleteBucket"]
-    resources = ["arn:aws:s3:::${aws:AccountId}-*-tfstate"]
+    resources = ["arn:aws:s3:::${each.value}-*-tfstate"]
   }
 }
 
