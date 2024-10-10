@@ -27,11 +27,11 @@ module "network_transit_gateway_admin" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.3.3"
 
-  name                = var.repositories.connectivity.role_name
-  description         = "Deployment role used to deploy the Transit Gateway"
-  permission_boundary = aws_iam_policy.default_permissions_boundary_network.name
-  repository          = var.repositories.connectivity.url
-  tags                = var.tags
+  name                    = var.repositories.connectivity.role_name
+  description             = "Deployment role used to deploy the Transit Gateway"
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_network.arn
+  repository              = var.repositories.connectivity.url
+  tags                    = var.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSResourceAccessManagerReadOnlyAccess",
@@ -75,10 +75,6 @@ module "network_transit_gateway_admin" {
   providers = {
     aws = aws.network
   }
-
-  depends_on = [
-    aws_iam_policy.default_permissions_boundary_network,
-  ]
 }
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
@@ -87,11 +83,11 @@ module "network_inspection_vpc_admin" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.3.3"
 
-  name                = var.repositories.firewall.role_name
-  description         = "Deployment role used to deploy the inspection vpc"
-  permission_boundary = aws_iam_policy.default_permissions_boundary_network.name
-  repository          = var.repositories.firewall.url
-  tags                = var.tags
+  name                    = var.repositories.firewall.role_name
+  description             = "Deployment role used to deploy the inspection vpc"
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_network.arn
+  repository              = var.repositories.firewall.url
+  tags                    = var.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSResourceAccessManagerReadOnlyAccess",
@@ -186,8 +182,4 @@ module "network_inspection_vpc_admin" {
   providers = {
     aws = aws.network
   }
-
-  depends_on = [
-    aws_iam_policy.default_permissions_boundary_network,
-  ]
 }

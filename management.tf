@@ -74,12 +74,11 @@ module "management_sso_identity" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.3.3"
 
-  name                = var.repositories.identity.role_name
-  common_provider     = var.scm_name
-  description         = "Used to manage the identity center permissionsets and assignments"
-  permission_boundary = aws_iam_policy.default_permissions_boundary_management.name
-  repository          = var.repositories.identity.url
-  tags                = var.tags
+  name                    = var.repositories.identity.role_name
+  description             = "Used to manage the identity center permissionsets and assignments"
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
+  repository              = var.repositories.identity.url
+  tags                    = var.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
@@ -115,10 +114,6 @@ module "management_sso_identity" {
   providers = {
     aws = aws.management
   }
-
-  depends_on = [
-    aws_iam_policy.default_permissions_boundary_management,
-  ]
 }
 
 ## Used to manage and deploy the landing zone
@@ -127,11 +122,11 @@ module "management_landing_zone" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.3.3"
 
-  name                = var.repositories.accelerator.role_name
-  description         = "Used to manage and deploy the lanzing zone configuration"
-  permission_boundary = aws_iam_policy.default_permissions_boundary_management.name
-  repository          = var.repositories.accelerator.url
-  tags                = var.tags
+  name                    = var.repositories.accelerator.role_name
+  description             = "Used to manage and deploy the lanzing zone configuration"
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
+  repository              = var.repositories.accelerator.url
+  tags                    = var.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.code_contributor.name}",
@@ -144,10 +139,6 @@ module "management_landing_zone" {
   providers = {
     aws = aws.management
   }
-
-  depends_on = [
-    aws_iam_policy.default_permissions_boundary_management,
-  ]
 }
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
@@ -156,11 +147,11 @@ module "cost_management" {
   source  = "appvia/oidc/aws//modules/role"
   version = "1.3.3"
 
-  name                = var.repositories.cost_management.role_name
-  description         = "Used to provision a collection of cost controls and notifications"
-  permission_boundary = aws_iam_policy.cost_iam_boundary.name
-  repository          = var.repositories.cost_management.url
-  tags                = var.tags
+  name                    = var.repositories.cost_management.role_name
+  description             = "Used to provision a collection of cost controls and notifications"
+  permission_boundary_arn = aws_iam_policy.cost_iam_boundary.arn
+  repository              = var.repositories.cost_management.url
+  tags                    = var.tags
 
   read_only_inline_policies = {
     CostManagement = jsonencode({
@@ -243,8 +234,4 @@ module "cost_management" {
   providers = {
     aws = aws.management
   }
-
-  depends_on = [
-    aws_iam_policy.default_permissions_boundary_management,
-  ]
 }
