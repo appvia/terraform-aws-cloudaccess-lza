@@ -29,7 +29,16 @@ terraform.rc
 # Other
 .DS_Store
 todo.md
-*.orig
 
-# Ignore securityhub-findings-forwarder lambda deployment package
-builds
+# Ignore vim swap files 
+*.swp 
+*.swo 
+
+# Ignore meld diff files 
+*.orig 
+*.backup 
+*.rej 
+
+# Ignore lambda zip files and build directories
+*.zip 
+builds/
