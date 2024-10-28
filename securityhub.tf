@@ -14,6 +14,7 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 
 ## Craft an IAM polciy to push logs to cloudwatch log group 
 # See also the following AWS managed policy: AWSLambdaBasicExecutionRole
+# tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "securityhub_lambda_cloudwatch_logs_policy" {
   statement {
     sid    = "AllowLogging"
@@ -52,7 +53,7 @@ data "archive_file" "securityhub_lambda_package" {
 module "securityhub_notifications" {
   count   = var.enable_securityhub_alarms ? 1 : 0
   source  = "appvia/notifications/aws"
-  version = "1.0.5"
+  version = "1.0.6"
 
   accounts_id_to_name            = var.accounts_id_to_name
   allowed_aws_services           = ["events.amazonaws.com", "lambda.amazonaws.com"]
@@ -79,15 +80,27 @@ resource "aws_iam_role" "securityhub_lambda_role" {
   tags               = var.tags
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 
-  inline_policy {
-    name   = "lza-securityhub-lambda-policy"
-    policy = data.aws_iam_policy_document.securityhub_notifications_policy[0].json
-  }
+  provider = aws.audit
+}
 
-  inline_policy {
-    name   = "lza-securityhub-lambda-logs-policy"
-    policy = data.aws_iam_policy_document.securityhub_lambda_cloudwatch_logs_policy.json
-  }
+## Assign the inline policy to the lambda role 
+resource "aws_iam_role_policy" "securityhub_lambda_role_policy" {
+  count = var.enable_securityhub_alarms ? 1 : 0
+
+  name   = "lza-securityhub-lambda-policy"
+  policy = data.aws_iam_policy_document.securityhub_notifications_policy[0].json
+  role   = aws_iam_role.securityhub_lambda_role[0].name
+
+  provider = aws.audit
+}
+
+## Assign the inline policy to the lambda role 
+resource "aws_iam_role_policy" "securityhub_lambda_logs_policy" {
+  count = var.enable_securityhub_alarms ? 1 : 0
+
+  name   = "lza-securityhub-lambda-logs-policy"
+  policy = data.aws_iam_policy_document.securityhub_lambda_cloudwatch_logs_policy.json
+  role   = aws_iam_role.securityhub_lambda_role[0].name
 
   provider = aws.audit
 }
