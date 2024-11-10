@@ -202,7 +202,7 @@ resource "aws_iam_group" "breakglass" {
 }
 
 ## Attach the MFA policy to the breakglass group 
-resource "aws_iam_group_policy_attachment" "test-attach" {
+resource "aws_iam_group_policy_attachment" "breakglass_attach" {
   count = var.enable_breakglass ? 1 : 0
 
   group      = aws_iam_group.breakglass[0].name
@@ -215,8 +215,8 @@ resource "aws_iam_group_policy_attachment" "test-attach" {
 resource "aws_iam_group_policy_attachment" "breakglass" {
   count = var.enable_breakglass ? 1 : 0
 
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   group      = aws_iam_group.breakglass[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 
   provider = aws.management
 }
