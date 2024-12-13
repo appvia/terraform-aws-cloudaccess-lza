@@ -33,6 +33,7 @@
 #
 #  variables {
 #    aws_accounts = {
+#      audit_account_id        = "123456789123"
 #      network_account_id      = "135791357913"
 #      remoteaccess_account_id = "246824682468"
 #    }

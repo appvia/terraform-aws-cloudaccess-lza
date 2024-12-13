@@ -58,7 +58,7 @@ resource "aws_iam_policy" "costs_viewer" {
   provider = aws.management
 }
 
-## Provision the iam boundary within the management account 
+## Provision the iam boundary within the management account
 resource "aws_iam_policy" "default_permissions_boundary_management" {
   name        = var.default_permissions_boundary_name
   description = "Used by the LZA pipelines to enforce permissions"
@@ -66,6 +66,71 @@ resource "aws_iam_policy" "default_permissions_boundary_management" {
   tags        = var.tags
 
   provider = aws.management
+}
+
+## Used to provision the aws organization boundary
+module "management_aws_organization" {
+  count   = var.repositories.organizations != null ? 1 : 0
+  source  = "appvia/oidc/aws//modules/role"
+  version = "1.3.4"
+
+  name                    = var.repositories.organizations.role_name
+  description             = "Used to manage and configure the AWS organization, units and features"
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management
+  repository              = var.repositories.organizations.url
+  tags                    = var.tags
+
+  read_only_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
+    "arn:aws:iam::aws:policy/AWSSSOReadOnly",
+    "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+  ]
+
+  read_write_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
+
+  providers = {
+    aws = aws.management
+  }
+}
+
+## Used to provision the lz bootstrapping pipeline
+module "management_aws_bootstrap" {
+  count   = var.repositories.bootstrap != null ? 1 : 0
+  source  = "appvia/oidc/aws//modules/role"
+  version = "1.3.4"
+
+  name                    = var.repositories.bootstrap.role_name
+  description             = "Used to manage and configure landing zone bootstrapping module"
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management
+  repository              = var.repositories.bootstrap.url
+  tags                    = var.tags
+
+  read_only_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
+    "arn:aws:iam::aws:policy/AWSSSOReadOnly",
+    "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  ]
+
+  read_write_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSCloudFormationFullAccess",
+    "arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
+    "arn:aws:iam::aws:policy/AWSSSOReadOnly",
+    "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+  ]
+
+  providers = {
+    aws = aws.management
+  }
 }
 
 ## Used to manage identity center

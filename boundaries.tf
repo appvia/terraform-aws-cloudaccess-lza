@@ -2,10 +2,11 @@
 ## Related to provisioning the IAM boundaries used by the pipelines
 #
 
-## Craft a permissions boundary that is used by the pipelines we provision here 
+## Craft a permissions boundary that is used by the pipelines we provision here
 # tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "default_permissions_boundary" {
   for_each = {
+    audit      = local.audit_account_id
     management = local.management_account_id
     network    = local.network_account_id
   }
