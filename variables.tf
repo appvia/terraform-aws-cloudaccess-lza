@@ -1,6 +1,7 @@
 variable "aws_accounts" {
   description = "Map of AWS account names to their account IDs"
   type = object({
+    audit_account_id        = string
     network_account_id      = optional(string, "")
     remoteaccess_account_id = optional(string, "")
   })
@@ -136,6 +137,14 @@ variable "repositories" {
       url       = string
       role_name = optional(string, "lza-accelerator")
     }), null)
+    bootstrap = optional(object({
+      url       = string
+      role_name = optional(string, "lza-bootstrap")
+    }), null)
+    compliance = optional(object({
+      url       = string
+      role_name = optional(string, "lza-compliance")
+    }), null)
     connectivity = optional(object({
       url       = string
       role_name = optional(string, "lza-connectivity")
@@ -151,6 +160,10 @@ variable "repositories" {
     identity = optional(object({
       url       = string
       role_name = optional(string, "lza-identity")
+    }), null)
+    organizations = optional(object({
+      url       = string
+      role_name = optional(string, "lza-organization")
     }), null)
   })
   default = {}

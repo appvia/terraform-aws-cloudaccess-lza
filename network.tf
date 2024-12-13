@@ -1,9 +1,11 @@
 #
-## Related to the network account 
+## Related to the network account
 #
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "ipam_admin" {
+  count = var.repositories.connectivity != null ? 1 : 0
+
   description = "Provides the permissions to manage the ipam service"
   name        = "lza-ipam-management"
   policy      = file("${path.module}/assets/policies/ipam-management.json")
@@ -12,8 +14,10 @@ resource "aws_iam_policy" "ipam_admin" {
   provider = aws.network
 }
 
-## Provision the iam boundary within the network account 
+## Provision the iam boundary within the network account
 resource "aws_iam_policy" "default_permissions_boundary_network" {
+  count = var.repositories.connectivity != null || var.repositories.firewall != null ? 1 : 0
+
   name        = var.default_permissions_boundary_name
   description = "Used by the LZA pipelines to enforce permissions"
   policy      = data.aws_iam_policy_document.default_permissions_boundary["network"].json
@@ -29,7 +33,7 @@ module "network_transit_gateway_admin" {
 
   name                    = var.repositories.connectivity.role_name
   description             = "Deployment role used to deploy the Transit Gateway"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_network.arn
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_network[0].arn
   repository              = var.repositories.connectivity.url
   tags                    = var.tags
 
@@ -39,7 +43,7 @@ module "network_transit_gateway_admin" {
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
   read_write_policy_arns = [
-    "arn:aws:iam::${local.network_account_id}:policy/${aws_iam_policy.ipam_admin.name}",
+    "arn:aws:iam::${local.network_account_id}:policy/${aws_iam_policy.ipam_admin[0].name}",
     "arn:aws:iam::aws:policy/AWSResourceAccessManagerFullAccess",
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     "arn:aws:iam::aws:policy/job-function/NetworkAdministrator",
@@ -69,7 +73,7 @@ module "network_transit_gateway_admin" {
     })
   }
 
-  # We can share our state with the firewall module 
+  # We can share our state with the firewall module
   shared_repositories = var.repositories.firewall != null ? [var.repositories.firewall.url] : []
 
   providers = {
@@ -85,7 +89,7 @@ module "network_inspection_vpc_admin" {
 
   name                    = var.repositories.firewall.role_name
   description             = "Deployment role used to deploy the inspection vpc"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_network.arn
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_network[0].arn
   repository              = var.repositories.firewall.url
   tags                    = var.tags
 
