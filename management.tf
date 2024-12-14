@@ -72,7 +72,7 @@ resource "aws_iam_policy" "default_permissions_boundary_management" {
 module "management_aws_organization" {
   count   = var.repositories.organizations != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.4"
+  version = "1.3.5"
 
   name                    = var.repositories.organizations.role_name
   description             = "Used to manage and configure the AWS organization, units and features"
