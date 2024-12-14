@@ -1,9 +1,7 @@
 variable "aws_accounts" {
   description = "Map of AWS account names to their account IDs"
   type = object({
-    audit_account_id        = string
-    network_account_id      = optional(string, "")
-    remoteaccess_account_id = optional(string, "")
+    audit_account_id = string
   })
 }
 
@@ -22,7 +20,7 @@ variable "default_permissions_boundary_name" {
 variable "enable_securityhub_alarms" {
   description = "Indicates if we should enable SecurityHub alarms"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "securityhub_sns_topic_name" {
@@ -64,7 +62,7 @@ variable "securityhub_lambda_runtime" {
 variable "securityhub_lambda_log_group_kms_alias" {
   description = "Name of the KMS alias for the CloudWatch log group"
   type        = string
-  default     = "alias/accelerator/kms/cloudwatch/key"
+  default     = null
 }
 
 variable "aws_support_role_name" {
@@ -119,17 +117,6 @@ variable "enable_breakglass" {
   default     = false
 }
 
-variable "scm_name" {
-  description = "Name of the source control management system (github or gitlab)"
-  type        = string
-  default     = "github"
-
-  validation {
-    condition     = can(regex("^(github|gitlab)$", var.scm_name))
-    error_message = "SCM name must be either 'github' or 'gitlab'"
-  }
-}
-
 variable "repositories" {
   description = "List of repository locations for the pipelines"
   type = object({
@@ -145,17 +132,9 @@ variable "repositories" {
       url       = string
       role_name = optional(string, "lza-compliance")
     }), null)
-    connectivity = optional(object({
-      url       = string
-      role_name = optional(string, "lza-connectivity")
-    }), null)
     cost_management = optional(object({
       url       = string
       role_name = optional(string, "lza-cost-management")
-    }), null)
-    firewall = optional(object({
-      url       = string
-      role_name = optional(string, "lza-firewall")
     }), null)
     identity = optional(object({
       url       = string

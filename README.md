@@ -94,13 +94,12 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
 | <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | ~> 5.0 |
 | <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | ~> 5.0 |
-| <a name="provider_aws.network"></a> [aws.network](#provider\_aws.network) | ~> 5.0 |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_accounts"></a> [aws\_accounts](#input\_aws\_accounts) | Map of AWS account names to their account IDs | <pre>object({<br/>    audit_account_id        = string<br/>    network_account_id      = optional(string, "")<br/>    remoteaccess_account_id = optional(string, "")<br/>  })</pre> | n/a | yes |
+| <a name="input_aws_accounts"></a> [aws\_accounts](#input\_aws\_accounts) | Map of AWS account names to their account IDs | <pre>object({<br/>    audit_account_id = string<br/>  })</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | n/a | yes |
 | <a name="input_accounts_id_to_name"></a> [accounts\_id\_to\_name](#input\_accounts\_id\_to\_name) | A mapping of account id and account name - used by notification lamdba to map an account ID to a human readable name | `map(string)` | `{}` | no |
 | <a name="input_aws_support_role_name"></a> [aws\_support\_role\_name](#input\_aws\_support\_role\_name) | Name of the AWS Support role | `string` | `"AWSSupportAccessRole"` | no |
@@ -111,15 +110,14 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_enable_aws_support"></a> [enable\_aws\_support](#input\_enable\_aws\_support) | Indicates if we should enable AWS Support role | `bool` | `true` | no |
 | <a name="input_enable_breakglass"></a> [enable\_breakglass](#input\_enable\_breakglass) | Indicates if we should enable breakglass users and group | `bool` | `false` | no |
 | <a name="input_enable_cis_alarms"></a> [enable\_cis\_alarms](#input\_enable\_cis\_alarms) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
-| <a name="input_enable_securityhub_alarms"></a> [enable\_securityhub\_alarms](#input\_enable\_securityhub\_alarms) | Indicates if we should enable SecurityHub alarms | `bool` | `true` | no |
+| <a name="input_enable_securityhub_alarms"></a> [enable\_securityhub\_alarms](#input\_enable\_securityhub\_alarms) | Indicates if we should enable SecurityHub alarms | `bool` | `false` | no |
 | <a name="input_identity_center_start_url"></a> [identity\_center\_start\_url](#input\_identity\_center\_start\_url) | The start URL of your Identity Center instance | `string` | `null` | no |
 | <a name="input_notifications"></a> [notifications](#input\_notifications) | Configuration for the notifications | <pre>object({<br/>    email = optional(object({<br/>      addresses = list(string)<br/>    }), null)<br/>    slack = optional(object({<br/>      webhook_url = string<br/>    }), null)<br/>    teams = optional(object({<br/>      webhook_url = string<br/>    }), null)<br/>  })</pre> | <pre>{<br/>  "email": {<br/>    "addresses": []<br/>  },<br/>  "slack": null,<br/>  "teams": null<br/>}</pre> | no |
-| <a name="input_repositories"></a> [repositories](#input\_repositories) | List of repository locations for the pipelines | <pre>object({<br/>    accelerator = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-accelerator")<br/>    }), null)<br/>    bootstrap = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-bootstrap")<br/>    }), null)<br/>    compliance = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-compliance")<br/>    }), null)<br/>    connectivity = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-connectivity")<br/>    }), null)<br/>    cost_management = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-cost-management")<br/>    }), null)<br/>    firewall = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-firewall")<br/>    }), null)<br/>    identity = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-identity")<br/>    }), null)<br/>    organizations = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-organization")<br/>    }), null)<br/>  })</pre> | `{}` | no |
-| <a name="input_scm_name"></a> [scm\_name](#input\_scm\_name) | Name of the source control management system (github or gitlab) | `string` | `"github"` | no |
+| <a name="input_repositories"></a> [repositories](#input\_repositories) | List of repository locations for the pipelines | <pre>object({<br/>    accelerator = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-accelerator")<br/>    }), null)<br/>    bootstrap = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-bootstrap")<br/>    }), null)<br/>    compliance = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-compliance")<br/>    }), null)<br/>    cost_management = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-cost-management")<br/>    }), null)<br/>    identity = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-identity")<br/>    }), null)<br/>    organizations = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-organization")<br/>    }), null)<br/>  })</pre> | `{}` | no |
 | <a name="input_security_hub_identity_center_role"></a> [security\_hub\_identity\_center\_role](#input\_security\_hub\_identity\_center\_role) | The name of the role to use when redirecting through Identity Center for security hub events | `string` | `null` | no |
 | <a name="input_securityhub_event_bridge_rule_name"></a> [securityhub\_event\_bridge\_rule\_name](#input\_securityhub\_event\_bridge\_rule\_name) | Display name of the EventBridge rule for Security Hub findings | `string` | `"lza-securityhub-alerts"` | no |
 | <a name="input_securityhub_lambda_function_name"></a> [securityhub\_lambda\_function\_name](#input\_securityhub\_lambda\_function\_name) | Name of the Security Hub Lambda function | `string` | `"lza-securityhub-lambda-forwarder"` | no |
-| <a name="input_securityhub_lambda_log_group_kms_alias"></a> [securityhub\_lambda\_log\_group\_kms\_alias](#input\_securityhub\_lambda\_log\_group\_kms\_alias) | Name of the KMS alias for the CloudWatch log group | `string` | `"alias/accelerator/kms/cloudwatch/key"` | no |
+| <a name="input_securityhub_lambda_log_group_kms_alias"></a> [securityhub\_lambda\_log\_group\_kms\_alias](#input\_securityhub\_lambda\_log\_group\_kms\_alias) | Name of the KMS alias for the CloudWatch log group | `string` | `null` | no |
 | <a name="input_securityhub_lambda_role_name"></a> [securityhub\_lambda\_role\_name](#input\_securityhub\_lambda\_role\_name) | Name of the IAM role for the Security Hub Lambda function | `string` | `"lza-securityhub-lambda-role"` | no |
 | <a name="input_securityhub_lambda_runtime"></a> [securityhub\_lambda\_runtime](#input\_securityhub\_lambda\_runtime) | Runtime for the Security Hub Lambda function | `string` | `"python3.12"` | no |
 | <a name="input_securityhub_severity_filter"></a> [securityhub\_severity\_filter](#input\_securityhub\_severity\_filter) | Indicates if we should enable SecurityHub | `list(string)` | <pre>[<br/>  "CRITICAL",<br/>  "HIGH"<br/>]</pre> | no |
@@ -127,9 +125,5 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_identity_role_ro_name"></a> [identity\_role\_ro\_name](#output\_identity\_role\_ro\_name) | The name of the IAM readonly role which can be assumed by the identity stack in all accounts |
-| <a name="output_identity_role_rw_name"></a> [identity\_role\_rw\_name](#output\_identity\_role\_rw\_name) | The name of the IAM readwrite role which can be assumed by the identity stack in all accounts |
-| <a name="output_identity_stack_name"></a> [identity\_stack\_name](#output\_identity\_stack\_name) | The name of the identity stack |
+No outputs.
 <!-- END_TF_DOCS -->

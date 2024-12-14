@@ -6,12 +6,6 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias   = "network"
-  region  = var.region
-  profile = "appvia-io-network"
-}
-
-provider "aws" {
   alias   = "audit"
   region  = var.region
   profile = "appvia-io-audit"

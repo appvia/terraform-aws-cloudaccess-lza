@@ -8,7 +8,6 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
   for_each = {
     audit      = local.audit_account_id
     management = local.management_account_id
-    network    = local.network_account_id
   }
 
   statement {
@@ -52,11 +51,12 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
 resource "aws_iam_policy" "cost_iam_boundary" {
   name        = var.costs_boundary_name
   description = "IAM boundary used by the cost management pipelines"
+  tags        = var.tags
+
   policy = templatefile("${path.module}/assets/boundaries/costs-boundary.json", {
     account_id    = local.management_account_id
     boundary_name = var.costs_boundary_name
   })
-  tags = var.tags
 
   provider = aws.management
 }

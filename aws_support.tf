@@ -35,7 +35,7 @@ resource "aws_cloudformation_stack_set" "aws_support_stack" {
   provider = aws.management
 }
 
-## Deploy the stackset to the root of the organizationa root 
+## Deploy the stackset to the root of the organizationa root
 resource "aws_cloudformation_stack_set_instance" "aws_support_stack_instance" {
   count = var.enable_aws_support ? 1 : 0
 

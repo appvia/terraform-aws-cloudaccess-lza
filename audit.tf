@@ -36,4 +36,3 @@ module "audit_compliance" {
     aws = aws.audit
   }
 }
-

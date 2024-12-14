@@ -1,8 +1,8 @@
 #
-## Landing Zone Resources 
+## Landing Zone Resources
 #
 
-## Provision the Landing Zone Access permissions 
+## Provision the Landing Zone Access permissions
 module "landing_zone" {
   source = "../.."
 
@@ -25,12 +25,6 @@ module "landing_zone" {
     accelerator = {
       url = "<ORG>/aws-accelerator-config"
     }
-    connectivity = {
-      url = "<ORG>/terrafom-aws-connectivity"
-    }
-    firewall = {
-      url = "<ORG>/terrafom-aws-firewall"
-    }
     identity = {
       url = "<ORG>/terrafom-aws-identity"
     }
@@ -39,6 +33,5 @@ module "landing_zone" {
   providers = {
     aws.audit      = aws.audit
     aws.management = aws.management
-    aws.network    = aws.network
   }
 }

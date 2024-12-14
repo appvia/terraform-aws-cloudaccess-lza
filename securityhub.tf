@@ -146,6 +146,8 @@ resource "aws_lambda_function" "securityhub_lambda_function" {
 
 ## Allow eventbridge to invoke the lambda function
 resource "aws_lambda_permission" "securityhub_event_bridge" {
+  count = var.enable_securityhub_alarms ? 1 : 0
+
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.securityhub_lambda_function[0].function_name
   principal     = "events.amazonaws.com"

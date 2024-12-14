@@ -20,4 +20,3 @@ module "alarm_baseline" {
     aws = aws.management
   }
 }
-

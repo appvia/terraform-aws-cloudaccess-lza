@@ -9,7 +9,6 @@ terraform {
       configuration_aliases = [
         aws.audit,
         aws.management,
-        aws.network,
       ]
     }
     archive = {

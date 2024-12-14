@@ -1,5 +1,5 @@
 
-## Provision a MFA policy for the IAM group 
+## Provision a MFA policy for the IAM group
 # tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "breakglass" {
   statement {
@@ -180,7 +180,7 @@ data "aws_iam_policy_document" "breakglass" {
   }
 }
 
-## Provision the IAM policy used to enforce MFA 
+## Provision the IAM policy used to enforce MFA
 resource "aws_iam_policy" "breakglass" {
   count = var.enable_breakglass ? 1 : 0
 
@@ -191,8 +191,8 @@ resource "aws_iam_policy" "breakglass" {
   provider = aws.management
 }
 
-## Provision a group for the breakglass users 
-# tfsec:ignore:aws-iam-enforce-group-mfa 
+## Provision a group for the breakglass users
+# tfsec:ignore:aws-iam-enforce-group-mfa
 resource "aws_iam_group" "breakglass" {
   count = var.enable_breakglass ? 1 : 0
 
@@ -201,7 +201,7 @@ resource "aws_iam_group" "breakglass" {
   provider = aws.management
 }
 
-## Attach the MFA policy to the breakglass group 
+## Attach the MFA policy to the breakglass group
 resource "aws_iam_group_policy_attachment" "breakglass_attach" {
   count = var.enable_breakglass ? 1 : 0
 
@@ -211,7 +211,7 @@ resource "aws_iam_group_policy_attachment" "breakglass_attach" {
   provider = aws.management
 }
 
-## Assign the administator policy to the breakglass group 
+## Assign the administator policy to the breakglass group
 resource "aws_iam_group_policy_attachment" "breakglass" {
   count = var.enable_breakglass ? 1 : 0
 
@@ -221,7 +221,7 @@ resource "aws_iam_group_policy_attachment" "breakglass" {
   provider = aws.management
 }
 
-## Create the two breakglass users 
+## Create the two breakglass users
 resource "aws_iam_user" "breakglass" {
   count = var.enable_breakglass ? var.breakglass_users : 0
 
@@ -231,7 +231,7 @@ resource "aws_iam_user" "breakglass" {
   provider = aws.management
 }
 
-## Attach the breakglass users to the breakglass group 
+## Attach the breakglass users to the breakglass group
 resource "aws_iam_user_group_membership" "breakglass" {
   count = var.enable_breakglass ? var.breakglass_users : 0
 
