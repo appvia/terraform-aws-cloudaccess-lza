@@ -10,16 +10,13 @@ locals {
   account_id = data.aws_caller_identity.current.account_id
 
   ## The name of the aws support stackset
-  aws_support_stack_name = "LZA-IAM-Support-Role"
+  aws_support_stack_name = var.aws_support_stack_name
   ## The capabilities required for the aws support stackset
   aws_support_capabilities = ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
   ## The parameters for the aws support stackset
   aws_support_parameters = {
     "RoleName" = var.aws_support_role_name
   }
-
-  ## Is the log group used the lambda function encrypted
-  enable_log_group_encryption = var.securityhub_lambda_log_group_kms_alias != null
 
   ## Indicates if the notifications for slack are enabled
   enable_slack_notifications = var.notifications.slack != null
@@ -28,7 +25,7 @@ locals {
 
   ## The configuration for the slack notification
   slack = local.enable_slack_notifications ? {
-    lambda_name = "lza-ca-notifications-slack"
+    lambda_name = var.notifications.lambda_name
     webhook_url = var.notifications.slack.webhook_url
   } : null
 

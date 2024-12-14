@@ -5,6 +5,12 @@ variable "aws_accounts" {
   })
 }
 
+variable "aws_support_stack_name" {
+  description = "Name of the stackset used to deploy the aws support role"
+  type        = string
+  default     = "lza-aws-support-role"
+}
+
 variable "costs_boundary_name" {
   description = "Name of the IAM policy to use as a permissions boundary for cost-related roles"
   type        = string
@@ -59,12 +65,6 @@ variable "securityhub_lambda_runtime" {
   default     = "python3.12"
 }
 
-variable "securityhub_lambda_log_group_kms_alias" {
-  description = "Name of the KMS alias for the CloudWatch log group"
-  type        = string
-  default     = null
-}
-
 variable "aws_support_role_name" {
   description = "Name of the AWS Support role"
   type        = string
@@ -86,6 +86,7 @@ variable "enable_cis_alarms" {
 variable "notifications" {
   description = "Configuration for the notifications"
   type = object({
+    lamdba_name = optional(string, "lza-ca-notifications-slack")
     email = optional(object({
       addresses = list(string)
     }), null)
@@ -97,6 +98,7 @@ variable "notifications" {
     }), null)
   })
   default = {
+    lamdba_name = "lza-ca-notifications-slack"
     email = {
       addresses = []
     }
