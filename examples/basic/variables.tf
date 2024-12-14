@@ -3,7 +3,6 @@ variable "aws_accounts" {
   type        = map(string)
   default = {
     management = "123456789012"
-    network    = "123456789012"
   }
 }
 
