@@ -19,7 +19,7 @@ locals {
   }
 
   ## Is the log group used the lambda function encrypted
-  enable_log_group_encryption = var.securityhub_lambda_log_group_kms_alias != ""
+  enable_log_group_encryption = var.securityhub_lambda_log_group_kms_alias != null
 
   ## Indicates if the notifications for slack are enabled
   enable_slack_notifications = var.notifications.slack != null
