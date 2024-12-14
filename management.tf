@@ -72,11 +72,11 @@ resource "aws_iam_policy" "default_permissions_boundary_management" {
 module "management_aws_organization" {
   count   = var.repositories.organizations != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.5"
+  version = "1.3.6"
 
   name                    = var.repositories.organizations.role_name
   description             = "Used to manage and configure the AWS organization, units and features"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.organizations.url
   tags                    = var.tags
 
@@ -101,11 +101,11 @@ module "management_aws_organization" {
 module "management_aws_bootstrap" {
   count   = var.repositories.bootstrap != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.4"
+  version = "1.3.6"
 
   name                    = var.repositories.bootstrap.role_name
   description             = "Used to manage and configure landing zone bootstrapping module"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.bootstrap.url
   tags                    = var.tags
 
