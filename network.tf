@@ -25,7 +25,7 @@ resource "aws_iam_policy" "default_permissions_boundary_network" {
 module "network_transit_gateway_admin" {
   count   = var.repositories.connectivity != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.4"
+  version = "1.3.6"
 
   name                    = var.repositories.connectivity.role_name
   description             = "Deployment role used to deploy the Transit Gateway"
@@ -81,7 +81,7 @@ module "network_transit_gateway_admin" {
 module "network_inspection_vpc_admin" {
   count   = var.repositories.firewall != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.4"
+  version = "1.3.6"
 
   name                    = var.repositories.firewall.role_name
   description             = "Deployment role used to deploy the inspection vpc"
