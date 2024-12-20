@@ -81,8 +81,8 @@ module "management_aws_organization" {
   tags                    = var.tags
 
   shared_repositories = compact([
-    var.repositories.identity,
-    var.repositories.compliance,
+    try(var.repositories.identity.url, null),
+    try(var.repositories.compliance.url, null)
   ])
 
   read_only_policy_arns = [
