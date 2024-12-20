@@ -80,6 +80,11 @@ module "management_aws_organization" {
   repository              = var.repositories.organizations.url
   tags                    = var.tags
 
+  shared_repositories = compact([
+    var.repositories.identity,
+    var.repositories.compliance,
+  ])
+
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
