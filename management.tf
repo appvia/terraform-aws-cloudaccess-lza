@@ -72,7 +72,7 @@ resource "aws_iam_policy" "default_permissions_boundary_management" {
 module "management_sso_identity" {
   count   = var.repositories.identity != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.4"
+  version = "1.3.6"
 
   name                    = var.repositories.identity.role_name
   description             = "Used to manage the identity center permissionsets and assignments"
@@ -120,7 +120,7 @@ module "management_sso_identity" {
 module "management_landing_zone" {
   count   = var.repositories.accelerator != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.4"
+  version = "1.3.6"
 
   name                    = var.repositories.accelerator.role_name
   description             = "Used to manage and deploy the lanzing zone configuration"
@@ -145,7 +145,7 @@ module "management_landing_zone" {
 module "cost_management" {
   count   = var.repositories.cost_management != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.4"
+  version = "1.3.6"
 
   name                    = var.repositories.cost_management.role_name
   description             = "Used to provision a collection of cost controls and notifications"
