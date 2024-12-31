@@ -68,6 +68,35 @@ resource "aws_iam_policy" "default_permissions_boundary_management" {
   provider = aws.management
 }
 
+## Used to provision accounts only via service catalog or organizations api
+module "management_aws_accounts" {
+  count   = var.repositories.accounts != null ? 1 : 0
+  source  = "appvia/oidc/aws//modules/role"
+  version = "1.3.6"
+
+  name                    = var.repositories.accounts.role_name
+  description             = "Used to manage and configure the AWS accounts"
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
+  repository              = var.repositories.accounts.url
+  tags                    = var.tags
+
+  read_only_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
+    "arn:aws:iam::aws:policy/AWSSSOReadOnly",
+    "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+  ]
+
+  read_write_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
+
+  providers = {
+    aws = aws.management
+  }
+}
+
 ## Used to provision the aws organization boundary
 module "management_aws_organization" {
   count   = var.repositories.organizations != null ? 1 : 0

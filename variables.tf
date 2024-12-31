@@ -126,6 +126,10 @@ variable "repositories" {
       url       = string
       role_name = optional(string, "lza-accelerator")
     }), null)
+    accounts = optional(object({
+      url       = string
+      role_name = optional(string, "lza-accounts")
+    }), null)
     bootstrap = optional(object({
       url       = string
       role_name = optional(string, "lza-bootstrap")
