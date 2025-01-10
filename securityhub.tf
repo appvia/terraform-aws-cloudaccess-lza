@@ -1,5 +1,5 @@
 
-## Craft an IAM policy document to allow the lambda function to assume the role 
+## Craft an IAM policy document to allow the lambda function to assume the role
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
   statement {
     sid     = "AllowLambdaAssumeRole"
@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
   }
 }
 
-## Craft an IAM polciy to push logs to cloudwatch log group 
+## Craft an IAM polciy to push logs to cloudwatch log group
 # See also the following AWS managed policy: AWSLambdaBasicExecutionRole
 # tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "securityhub_lambda_cloudwatch_logs_policy" {
@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "securityhub_lambda_cloudwatch_logs_policy" {
   }
 }
 
-## Craft an IAM polciy perform access to publish messages to the SNS topic 
+## Craft an IAM polciy perform access to publish messages to the SNS topic
 data "aws_iam_policy_document" "securityhub_notifications_policy" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
@@ -49,30 +49,29 @@ data "archive_file" "securityhub_lambda_package" {
   output_path = "./builds/securityhub-findings-forwarder.zip"
 }
 
-## Provision the notifications to forward the security hub findings to the messaging channel 
+## Provision the notifications to forward the security hub findings to the messaging channel
 module "securityhub_notifications" {
-  count   = var.enable_securityhub_alarms ? 1 : 0
-  source  = "appvia/notifications/aws"
-  version = "1.0.7"
+  count  = var.enable_securityhub_alarms ? 1 : 0
+  source = "github.com/appvia/terraform-aws-notifications.git?ref=93b8fa17b5092a584a12b53b8a0815644b5f5fe0"
 
-  accounts_id_to_name            = var.accounts_id_to_name
-  allowed_aws_services           = ["events.amazonaws.com", "lambda.amazonaws.com"]
-  cloudwatch_log_group_retention = 3
-  create_sns_topic               = true
-  email                          = local.email
-  enable_slack                   = true
-  identity_center_role           = var.security_hub_identity_center_role
-  identity_center_start_url      = var.identity_center_start_url
-  slack                          = local.slack
-  sns_topic_name                 = var.securityhub_sns_topic_name
-  tags                           = var.tags
+  accounts_id_to_name_parameter_arn = var.accounts_id_to_name_parameter_arn
+  allowed_aws_services              = ["events.amazonaws.com", "lambda.amazonaws.com"]
+  cloudwatch_log_group_retention    = 3
+  create_sns_topic                  = true
+  email                             = local.email
+  enable_slack                      = true
+  identity_center_role              = var.security_hub_identity_center_role
+  identity_center_start_url         = var.identity_center_start_url
+  slack                             = local.slack
+  sns_topic_name                    = var.securityhub_sns_topic_name
+  tags                              = var.tags
 
   providers = {
     aws = aws.audit
   }
 }
 
-## Provision an IAM role for the lambda function to run under 
+## Provision an IAM role for the lambda function to run under
 resource "aws_iam_role" "securityhub_lambda_role" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
@@ -83,7 +82,7 @@ resource "aws_iam_role" "securityhub_lambda_role" {
   provider = aws.audit
 }
 
-## Assign the inline policy to the lambda role 
+## Assign the inline policy to the lambda role
 resource "aws_iam_role_policy" "securityhub_lambda_role_policy" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
@@ -94,7 +93,7 @@ resource "aws_iam_role_policy" "securityhub_lambda_role_policy" {
   provider = aws.audit
 }
 
-## Assign the inline policy to the lambda role 
+## Assign the inline policy to the lambda role
 resource "aws_iam_role_policy" "securityhub_lambda_logs_policy" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
@@ -105,7 +104,7 @@ resource "aws_iam_role_policy" "securityhub_lambda_logs_policy" {
   provider = aws.audit
 }
 
-## Provision a cloudwatch log group to capture the logs from the lambda function 
+## Provision a cloudwatch log group to capture the logs from the lambda function
 resource "aws_cloudwatch_log_group" "securityhub_lambda_log_group" {
   kms_key_id        = local.enable_log_group_encryption ? data.aws_kms_alias.securityhub_kms_key[0].id : null
   log_group_class   = "STANDARD"
@@ -116,7 +115,7 @@ resource "aws_cloudwatch_log_group" "securityhub_lambda_log_group" {
   provider = aws.audit
 }
 
-## Provision the lamda function to forward the security hub findings to the messaging channel  
+## Provision the lamda function to forward the security hub findings to the messaging channel
 # tfsec:ignore:aws-lambda-enable-tracing
 resource "aws_lambda_function" "securityhub_lambda_function" {
   count = var.enable_securityhub_alarms ? 1 : 0
@@ -186,7 +185,7 @@ resource "aws_cloudwatch_event_rule" "securityhub_findings" {
 }
 
 
-## Provision a target to the event bridge rule, to publish messages to the SNS topic 
+## Provision a target to the event bridge rule, to publish messages to the SNS topic
 resource "aws_cloudwatch_event_target" "security_hub_findings_target" {
   count = var.enable_securityhub_alarms ? 1 : 0
 
