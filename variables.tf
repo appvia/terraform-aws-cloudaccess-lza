@@ -86,7 +86,7 @@ variable "enable_cis_alarms" {
 variable "notifications" {
   description = "Configuration for the notifications"
   type = object({
-    lamdba_name = optional(string, "lza-ca-notifications-slack")
+    lambda_name = optional(string, "lza-ca-notifications-slack")
     email = optional(object({
       addresses = list(string)
     }), null)
@@ -98,7 +98,7 @@ variable "notifications" {
     }), null)
   })
   default = {
-    lamdba_name = "lza-ca-notifications-slack"
+    lambda_name = "lza-ca-notifications-slack"
     email = {
       addresses = []
     }
