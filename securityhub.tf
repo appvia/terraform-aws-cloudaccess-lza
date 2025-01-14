@@ -52,8 +52,7 @@ data "archive_file" "securityhub_lambda_package" {
 ## Provision the notifications to forward the security hub findings to the messaging channel
 module "securityhub_notifications" {
   count   = var.enable_securityhub_alarms ? 1 : 0
-  source  = "appvia/notifications/aws"
-  version = "2.0.0"
+  source = "github.com/appvia/terraform-aws-notifications.git?ref=v2.0.0"
 
   accounts_id_to_name_parameter_arn = var.accounts_id_to_name_parameter_arn
   allowed_aws_services              = ["events.amazonaws.com", "lambda.amazonaws.com"]
