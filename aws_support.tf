@@ -13,7 +13,7 @@ resource "aws_cloudformation_stack_set" "aws_support_stack" {
   parameters       = local.aws_support_parameters
   permission_model = "SERVICE_MANAGED"
   template_body    = file("${path.module}/assets/cloudformation/aws-support-role.yml")
-  tags             = var.tags
+  tags             = local.tags
 
   auto_deployment {
     enabled                          = true
@@ -57,7 +57,7 @@ resource "aws_cloudformation_stack" "aws_support_stack_instance_management_accou
   name          = local.aws_support_stack_name
   on_failure    = "ROLLBACK"
   parameters    = local.aws_support_parameters
-  tags          = var.tags
+  tags          = local.tags
   template_body = file("${path.module}/assets/cloudformation/aws-support-role.yml")
 
   lifecycle {

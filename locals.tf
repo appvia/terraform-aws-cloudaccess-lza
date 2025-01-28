@@ -18,6 +18,9 @@ locals {
     "RoleName" = var.aws_support_role_name
   }
 
+  ## The tags to apply to all resources
+  tags = var.tags
+
   ## Indicates if the notifications for slack are enabled
   enable_slack_notifications = var.notifications.slack != null
   ## Indicates if the notifications for email are enabled

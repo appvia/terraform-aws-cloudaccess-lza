@@ -7,7 +7,7 @@ resource "aws_iam_policy" "user_management" {
   name        = "lza-user-management"
   description = "Provides the permissions to manage users in identity center"
   policy      = file("${path.module}/assets/policies/user-management.json")
-  tags        = var.tags
+  tags        = local.tags
 
   provider = aws.management
 }
@@ -20,7 +20,7 @@ resource "aws_iam_policy" "code_contributor" {
     management_account_id = local.management_account_id
     region                = local.region
   })
-  tags = var.tags
+  tags = local.tags
 
   provider = aws.management
 }
@@ -33,7 +33,7 @@ resource "aws_iam_policy" "code_release" {
     management_account_id = local.management_account_id
     region                = local.region
   })
-  tags = var.tags
+  tags = local.tags
 
   provider = aws.management
 }
@@ -43,7 +43,7 @@ resource "aws_iam_policy" "costs_admin" {
   name        = "lza-costs-admin"
   description = "Provides the permissions to manage costs in the management account"
   policy      = file("${path.module}/assets/policies/costs-admin.json")
-  tags        = var.tags
+  tags        = local.tags
 
   provider = aws.management
 }
@@ -53,7 +53,7 @@ resource "aws_iam_policy" "costs_viewer" {
   name        = "lza-costs-viewer"
   description = "Provides the permissions to view costs in the management account"
   policy      = file("${path.module}/assets/policies/costs-viewer.json")
-  tags        = var.tags
+  tags        = local.tags
 
   provider = aws.management
 }
@@ -63,7 +63,7 @@ resource "aws_iam_policy" "default_permissions_boundary_management" {
   name        = var.default_permissions_boundary_name
   description = "Used by the LZA pipelines to enforce permissions"
   policy      = data.aws_iam_policy_document.default_permissions_boundary["management"].json
-  tags        = var.tags
+  tags        = local.tags
 
   provider = aws.management
 }
@@ -78,7 +78,7 @@ module "management_aws_accounts" {
   description             = "Used to manage and configure the AWS accounts"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.accounts.url
-  tags                    = var.tags
+  tags                    = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
@@ -107,7 +107,7 @@ module "management_aws_organization" {
   description             = "Used to manage and configure the AWS organization, units and features"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.organizations.url
-  tags                    = var.tags
+  tags                    = local.tags
 
   shared_repositories = compact([
     try(var.repositories.identity.url, null),
@@ -141,7 +141,7 @@ module "management_aws_bootstrap" {
   description             = "Used to manage and configure landing zone bootstrapping module"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.bootstrap.url
-  tags                    = var.tags
+  tags                    = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
@@ -177,7 +177,7 @@ module "management_sso_identity" {
   description             = "Used to manage the identity center permissionsets and assignments"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.identity.url
-  tags                    = var.tags
+  tags                    = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
@@ -225,7 +225,7 @@ module "management_landing_zone" {
   description             = "Used to manage and deploy the lanzing zone configuration"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.accelerator.url
-  tags                    = var.tags
+  tags                    = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.code_contributor.name}",
@@ -250,7 +250,7 @@ module "cost_management" {
   description             = "Used to provision a collection of cost controls and notifications"
   permission_boundary_arn = aws_iam_policy.cost_iam_boundary.arn
   repository              = var.repositories.cost_management.url
-  tags                    = var.tags
+  tags                    = local.tags
 
   read_only_inline_policies = {
     CostManagement = jsonencode({
