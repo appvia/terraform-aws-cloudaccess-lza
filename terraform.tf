@@ -11,9 +11,5 @@ terraform {
         aws.management,
       ]
     }
-    archive = {
-      source  = "hashicorp/archive"
-      version = "~> 2.0"
-    }
   }
 }

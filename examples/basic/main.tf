@@ -9,10 +9,9 @@ module "landing_zone" {
   aws_accounts = var.aws_accounts
   tags         = var.tags
 
-  enable_aws_support        = true
-  enable_breakglass         = true
-  enable_cis_alarms         = true
-  enable_securityhub_alarms = true
+  enable_aws_support = true
+  enable_breakglass  = true
+  enable_cis_alarms  = true
 
   notifications = {
     slack = {
