@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "default_permissions_boundary" {
 resource "aws_iam_policy" "cost_iam_boundary" {
   name        = var.costs_boundary_name
   description = "IAM boundary used by the cost management pipelines"
-  tags        = var.tags
+  tags        = local.tags
 
   policy = templatefile("${path.module}/assets/boundaries/costs-boundary.json", {
     account_id    = local.management_account_id

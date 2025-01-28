@@ -226,7 +226,7 @@ resource "aws_iam_user" "breakglass" {
   count = var.enable_breakglass ? var.breakglass_users : 0
 
   name = "lza-breakglass${count.index}"
-  tags = var.tags
+  tags = local.tags
 
   provider = aws.management
 }

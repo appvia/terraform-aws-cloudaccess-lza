@@ -4,7 +4,7 @@ resource "aws_iam_policy" "default_permissions_boundary_audit" {
   name        = var.default_permissions_boundary_name
   description = "Used by the LZA pipelines to enforce permissions"
   policy      = data.aws_iam_policy_document.default_permissions_boundary["audit"].json
-  tags        = var.tags
+  tags        = local.tags
 
   provider = aws.audit
 }
@@ -19,7 +19,7 @@ module "audit_compliance" {
   description             = "Used to manage and configure the compliance security stack"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_audit.arn
   repository              = var.repositories.compliance.url
-  tags                    = var.tags
+  tags                    = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",

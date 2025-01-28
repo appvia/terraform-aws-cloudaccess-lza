@@ -1,20 +1,40 @@
 
+## Provision the notifications sns topics and destinations
+#trivy:ignore:AVD-AWS-0057 - (https://avd.aquasec.com/misconfig/aws/iam/avd-aws-0057)
+#trivy:ignore:AVD-DS-0002
+#trivy:ignore:AVD-DS-0013
+#trivy:ignore:AVD-DS-0015
+#trivy:ignore:AVD-DS-0026
+module "notifications" {
+  source  = "appvia/notifications/aws"
+  version = "1.1.0"
+
+  allowed_aws_services = ["lambda.amazonaws.com", "events.amazonaws.com"]
+  create_sns_topic     = true
+  email                = local.notifications_email
+  enable_slack         = local.enable_slack_notifications
+  enable_teams         = local.enable_teams_notifications
+  slack                = local.notifications_slack
+  sns_topic_name       = local.notifications_sns_topic_name
+  tags                 = local.tags
+  teams                = local.notifications_teams
+
+  providers = {
+    aws = aws.management
+  }
+}
+
 ## Provision the CIS AWS Foundations CloudWatch Alarms
 module "alarm_baseline" {
   count   = var.enable_cis_alarms ? 1 : 0
   source  = "appvia/alarm-baseline/aws"
-  version = "0.2.7"
+  version = "0.3.0"
 
-  create_sns_topic                    = true
   enable_iam_changes                  = false
   enable_mfa_console_signin_allow_sso = true
   enable_organizations_changes        = false
-  notification                        = local.notifications
-  tags                                = var.tags
-  accounts_id_to_name                 = var.accounts_id_to_name
-  cloudwatch_log_group_retention      = 3
-  identity_center_start_url           = var.identity_center_start_url
-  identity_center_role                = var.cloudwatch_identity_center_role
+  sns_topic_arn                       = module.notifications.sns_topic_arn
+  tags                                = local.tags
 
   providers = {
     aws = aws.management

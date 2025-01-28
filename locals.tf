@@ -18,23 +18,33 @@ locals {
     "RoleName" = var.aws_support_role_name
   }
 
+  ## The tags to apply to all resources
+  tags = var.tags
+
   ## Indicates if the notifications for slack are enabled
   enable_slack_notifications = var.notifications.slack != null
-  ## Indicates if the notifications for email are enabled
-  enable_email_notifications = length(var.notifications.email.addresses) > 0
+  ## Indicates if the notifications for teams are enabled
+  enable_teams_notifications = var.notifications.teams != null
 
-  ## The configuration for the slack notification
-  slack = local.enable_slack_notifications ? {
-    lambda_name = var.notifications.lambda_name
-    webhook_url = var.notifications.slack.webhook_url
+  ## The configuration for slack notifications
+  notifications_slack = var.notifications.slack.webhook_url != null ? {
+    lambda_name        = "lza-slack-ca-notifications-${local.region}"
+    lambda_description = "Lambda function to forward notifications to slack to an SNS topic"
+    webhook_url        = var.notifications.slack.webhook_url
   } : null
 
-  email = {
-    addresses = var.notifications.email.addresses
-  }
+  ## The configuration for ms team notifications
+  notifications_teams = var.notifications.teams.webhook_url != null ? {
+    lambda_name        = "lza-teams-ca-notifications-${local.region}"
+    lambda_description = "Lambda function to forward notifications to teams to an SNS topic"
+    webhook_url        = var.notifications.teams.webhook_url
+  } : null
 
-  notifications = {
-    email = (local.enable_email_notifications ? local.email : null)
-    slack = (local.enable_slack_notifications ? local.slack : null)
-  }
+  ## The configuration for email notifications
+  notifications_email = var.notifications.email.addresses != null ? {
+    addresses = var.notifications.email.addresses
+  } : null
+
+  ## Name of the sns topic for notifications for budget and cost alerts
+  notifications_sns_topic_name = "lza-cloudaccess-notifications"
 }
