@@ -60,8 +60,8 @@ variable "notifications" {
     email = {
       addresses = []
     }
-    slack = {}
-    teams = {}
+    slack = null
+    teams = null
   }
 }
 
