@@ -28,14 +28,14 @@ locals {
 
   ## The configuration for slack notifications
   notifications_slack = var.notifications.slack.webhook_url != null ? {
-    lambda_name        = "lza-slack-notifications-${local.region}"
+    lambda_name        = "lza-slack-ca-notifications-${local.region}"
     lambda_description = "Lambda function to forward notifications to slack to an SNS topic"
     webhook_url        = var.notifications.slack.webhook_url
   } : null
 
   ## The configuration for ms team notifications
   notifications_teams = var.notifications.teams.webhook_url != null ? {
-    lambda_name        = "lza-teams-notifications-${local.region}"
+    lambda_name        = "lza-teams-ca-notifications-${local.region}"
     lambda_description = "Lambda function to forward notifications to teams to an SNS topic"
     webhook_url        = var.notifications.teams.webhook_url
   } : null
@@ -46,5 +46,5 @@ locals {
   } : null
 
   ## Name of the sns topic for notifications for budget and cost alerts
-  notifications_sns_topic_name = "lza-general-notifications"
+  notifications_sns_topic_name = "lza-cloudaccess-notifications"
 }
