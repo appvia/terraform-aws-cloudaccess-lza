@@ -202,6 +202,23 @@ module "management_sso_identity" {
           Action = [
             "sso:DeleteInlinePolicyFromPermissionSet",
             "sso:PutInlinePolicyToPermissionSet",
+            "secretsmanager:GetSecretValue",
+            
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+      ]
+    })
+  }
+
+  read_only_inline_policies = {
+    "additional" = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = [
+            "secretsmanager:GetSecretValue",
           ]
           Effect   = "Allow"
           Resource = "*"
