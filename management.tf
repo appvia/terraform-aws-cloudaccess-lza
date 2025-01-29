@@ -12,6 +12,17 @@ resource "aws_iam_policy" "user_management" {
   provider = aws.management
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
+resource "aws_iam_policy" "secretsmanager_get_value" {
+  name        = "lza-secretsmanager-get-value"
+  description = "Provides the permissions to get the value of secrets from secrets manager"
+  policy      = file("${path.module}/assets/policies/secretsmanager-get-value.json")
+  tags        = local.tags
+
+  provider = aws.management
+}
+
+
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "code_contributor" {
   name        = "lza-code-contributor"
@@ -183,7 +194,8 @@ module "management_sso_identity" {
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
     "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
-    "arn:aws:iam::aws:policy/ReadOnlyAccess"
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.secretsmanager_get_value.name}",
   ]
 
   read_write_policy_arns = [
