@@ -27,21 +27,21 @@ locals {
   enable_teams_notifications = var.notifications.teams != null
 
   ## The configuration for slack notifications
-  notifications_slack = var.notifications.slack.webhook_url != null ? {
+  notifications_slack = can(var.notifications.slack.webhook_url) ? {
     lambda_name        = "lza-slack-ca-notifications-${local.region}"
     lambda_description = "Lambda function to forward notifications to slack to an SNS topic"
     webhook_url        = var.notifications.slack.webhook_url
   } : null
 
   ## The configuration for ms team notifications
-  notifications_teams = var.notifications.teams.webhook_url != null ? {
+  notifications_teams = can(var.notifications.teams.webhook_url) ? {
     lambda_name        = "lza-teams-ca-notifications-${local.region}"
     lambda_description = "Lambda function to forward notifications to teams to an SNS topic"
     webhook_url        = var.notifications.teams.webhook_url
   } : null
 
   ## The configuration for email notifications
-  notifications_email = var.notifications.email.addresses != null ? {
+  notifications_email = can(var.notifications.email.addresses) ? {
     addresses = var.notifications.email.addresses
   } : null
 
