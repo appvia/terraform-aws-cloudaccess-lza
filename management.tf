@@ -192,6 +192,7 @@ module "management_sso_identity" {
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     "arn:aws:iam::aws:policy/IAMFullAccess",
+    "arn:aws:iam::aws:policy/Lambda_FullAccess",
   ]
 
   read_write_inline_policies = {
@@ -203,7 +204,6 @@ module "management_sso_identity" {
             "sso:DeleteInlinePolicyFromPermissionSet",
             "sso:PutInlinePolicyToPermissionSet",
             "secretsmanager:GetSecretValue",
-            
           ]
           Effect   = "Allow"
           Resource = "*"
