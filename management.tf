@@ -193,6 +193,9 @@ module "management_sso_identity" {
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     "arn:aws:iam::aws:policy/IAMFullAccess",
     "arn:aws:iam::aws:policy/Lambda_FullAccess",
+    "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
   ]
 
   read_write_inline_policies = {
