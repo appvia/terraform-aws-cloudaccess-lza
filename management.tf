@@ -12,6 +12,16 @@ resource "aws_iam_policy" "user_management" {
   provider = aws.management
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
+resource "aws_iam_policy" "idp_scim_sync" {
+  name        = "lza-idp-scim-sync"
+  description = "Provides the permissions to sync users from IDP to identity center"
+  policy      = file("${path.module}/assets/policies/idp-scim-sync.json")
+  tags        = local.tags
+
+  provider = aws.management
+}
+
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "code_contributor" {
   name        = "lza-code-contributor"
@@ -188,16 +198,11 @@ module "management_sso_identity" {
 
   read_write_policy_arns = [
     "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.user_management.name}",
+    "arn:aws:iam::$${local.management_account_id}:policy/${aws_iam_policy.idp_scim_sync.name}",
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     "arn:aws:iam::aws:policy/IAMFullAccess",
-    "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
-    "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
-    "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-    "arn:aws:iam::aws:policy/AmazonEventBridgeFullAccess"
   ]
 
   read_write_inline_policies = {
