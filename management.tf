@@ -198,7 +198,7 @@ module "management_sso_identity" {
 
   read_write_policy_arns = [
     "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.user_management.name}",
-    "arn:aws:iam::$${local.management_account_id}:policy/${aws_iam_policy.idp_scim_sync.name}",
+    "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.idp_scim_sync.name}",
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
