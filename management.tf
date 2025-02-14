@@ -141,6 +141,34 @@ module "management_aws_organization" {
   }
 }
 
+## Used to provision the aws compliance security stack
+module "audit_compliance_management" {
+  count   = var.repositories.compliance != null ? 1 : 0
+  source  = "appvia/oidc/aws//modules/role"
+  version = "1.3.6"
+
+  name                    = var.repositories.compliance.role_name
+  description             = "Used to manage and configure the compliance security stack in management account"
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_audit.arn
+  repository              = var.repositories.compliance.url
+  tags                    = local.tags
+
+  read_only_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
+    "arn:aws:iam::aws:policy/AWSSSOReadOnly",
+    "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  ]
+
+  read_write_policy_arns = [
+    "arn:aws:iam::aws:policy/AdministratorAccess",
+  ]
+
+  providers = {
+    aws = aws.management
+  }
+}
+
 ## Used to provision the lz bootstrapping pipeline
 module "management_aws_bootstrap" {
   count   = var.repositories.bootstrap != null ? 1 : 0
