@@ -149,7 +149,7 @@ module "audit_compliance_management" {
 
   name                    = var.repositories.compliance.role_name
   description             = "Used to manage and configure the compliance security stack in management account"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_audit.arn
+  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.compliance.url
   tags                    = local.tags
 
