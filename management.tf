@@ -117,12 +117,8 @@ module "management_aws_organization" {
   description             = "Used to manage and configure the AWS organization, units and features"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.organizations.url
+  shared_repositories     = var.repositories.organizations.shared
   tags                    = local.tags
-
-  shared_repositories = compact([
-    try(var.repositories.identity.url, null),
-    try(var.repositories.compliance.url, null)
-  ])
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
@@ -151,6 +147,7 @@ module "audit_compliance_management" {
   description             = "Used to manage and configure the compliance security stack in management account"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.compliance.url
+  shared_repositories     = var.repositories.compliance.shared
   tags                    = local.tags
 
   read_only_policy_arns = [
@@ -179,6 +176,7 @@ module "management_aws_bootstrap" {
   description             = "Used to manage and configure landing zone bootstrapping module"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.bootstrap.url
+  shared_repositories     = var.repositories.bootstrap.shared
   tags                    = local.tags
 
   read_only_policy_arns = [
@@ -215,6 +213,7 @@ module "management_sso_identity" {
   description             = "Used to manage the identity center permissionsets and assignments"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.identity.url
+  shared_repositories     = var.repositories.identity.shared
   tags                    = local.tags
 
   read_only_policy_arns = [
@@ -280,6 +279,7 @@ module "management_landing_zone" {
   description             = "Used to manage and deploy the lanzing zone configuration"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.accelerator.url
+  shared_repositories     = var.repositories.accelerator.shared
   tags                    = local.tags
 
   read_only_policy_arns = [
@@ -305,6 +305,7 @@ module "cost_management" {
   description             = "Used to provision a collection of cost controls and notifications"
   permission_boundary_arn = aws_iam_policy.cost_iam_boundary.arn
   repository              = var.repositories.cost_management.url
+  shared_repositories     = var.repositories.cost_management.shared
   tags                    = local.tags
 
   read_only_inline_policies = {

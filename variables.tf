@@ -83,30 +83,37 @@ variable "repositories" {
     accelerator = optional(object({
       url       = string
       role_name = optional(string, "lza-accelerator")
+      shared    = optional(list(string), [])
     }), null)
     accounts = optional(object({
       url       = string
       role_name = optional(string, "lza-accounts")
+      shared    = optional(list(string), [])
     }), null)
     bootstrap = optional(object({
       url       = string
       role_name = optional(string, "lza-bootstrap")
+      shared    = optional(list(string), [])
     }), null)
     compliance = optional(object({
       url       = string
       role_name = optional(string, "lza-compliance")
+      shared    = optional(list(string), [])
     }), null)
     cost_management = optional(object({
       url       = string
       role_name = optional(string, "lza-cost-management")
+      shared    = optional(list(string), [])
     }), null)
     identity = optional(object({
       url       = string
       role_name = optional(string, "lza-identity")
+      shared    = optional(list(string), [])
     }), null)
     organizations = optional(object({
       url       = string
       role_name = optional(string, "lza-organization")
+      shared    = optional(list(string), [])
     }), null)
   })
   default = {}

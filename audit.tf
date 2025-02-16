@@ -19,6 +19,7 @@ module "audit_compliance" {
   description             = "Used to manage and configure the compliance security stack"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_audit.arn
   repository              = var.repositories.compliance.url
+  shared_repositories     = var.repositories.compliance.shared
   tags                    = local.tags
 
   read_only_policy_arns = [
