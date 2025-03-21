@@ -7,7 +7,7 @@
 #trivy:ignore:AVD-DS-0026
 module "notifications" {
   source  = "appvia/notifications/aws"
-  version = "1.1.0"
+  version = "2.0.1"
 
   allowed_aws_services = ["lambda.amazonaws.com", "events.amazonaws.com"]
   create_sns_topic     = true
