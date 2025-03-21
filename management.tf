@@ -238,6 +238,7 @@ module "management_sso_identity" {
       Statement = [
         {
           Action = [
+            "kms:PutKeyPolicy",
             "sso:DeleteInlinePolicyFromPermissionSet",
             "sso:PutInlinePolicyToPermissionSet",
             "secretsmanager:GetSecretValue",
