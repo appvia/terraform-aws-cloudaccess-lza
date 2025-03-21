@@ -6,8 +6,9 @@
 #trivy:ignore:AVD-DS-0015
 #trivy:ignore:AVD-DS-0026
 module "notifications" {
-  source  = "appvia/notifications/aws"
-  version = "2.0.1"
+  source = "github.com/appvia/terraform-aws-notifications.git?ref=nonsensitive-var"
+  # source  = "appvia/notifications/aws"
+  # version = "2.0.1"
 
   allowed_aws_services = ["lambda.amazonaws.com", "events.amazonaws.com"]
   create_sns_topic     = true
