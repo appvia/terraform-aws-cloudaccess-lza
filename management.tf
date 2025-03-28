@@ -88,6 +88,7 @@ module "management_aws_accounts" {
   description             = "Used to manage and configure the AWS accounts"
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.accounts.url
+  shared_repositories     = var.repositories.accounts.shared
   tags                    = local.tags
 
   read_only_policy_arns = [
