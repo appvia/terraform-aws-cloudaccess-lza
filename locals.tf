@@ -21,11 +21,6 @@ locals {
   ## The tags to apply to all resources
   tags = var.tags
 
-  ## Indicates if the notifications for slack are enabled
-  enable_slack_notifications = var.notifications.slack != null
-  ## Indicates if the notifications for teams are enabled
-  enable_teams_notifications = var.notifications.teams != null
-
   ## The configuration for slack notifications
   notifications_slack = can(var.notifications.slack.webhook_url) ? {
     lambda_name        = "lza-slack-ca-notifications-${local.region}"

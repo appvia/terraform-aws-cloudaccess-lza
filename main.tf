@@ -1,23 +1,22 @@
 
 ## Provision the notifications sns topics and destinations
-#trivy:ignore:AVD-AWS-0057 - (https://avd.aquasec.com/misconfig/aws/iam/avd-aws-0057)
-#trivy:ignore:AVD-DS-0002
-#trivy:ignore:AVD-DS-0013
-#trivy:ignore:AVD-DS-0015
-#trivy:ignore:AVD-DS-0026
 module "notifications" {
-  source  = "appvia/notifications/aws"
-  version = "1.1.0"
+  source  = "appvia/notify/aws"
+  version = "0.0.5"
 
-  allowed_aws_services = ["lambda.amazonaws.com", "events.amazonaws.com"]
-  create_sns_topic     = true
-  email                = local.notifications_email
-  enable_slack         = local.enable_slack_notifications
-  enable_teams         = local.enable_teams_notifications
-  slack                = local.notifications_slack
-  sns_topic_name       = local.notifications_sns_topic_name
-  tags                 = local.tags
-  teams                = local.notifications_teams
+  allowed_aws_services = [
+    "budgets.amazonaws.com",
+    "cloudwatch.amazonaws.com",
+    "cloudtrail.amazonaws.com",
+    "events.amazonaws.com",
+  ]
+
+  create_sns_topic = true
+  email            = local.notifications_email
+  slack            = local.notifications_slack
+  sns_topic_name   = local.notifications_sns_topic_name
+  tags             = local.tags
+  teams            = local.notifications_teams
 
   providers = {
     aws = aws.management
