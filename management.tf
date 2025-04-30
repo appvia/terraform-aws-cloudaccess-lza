@@ -72,7 +72,7 @@ resource "aws_iam_policy" "default_permissions_boundary_management" {
 module "management_aws_accounts" {
   count   = var.repositories.accounts != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.6"
+  version = "1.3.10"
 
   name                    = var.repositories.accounts.role_name
   description             = "Used to manage and configure the AWS accounts"
@@ -101,7 +101,7 @@ module "management_aws_accounts" {
 module "management_aws_organization" {
   count   = var.repositories.organizations != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.6"
+  version = "1.3.10"
 
   name                    = var.repositories.organizations.role_name
   description             = "Used to manage and configure the AWS organization, units and features"
@@ -135,7 +135,7 @@ module "management_aws_organization" {
 module "management_aws_bootstrap" {
   count   = var.repositories.bootstrap != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.6"
+  version = "1.3.10"
 
   name                    = var.repositories.bootstrap.role_name
   description             = "Used to manage and configure landing zone bootstrapping module"
@@ -171,7 +171,7 @@ module "management_aws_bootstrap" {
 module "management_sso_identity" {
   count   = var.repositories.identity != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.6"
+  version = "1.3.10"
 
   name                    = var.repositories.identity.role_name
   description             = "Used to manage the identity center permissionsets and assignments"
@@ -219,7 +219,7 @@ module "management_sso_identity" {
 module "management_landing_zone" {
   count   = var.repositories.accelerator != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.6"
+  version = "1.3.10"
 
   name                    = var.repositories.accelerator.role_name
   description             = "Used to manage and deploy the lanzing zone configuration"
@@ -244,7 +244,7 @@ module "management_landing_zone" {
 module "cost_management" {
   count   = var.repositories.cost_management != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "1.3.6"
+  version = "1.3.10"
 
   name                    = var.repositories.cost_management.role_name
   description             = "Used to provision a collection of cost controls and notifications"
