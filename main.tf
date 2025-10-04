@@ -27,7 +27,7 @@ module "notifications" {
 module "alarm_baseline" {
   count   = var.enable_cis_alarms ? 1 : 0
   source  = "appvia/alarm-baseline/aws"
-  version = "0.3.1"
+  version = "0.3.2"
 
   enable_iam_changes                  = false
   enable_mfa_console_signin_allow_sso = true
