@@ -26,7 +26,8 @@ module "notifications" {
 ## Provision the CIS AWS Foundations CloudWatch Alarms
 module "alarm_baseline" {
   count   = var.enable_cis_alarms ? 1 : 0
-  source  = "appvia/alarm-baseline/aws?ref=fix/sa-623-unauthorised-api-call"
+  source = "github.com/appvia/terraform-aws-alarm-baseline?ref=fix/sa-623-unauthorised-api-call"
+  # source  = "appvia/alarm-baseline/aws"
   # version = "0.3.3"
 
   enable_iam_changes                             = false
