@@ -88,9 +88,9 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0.0 |
-| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | >= 5.0.0 |
-| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | >= 5.0.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.0.0 |
+| <a name="provider_aws.audit"></a> [aws.audit](#provider\_aws.audit) | >= 6.0.0 |
+| <a name="provider_aws.management"></a> [aws.management](#provider\_aws.management) | >= 6.0.0 |
 
 ## Inputs
 
@@ -108,6 +108,7 @@ The `terraform-docs` utility is used to generate this README. Follow the below s
 | <a name="input_enable_cis_alarms"></a> [enable\_cis\_alarms](#input\_enable\_cis\_alarms) | Indicates if we should enable CIS alerts | `bool` | `true` | no |
 | <a name="input_notifications"></a> [notifications](#input\_notifications) | Configuration for the notifications | <pre>object({<br/>    lambda_name = optional(string, "lza-ca-notifications-slack")<br/>    email = optional(object({<br/>      addresses = list(string)<br/>    }), null)<br/>    slack = optional(object({<br/>      webhook_url = string<br/>    }), null)<br/>    teams = optional(object({<br/>      webhook_url = string<br/>    }), null)<br/>  })</pre> | <pre>{<br/>  "email": {<br/>    "addresses": []<br/>  },<br/>  "lambda_name": "lza-ca-notifications-slack",<br/>  "slack": null,<br/>  "teams": null<br/>}</pre> | no |
 | <a name="input_repositories"></a> [repositories](#input\_repositories) | List of repository locations for the pipelines | <pre>object({<br/>    accelerator = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-accelerator")<br/>      shared    = optional(list(string), [])<br/>    }), null)<br/>    accounts = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-accounts")<br/>      shared    = optional(list(string), [])<br/>    }), null)<br/>    bootstrap = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-bootstrap")<br/>      shared    = optional(list(string), [])<br/>    }), null)<br/>    compliance = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-compliance")<br/>      shared    = optional(list(string), [])<br/>    }), null)<br/>    cost_management = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-cost-management")<br/>      shared    = optional(list(string), [])<br/>    }), null)<br/>    identity = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-identity")<br/>      shared    = optional(list(string), [])<br/>    }), null)<br/>    organizations = optional(object({<br/>      url       = string<br/>      role_name = optional(string, "lza-organization")<br/>      shared    = optional(list(string), [])<br/>    }), null)<br/>  })</pre> | `{}` | no |
+| <a name="input_unauthorized_api_calls_extra_excluded_services"></a> [unauthorized\_api\_calls\_extra\_excluded\_services](#input\_unauthorized\_api\_calls\_extra\_excluded\_services) | Optional list of additional AWS services to exclude from unauthorized API call metric filter. | `list(string)` | `[]` | no |
 
 ## Outputs
 
