@@ -27,13 +27,14 @@ module "notifications" {
 module "alarm_baseline" {
   count   = var.enable_cis_alarms ? 1 : 0
   source  = "appvia/alarm-baseline/aws"
-  version = "0.3.2"
+  version = "0.3.3"
 
-  enable_iam_changes                  = false
-  enable_mfa_console_signin_allow_sso = true
-  enable_organizations_changes        = false
-  sns_topic_arn                       = module.notifications.sns_topic_arn
-  tags                                = local.tags
+  enable_iam_changes                             = false
+  enable_mfa_console_signin_allow_sso            = true
+  enable_organizations_changes                   = false
+  sns_topic_arn                                  = module.notifications.sns_topic_arn
+  tags                                           = local.tags
+  unauthorized_api_calls_extra_excluded_services = var.unauthorized_api_calls_extra_excluded_services
 
   providers = {
     aws = aws.management
