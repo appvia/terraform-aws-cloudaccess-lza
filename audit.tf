@@ -13,7 +13,7 @@ resource "aws_iam_policy" "default_permissions_boundary_audit" {
 module "audit_compliance" {
   count   = var.repositories.compliance != null ? 1 : 0
   source  = "appvia/oidc/aws//modules/role"
-  version = "2.0.3"
+  version = "3.0.1"
 
   name                    = var.repositories.compliance.role_name
   description             = "Used to manage and configure the compliance security stack"
