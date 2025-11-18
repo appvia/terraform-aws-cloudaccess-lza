@@ -2,7 +2,7 @@
 ## Provision the notifications sns topics and destinations
 module "notifications" {
   source  = "appvia/notify/aws"
-  version = "0.0.7"
+  version = "0.0.6"
 
   allowed_aws_services = [
     "budgets.amazonaws.com",
@@ -26,9 +26,8 @@ module "notifications" {
 ## Provision the CIS AWS Foundations CloudWatch Alarms
 module "alarm_baseline" {
   count   = var.enable_cis_alarms ? 1 : 0
-  source = "github.com/appvia/terraform-aws-alarm-baseline?ref=fix/sa-623-unauthorised-api-call"
-  # source  = "appvia/alarm-baseline/aws"
-  # version = "0.3.3"
+  source  = "appvia/alarm-baseline/aws"
+  version = "0.3.4"
 
   enable_iam_changes                             = false
   enable_mfa_console_signin_allow_sso            = true
