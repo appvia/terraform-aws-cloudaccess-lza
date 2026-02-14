@@ -5,7 +5,7 @@ locals {
   ## The account id of the management account
   management_account_id = data.aws_organizations_organization.current.master_account_id
   ## The current region name
-  region = data.aws_region.current.name
+  region = data.aws_region.current.region
   ## The current account id
   account_id = data.aws_caller_identity.current.account_id
 
