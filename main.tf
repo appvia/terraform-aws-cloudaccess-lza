@@ -32,6 +32,7 @@ module "alarm_baseline" {
   enable_iam_changes                             = false
   enable_mfa_console_signin_allow_sso            = true
   enable_organizations_changes                   = false
+  cloudtrail_log_group_name                      = var.organization_log_group_name
   sns_topic_arn                                  = module.notifications.sns_topic_arn
   tags                                           = local.tags
   unauthorized_api_calls_extra_excluded_services = var.unauthorized_api_calls_extra_excluded_services

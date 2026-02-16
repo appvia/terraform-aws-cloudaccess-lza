@@ -125,6 +125,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "organization_log_group_name" {
+  description = "The name of the CloudWatch log group for the AWS Organization. If not provided, will use the default log group."
+  type        = string
+  default     = "aws-controltower/CloudTrailLogs"
+}
+
 variable "unauthorized_api_calls_extra_excluded_services" {
   description = "Optional list of additional AWS services to exclude from unauthorized API call metric filter."
   type        = list(string)
