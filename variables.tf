@@ -8,19 +8,19 @@ variable "aws_accounts" {
 variable "aws_support_stack_name" {
   description = "Name of the stackset used to deploy the aws support role"
   type        = string
-  default     = "lza-aws-support-role"
+  default     = "lz-aws-support-role"
 }
 
 variable "costs_boundary_name" {
   description = "Name of the IAM policy to use as a permissions boundary for cost-related roles"
   type        = string
-  default     = "lza-costs-boundary"
+  default     = "lz-costs-boundary"
 }
 
 variable "default_permissions_boundary_name" {
   description = "Name of the default IAM policy used by roles we provision"
   type        = string
-  default     = "lza-base-default-boundary"
+  default     = "lz-base-default-boundary"
 }
 
 variable "aws_support_role_name" {
@@ -44,7 +44,7 @@ variable "enable_cis_alarms" {
 variable "notifications" {
   description = "Configuration for the notifications"
   type = object({
-    lambda_name = optional(string, "lza-ca-notifications-slack")
+    lambda_name = optional(string, "lz-ca-notifications-slack")
     email = optional(object({
       addresses = list(string)
     }), null)
@@ -56,7 +56,7 @@ variable "notifications" {
     }), null)
   })
   default = {
-    lambda_name = "lza-ca-notifications-slack"
+    lambda_name = "lz-ca-notifications-slack"
     email = {
       addresses = []
     }
@@ -82,37 +82,37 @@ variable "repositories" {
   type = object({
     accelerator = optional(object({
       url       = string
-      role_name = optional(string, "lza-accelerator")
+      role_name = optional(string, "lz-aws-accelerator")
       shared    = optional(list(string), [])
     }), null)
     accounts = optional(object({
       url       = string
-      role_name = optional(string, "lza-accounts")
+      role_name = optional(string, "lz-aws-accounts")
       shared    = optional(list(string), [])
     }), null)
     bootstrap = optional(object({
       url       = string
-      role_name = optional(string, "lza-bootstrap")
+      role_name = optional(string, "lz-aws-bootstrap")
       shared    = optional(list(string), [])
     }), null)
     compliance = optional(object({
       url       = string
-      role_name = optional(string, "lza-compliance")
+      role_name = optional(string, "lz-aws-compliance")
       shared    = optional(list(string), [])
     }), null)
     cost_management = optional(object({
       url       = string
-      role_name = optional(string, "lza-cost-management")
+      role_name = optional(string, "lz-aws-cost-management")
       shared    = optional(list(string), [])
     }), null)
     identity = optional(object({
       url       = string
-      role_name = optional(string, "lza-identity")
+      role_name = optional(string, "lz-aws-identity")
       shared    = optional(list(string), [])
     }), null)
     organizations = optional(object({
       url       = string
-      role_name = optional(string, "lza-organization")
+      role_name = optional(string, "lz-aws-organizations")
       shared    = optional(list(string), [])
     }), null)
   })
@@ -122,6 +122,7 @@ variable "repositories" {
 variable "tags" {
   description = "Tags to apply to all resources"
   type        = map(string)
+  default     = {}
 }
 
 variable "unauthorized_api_calls_extra_excluded_services" {

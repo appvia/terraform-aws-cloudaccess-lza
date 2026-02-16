@@ -4,7 +4,7 @@
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "user_management" {
-  name        = "lza-user-management"
+  name        = "lz-user-management"
   description = "Provides the permissions to manage users in identity center"
   policy      = file("${path.module}/assets/policies/user-management.json")
   tags        = local.tags
@@ -14,7 +14,7 @@ resource "aws_iam_policy" "user_management" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "idp_scim_sync" {
-  name        = "lza-idp-scim-sync"
+  name        = "lz-idp-scim-sync"
   description = "Provides the permissions to sync users from IDP to identity center"
   policy      = file("${path.module}/assets/policies/idp-scim-sync.json")
   tags        = local.tags
@@ -24,7 +24,7 @@ resource "aws_iam_policy" "idp_scim_sync" {
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "code_contributor" {
-  name        = "lza-code-contributor"
+  name        = "lz-code-contributor"
   description = "Provides the permissions to validate the landing zone code"
   policy = templatefile("${path.module}/assets/policies/code-contributor.json", {
     management_account_id = local.management_account_id
@@ -37,7 +37,7 @@ resource "aws_iam_policy" "code_contributor" {
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "code_release" {
-  name        = "lza-code-release"
+  name        = "lz-code-release"
   description = "Provides the permissions to release the landing zone code"
   policy = templatefile("${path.module}/assets/policies/code-release.json", {
     management_account_id = local.management_account_id
@@ -50,7 +50,7 @@ resource "aws_iam_policy" "code_release" {
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "costs_admin" {
-  name        = "lza-costs-admin"
+  name        = "lz-costs-admin"
   description = "Provides the permissions to manage costs in the management account"
   policy      = file("${path.module}/assets/policies/costs-admin.json")
   tags        = local.tags
@@ -60,7 +60,7 @@ resource "aws_iam_policy" "costs_admin" {
 
 # tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "costs_viewer" {
-  name        = "lza-costs-viewer"
+  name        = "lz-costs-viewer"
   description = "Provides the permissions to view costs in the management account"
   policy      = file("${path.module}/assets/policies/costs-viewer.json")
   tags        = local.tags
@@ -71,7 +71,7 @@ resource "aws_iam_policy" "costs_viewer" {
 ## Provision the iam boundary within the management account
 resource "aws_iam_policy" "default_permissions_boundary_management" {
   name        = var.default_permissions_boundary_name
-  description = "Used by the LZA pipelines to enforce permissions"
+  description = "Used by the LZ pipelines to enforce permissions"
   policy      = data.aws_iam_policy_document.default_permissions_boundary["management"].json
   tags        = local.tags
 
