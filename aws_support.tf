@@ -42,7 +42,6 @@ resource "aws_cloudformation_stack_set_instance" "aws_support_stack_instance" {
   deployment_targets {
     organizational_unit_ids = [data.aws_organizations_organization.current.roots[0].id]
   }
-  region         = local.region
   stack_set_name = local.aws_support_stack_name
 
   depends_on = [aws_cloudformation_stack_set.aws_support_stack]
