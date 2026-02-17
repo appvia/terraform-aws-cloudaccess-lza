@@ -173,12 +173,14 @@ module "management_aws_bootstrap" {
   source  = "appvia/oidc/aws//modules/role"
   version = "3.0.2"
 
-  name                    = var.repositories.bootstrap.role_name
-  description             = "Used to manage and configure landing zone bootstrapping module"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
-  repository              = var.repositories.bootstrap.url
-  shared_repositories     = var.repositories.bootstrap.shared
-  tags                    = local.tags
+  name                       = var.repositories.bootstrap.role_name
+  description                = "Used to manage and configure landing zone bootstrapping module"
+  permission_boundary_arn    = aws_iam_policy.default_permissions_boundary_management.arn
+  repository                 = var.repositories.bootstrap.url
+  read_only_inline_policies  = var.repositories.bootstrap.additional_read_permissions
+  read_write_inline_policies = var.repositories.bootstrap.additional_write_permissions
+  shared_repositories        = var.repositories.bootstrap.shared
+  tags                       = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
@@ -233,8 +235,8 @@ module "management_sso_identity" {
     "arn:aws:iam::aws:policy/IAMFullAccess",
   ]
 
-  read_write_inline_policies = {
-    "additional" = jsonencode({
+  read_write_inline_policies = merge({
+    LandingZoneAdditional = jsonencode({
       Version = "2012-10-17"
       Statement = [
         {
@@ -248,11 +250,12 @@ module "management_sso_identity" {
           Resource = "*"
         },
       ]
-    })
-  }
+    }) },
+    var.repositories.identity.additional_write_permissions,
+  )
 
-  read_only_inline_policies = {
-    "additional" = jsonencode({
+  read_only_inline_policies = merge({
+    LandingZoneAdditional = jsonencode({
       Version = "2012-10-17"
       Statement = [
         {
@@ -263,8 +266,8 @@ module "management_sso_identity" {
           Resource = "*"
         },
       ]
-    })
-  }
+    }) }, var.repositories.identity.additional_read_permissions,
+  )
 
   providers = {
     aws = aws.management
@@ -277,12 +280,14 @@ module "management_landing_zone" {
   source  = "appvia/oidc/aws//modules/role"
   version = "3.0.2"
 
-  name                    = var.repositories.accelerator.role_name
-  description             = "Used to manage and deploy the lanzing zone configuration"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
-  repository              = var.repositories.accelerator.url
-  shared_repositories     = var.repositories.accelerator.shared
-  tags                    = local.tags
+  name                       = var.repositories.accelerator.role_name
+  description                = "Used to manage and deploy the landing zone configuration"
+  permission_boundary_arn    = aws_iam_policy.default_permissions_boundary_management.arn
+  repository                 = var.repositories.accelerator.url
+  read_only_inline_policies  = var.repositories.accelerator.additional_read_permissions
+  read_write_inline_policies = var.repositories.accelerator.additional_write_permissions
+  shared_repositories        = var.repositories.accelerator.shared
+  tags                       = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.code_contributor.name}",
@@ -310,7 +315,7 @@ module "cost_management" {
   shared_repositories     = var.repositories.cost_management.shared
   tags                    = local.tags
 
-  read_only_inline_policies = {
+  read_only_inline_policies = merge({
     CostManagement = jsonencode({
       Version = "2012-10-17"
       Statement = [
@@ -336,9 +341,9 @@ module "cost_management" {
         },
       ]
     })
-  }
+  }, var.repositories.cost_management.additional_read_permissions)
 
-  read_write_inline_policies = {
+  read_write_inline_policies = merge({
     CostManagement = jsonencode({
       Version = "2012-10-17"
       Statement = [
@@ -367,7 +372,7 @@ module "cost_management" {
         },
       ]
     })
-  }
+  }, var.repositories.cost_management.additional_write_permissions)
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSBillingConductorReadOnlyAccess",

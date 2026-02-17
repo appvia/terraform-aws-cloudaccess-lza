@@ -15,12 +15,14 @@ module "audit_compliance" {
   source  = "appvia/oidc/aws//modules/role"
   version = "3.0.2"
 
-  name                    = var.repositories.compliance.role_name
-  description             = "Used to manage and configure the compliance security stack"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_audit.arn
-  repository              = var.repositories.compliance.url
-  shared_repositories     = var.repositories.compliance.shared
-  tags                    = local.tags
+  name                       = var.repositories.compliance.role_name
+  description                = "Used to manage and configure the compliance security stack"
+  permission_boundary_arn    = aws_iam_policy.default_permissions_boundary_audit.arn
+  repository                 = var.repositories.compliance.url
+  read_only_inline_policies  = var.repositories.compliance.additional_read_permissions
+  read_write_inline_policies = var.repositories.compliance.additional_write_permissions
+  shared_repositories        = var.repositories.compliance.shared
+  tags                       = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
