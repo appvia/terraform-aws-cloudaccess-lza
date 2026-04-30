@@ -220,19 +220,18 @@ module "management_sso_identity" {
   tags                    = local.tags
 
   read_only_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
     "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
     "arn:aws:iam::aws:policy/ReadOnlyAccess"
+    "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess",
   ]
 
   read_write_policy_arns = [
     "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.user_management.name}",
     "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.idp_scim_sync.name}",
-    "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
-    "arn:aws:iam::aws:policy/AWSSSOReadOnly",
-    "arn:aws:iam::aws:policy/ReadOnlyAccess",
-    "arn:aws:iam::aws:policy/IAMFullAccess",
+    "arn:aws:iam::aws:policy/AdministratorAccess",
   ]
 
   read_write_inline_policies = merge({
@@ -242,13 +241,28 @@ module "management_sso_identity" {
         {
           Action = [
             "kms:PutKeyPolicy",
-            "sso:DeleteInlinePolicyFromPermissionSet",
-            "sso:PutInlinePolicyToPermissionSet",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "AllowKMS"
+        },
+        {
+          Action = [
             "secretsmanager:GetSecretValue",
           ]
           Effect   = "Allow"
           Resource = "*"
+          Sid      = "AllowSecretsManager"
         },
+        {
+          Action = [
+            "sso:DeleteInlinePolicyFromPermissionSet",
+            "sso:PutInlinePolicyToPermissionSet",
+          ],
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "AllowSSO"
+        }
       ]
     }) },
     var.repositories.identity.additional_write_permissions,
