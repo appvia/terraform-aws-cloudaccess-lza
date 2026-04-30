@@ -220,12 +220,12 @@ module "management_sso_identity" {
   tags                    = local.tags
 
   read_only_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess",
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
     "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
-    "arn:aws:iam::aws:policy/ReadOnlyAccess"
-    "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess",
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
 
   read_write_policy_arns = [
