@@ -2,7 +2,7 @@
 ## Provision the notifications sns topics and destinations
 module "notifications" {
   source  = "appvia/notify/aws"
-  version = "0.1.3"
+  version = "0.1.4"
 
   allowed_aws_services = [
     "budgets.amazonaws.com",
