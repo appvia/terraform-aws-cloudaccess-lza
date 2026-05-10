@@ -133,6 +133,24 @@ module "management_aws_organization" {
     "arn:aws:iam::aws:policy/AdministratorAccess",
   ]
 
+  read_only_inline_policies = {
+    AllowControlTower = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Sid = "AllowReadOnlyControlTower"
+          Action = [
+            "controltower:Describe*",
+            "controltower:Get*",
+            "controltower:List*"
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+      ]
+    })
+  }
+
   providers = {
     aws = aws.management
   }
