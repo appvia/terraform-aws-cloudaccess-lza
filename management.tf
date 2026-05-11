@@ -103,6 +103,11 @@ module "management_aws_accounts" {
     "arn:aws:iam::aws:policy/AdministratorAccess",
   ]
 
+  # Additional read-only inline policies
+  read_only_inline_policies = var.repositories.accounts.additional_read_permissions
+  # Additional read-write inline policies
+  read_write_inline_policies = var.repositories.accounts.additional_write_permissions
+
   providers = {
     aws = aws.management
   }
@@ -133,7 +138,8 @@ module "management_aws_organization" {
     "arn:aws:iam::aws:policy/AdministratorAccess",
   ]
 
-  read_only_inline_policies = {
+  # Additional read-only inline policies
+  read_only_inline_policies = merge({
     AllowControlTower = jsonencode({
       Version = "2012-10-17"
       Statement = [
@@ -149,7 +155,10 @@ module "management_aws_organization" {
         },
       ]
     })
-  }
+  }, var.repositories.organizations.additional_read_permissions)
+
+  # Additional read-write inline policies
+  read_write_inline_policies = var.repositories.organizations.additional_write_permissions
 
   providers = {
     aws = aws.management
@@ -162,12 +171,14 @@ module "audit_compliance_management" {
   source  = "appvia/oidc/aws//modules/role"
   version = "3.0.3"
 
-  name                    = var.repositories.compliance.role_name
-  description             = "Used to manage and configure the compliance security stack in management account"
-  permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
-  repository              = var.repositories.compliance.url
-  shared_repositories     = var.repositories.compliance.shared
-  tags                    = local.tags
+  name                       = var.repositories.compliance.role_name
+  description                = "Used to manage and configure the compliance security stack in management account"
+  permission_boundary_arn    = aws_iam_policy.default_permissions_boundary_management.arn
+  read_only_inline_policies  = var.repositories.compliance.additional_read_permissions
+  read_write_inline_policies = var.repositories.compliance.additional_write_permissions
+  repository                 = var.repositories.compliance.url
+  shared_repositories        = var.repositories.compliance.shared
+  tags                       = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
