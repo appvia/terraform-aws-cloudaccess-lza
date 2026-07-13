@@ -24,6 +24,15 @@ module "audit_compliance" {
   shared_repositories        = var.repositories.compliance.shared
   tags                       = local.tags
 
+  common_provider             = var.common_provider
+  azuredevops_organization_id = var.azuredevops_organization_id
+  # This role runs in the audit account, a spoke of the management-account hub where the Azure
+  # DevOps OIDC provider is federated. When common_provider is "azuredevops", it trusts its
+  # counterpart role in the management account (module.audit_compliance_management) via
+  # sts:AssumeRole instead of federating OIDC directly - see terraform-aws-lza-bootstrap's
+  # iam_roles_azuredevops vs iam_roles_azuredevops_management split for the same pattern.
+  azuredevops_primary_role_account_id = var.common_provider == "azuredevops" ? local.management_account_id : null
+
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",

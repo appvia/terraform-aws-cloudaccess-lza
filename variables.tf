@@ -11,6 +11,24 @@ variable "aws_support_stack_name" {
   default     = "lz-aws-support-role"
 }
 
+variable "common_provider" {
+  description = "The CI/CD identity provider used as the OIDC trust for all roles provisioned by this module"
+  type        = string
+  default     = "github"
+
+  validation {
+    condition     = contains(["github", "gitlab", "azuredevops"], var.common_provider)
+    error_message = "Allowed values for common_provider are github, gitlab or azuredevops."
+  }
+
+}
+
+variable "azuredevops_organization_id" {
+  description = "The Azure DevOps organization ID (GUID, found under Organization Settings) used to build the OIDC issuer URL (https://vstoken.dev.azure.com/<organization_id>). Required when common_provider is 'azuredevops'. Repository values in var.repositories must then be formatted as '<organisation-name>/<project-name>/<service-connection-name>', and the read-only role for each repository requires a distinct '-ro' suffixed service connection."
+  type        = string
+  default     = null
+}
+
 variable "costs_boundary_name" {
   description = "Name of the IAM policy to use as a permissions boundary for cost-related roles"
   type        = string
@@ -85,7 +103,7 @@ variable "enable_breakglass" {
 }
 
 variable "repositories" {
-  description = "List of repository locations for the pipelines"
+  description = "List of repository locations for the pipelines. Each 'url' field should be a Git repository URL when common_provider is 'github' or 'gitlab', or '<organisation-name>/<project-name>/<service-connection-name>' when common_provider is 'azuredevops'."
   type = object({
     accelerator = optional(object({
       # The URL for the repository containing the accelerator pipeline code. This should be a Git repository URL.
