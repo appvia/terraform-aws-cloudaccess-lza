@@ -89,6 +89,7 @@ module "management_aws_accounts" {
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.accounts.url
   shared_repositories     = var.repositories.accounts.shared
+  repository_ids          = var.repositories.accounts.repository_ids
   tags                    = local.tags
 
   read_only_policy_arns = [
@@ -124,6 +125,7 @@ module "management_aws_organization" {
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.organizations.url
   shared_repositories     = var.repositories.organizations.shared
+  repository_ids          = var.repositories.organizations.repository_ids
   tags                    = local.tags
 
   read_only_policy_arns = [
@@ -178,6 +180,7 @@ module "audit_compliance_management" {
   read_write_inline_policies = var.repositories.compliance.additional_write_permissions
   repository                 = var.repositories.compliance.url
   shared_repositories        = var.repositories.compliance.shared
+  repository_ids             = var.repositories.compliance.repository_ids
   tags                       = local.tags
 
   read_only_policy_arns = [
@@ -209,6 +212,7 @@ module "management_aws_bootstrap" {
   read_only_inline_policies  = var.repositories.bootstrap.additional_read_permissions
   read_write_inline_policies = var.repositories.bootstrap.additional_write_permissions
   shared_repositories        = var.repositories.bootstrap.shared
+  repository_ids             = var.repositories.bootstrap.repository_ids
   tags                       = local.tags
 
   read_only_policy_arns = [
@@ -246,6 +250,7 @@ module "management_sso_identity" {
   permission_boundary_arn = aws_iam_policy.default_permissions_boundary_management.arn
   repository              = var.repositories.identity.url
   shared_repositories     = var.repositories.identity.shared
+  repository_ids          = var.repositories.identity.repository_ids
   tags                    = local.tags
 
   read_only_policy_arns = [
@@ -330,6 +335,7 @@ module "management_landing_zone" {
   read_only_inline_policies  = var.repositories.accelerator.additional_read_permissions
   read_write_inline_policies = var.repositories.accelerator.additional_write_permissions
   shared_repositories        = var.repositories.accelerator.shared
+  repository_ids             = var.repositories.accelerator.repository_ids
   tags                       = local.tags
 
   read_only_policy_arns = [
@@ -356,6 +362,7 @@ module "cost_management" {
   permission_boundary_arn = aws_iam_policy.cost_iam_boundary.arn
   repository              = var.repositories.cost_management.url
   shared_repositories     = var.repositories.cost_management.shared
+  repository_ids          = var.repositories.cost_management.repository_ids
   tags                    = local.tags
 
   read_only_inline_policies = merge({

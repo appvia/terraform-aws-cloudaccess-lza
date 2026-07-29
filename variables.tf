@@ -98,6 +98,10 @@ variable "repositories" {
       additional_read_permissions = optional(map(string), {})
       # A map of additional permissions (in the form of IAM policy actions) that should be added to the role
       additional_write_permissions = optional(map(string), {})
+      repository_ids = optional(map(object({
+        owner_id = string
+        repo_id  = string
+      })), {})
     }), null)
     accounts = optional(object({
       # The URL for the repository containing the accounts pipeline code. This should be a Git repository URL.
@@ -110,6 +114,10 @@ variable "repositories" {
       additional_read_permissions = optional(map(string), {})
       # A map of additional permissions (in the form of IAM policy actions) that should be added to the role
       additional_write_permissions = optional(map(string), {})
+      repository_ids = optional(map(object({
+        owner_id = string
+        repo_id  = string
+      })), {})
     }), null)
     bootstrap = optional(object({
       # The URL for the repository containing the bootstrap pipeline code. This should be a Git repository URL.
@@ -122,6 +130,10 @@ variable "repositories" {
       additional_read_permissions = optional(map(string), {})
       # A map of additional permissions (in the form of IAM policy actions) that should be added to the role
       additional_write_permissions = optional(map(string), {})
+      repository_ids = optional(map(object({
+        owner_id = string
+        repo_id  = string
+      })), {})
     }), null)
     compliance = optional(object({
       # The URL for the repository containing the compliance pipeline code. This should be a Git repository URL.
@@ -134,6 +146,10 @@ variable "repositories" {
       additional_read_permissions = optional(map(string), {})
       # A map of additional permissions (in the form of IAM policy actions) that should be added to the role
       additional_write_permissions = optional(map(string), {})
+      repository_ids = optional(map(object({
+        owner_id = string
+        repo_id  = string
+      })), {})
     }), null)
     cost_management = optional(object({
       # The URL for the repository containing the cost management pipeline code. This should be a Git repository URL.
@@ -146,6 +162,10 @@ variable "repositories" {
       additional_read_permissions = optional(map(string), {})
       # A map of additional permissions (in the form of IAM policy actions) that should be added to the role
       additional_write_permissions = optional(map(string), {})
+      repository_ids = optional(map(object({
+        owner_id = string
+        repo_id  = string
+      })), {})
     }), null)
     identity = optional(object({
       # The URL for the repository containing the identity pipeline code. This should be a Git repository URL.
@@ -158,6 +178,10 @@ variable "repositories" {
       additional_read_permissions = optional(map(string), {})
       # A map of additional permissions (in the form of IAM policy actions) that should be added to the role
       additional_write_permissions = optional(map(string), {})
+      repository_ids = optional(map(object({
+        owner_id = string
+        repo_id  = string
+      })), {})
     }), null)
     organizations = optional(object({
       # The URL for the repository containing the organizations pipeline code. This should be a Git repository URL.
@@ -170,6 +194,10 @@ variable "repositories" {
       additional_read_permissions = optional(map(string), {})
       # A map of additional permissions (in the form of IAM policy actions) that should be added to the role
       additional_write_permissions = optional(map(string), {})
+      repository_ids = optional(map(object({
+        owner_id = string
+        repo_id  = string
+      })), {})
     }), null)
   })
   default = {}

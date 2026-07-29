@@ -22,6 +22,7 @@ module "audit_compliance" {
   read_only_inline_policies  = var.repositories.compliance.additional_read_permissions
   read_write_inline_policies = var.repositories.compliance.additional_write_permissions
   shared_repositories        = var.repositories.compliance.shared
+  repository_ids             = var.repositories.compliance.repository_ids
   tags                       = local.tags
 
   read_only_policy_arns = [
