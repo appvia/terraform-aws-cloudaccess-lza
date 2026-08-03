@@ -235,7 +235,9 @@ module "management_aws_bootstrap" {
       Statement = [
         {
           Action = [
+            "iam:TagOpenIDConnectProvider",
             "iam:TagRole",
+            "iam:UntagOpenIDConnectProvider",
             "iam:UntagRole",
           ]
           Effect   = "Allow"
