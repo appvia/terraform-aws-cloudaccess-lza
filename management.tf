@@ -239,10 +239,12 @@ module "management_aws_bootstrap" {
             "iam:TagRole",
             "iam:UntagOpenIDConnectProvider",
             "iam:UntagRole",
+            "s3:TagResource",
+            "s3:UntagResource "
           ]
           Effect   = "Allow"
           Resource = "*"
-          Sid      = "AllowIAM"
+          Sid      = "AllowTagging"
         },
       ]
     }) },
