@@ -202,14 +202,13 @@ module "management_aws_bootstrap" {
   source  = "appvia/oidc/aws//modules/role"
   version = "3.1.1"
 
-  name                       = var.repositories.bootstrap.role_name
-  description                = "Used to manage and configure landing zone bootstrapping module"
-  permission_boundary_arn    = aws_iam_policy.default_permissions_boundary_management.arn
-  repository                 = var.repositories.bootstrap.url
-  read_only_inline_policies  = var.repositories.bootstrap.additional_read_permissions
-  read_write_inline_policies = var.repositories.bootstrap.additional_write_permissions
-  shared_repositories        = var.repositories.bootstrap.shared
-  tags                       = local.tags
+  name                      = var.repositories.bootstrap.role_name
+  description               = "Used to manage and configure landing zone bootstrapping module"
+  permission_boundary_arn   = aws_iam_policy.default_permissions_boundary_management.arn
+  repository                = var.repositories.bootstrap.url
+  read_only_inline_policies = var.repositories.bootstrap.additional_read_permissions
+  shared_repositories       = var.repositories.bootstrap.shared
+  tags                      = local.tags
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
@@ -229,6 +228,24 @@ module "management_aws_bootstrap" {
     "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
   ]
+
+  read_write_inline_policies = merge({
+    LandingZoneAdditional = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = [
+            "iam:TagRole",
+            "iam:UntagRole",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+          Sid      = "AllowIAM"
+        },
+      ]
+    }) },
+    var.repositories.bootstrap.additional_write_permissions,
+  )
 
   providers = {
     aws = aws.management
