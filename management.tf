@@ -91,6 +91,9 @@ module "management_aws_accounts" {
   shared_repositories     = var.repositories.accounts.shared
   tags                    = local.tags
 
+  common_provider             = var.common_provider
+  azuredevops_organization_id = var.azuredevops_organization_id
+
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
@@ -125,6 +128,9 @@ module "management_aws_organization" {
   repository              = var.repositories.organizations.url
   shared_repositories     = var.repositories.organizations.shared
   tags                    = local.tags
+
+  common_provider             = var.common_provider
+  azuredevops_organization_id = var.azuredevops_organization_id
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
@@ -180,6 +186,9 @@ module "audit_compliance_management" {
   shared_repositories        = var.repositories.compliance.shared
   tags                       = local.tags
 
+  common_provider             = var.common_provider
+  azuredevops_organization_id = var.azuredevops_organization_id
+
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSSSODirectoryReadOnly",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
@@ -209,6 +218,9 @@ module "management_aws_bootstrap" {
   read_only_inline_policies = var.repositories.bootstrap.additional_read_permissions
   shared_repositories       = var.repositories.bootstrap.shared
   tags                      = local.tags
+
+  common_provider             = var.common_provider
+  azuredevops_organization_id = var.azuredevops_organization_id
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess",
@@ -268,6 +280,9 @@ module "management_sso_identity" {
   repository              = var.repositories.identity.url
   shared_repositories     = var.repositories.identity.shared
   tags                    = local.tags
+
+  common_provider             = var.common_provider
+  azuredevops_organization_id = var.azuredevops_organization_id
 
   read_only_policy_arns = [
     "arn:aws:iam::aws:policy/AWSLambda_ReadOnlyAccess",
@@ -353,6 +368,9 @@ module "management_landing_zone" {
   shared_repositories        = var.repositories.accelerator.shared
   tags                       = local.tags
 
+  common_provider             = var.common_provider
+  azuredevops_organization_id = var.azuredevops_organization_id
+
   read_only_policy_arns = [
     "arn:aws:iam::${local.management_account_id}:policy/${aws_iam_policy.code_contributor.name}",
   ]
@@ -378,6 +396,9 @@ module "cost_management" {
   repository              = var.repositories.cost_management.url
   shared_repositories     = var.repositories.cost_management.shared
   tags                    = local.tags
+
+  common_provider             = var.common_provider
+  azuredevops_organization_id = var.azuredevops_organization_id
 
   read_only_inline_policies = merge({
     CostManagement = jsonencode({
