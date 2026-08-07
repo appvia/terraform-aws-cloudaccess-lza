@@ -251,6 +251,7 @@ module "management_aws_bootstrap" {
             "iam:TagRole",
             "iam:UntagOpenIDConnectProvider",
             "iam:UntagRole",
+            "iam:UpdateAssumeRolePolicy",
             "s3:TagResource",
             "s3:UntagResource "
           ]
